@@ -707,7 +707,7 @@ const TERMS = {
 const UNITS = {
   cv:   { no:'解1', title:'循環器', subject:'解剖生理', course:'med', subj:0, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
   vital:{ no:'技1', title:'バイタルサイン', subject:'基礎看護技術', course:'base', subj:0, lessons:VITAL_LESSONS, cards:'vital', drill:'vital' },
-  calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'base', subj:1, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
+  calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'calc', subj:0, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
 };
 const U = (...t) => t.map(x => typeof x === 'string' ? { t:x } : x);
 const CATALOG = [
@@ -718,9 +718,8 @@ const CATALOG = [
       { name:'病理学', k:'病', units:U('炎症','腫瘍','循環障害') },
       { name:'微生物学', k:'微', units:U('細菌','ウイルス','感染症と予防') },
       { name:'薬理学', k:'薬', units:U('薬の作用と体内動態','与薬の方法','注意が必要な薬') } ] },
-    { id:'base', name:'基礎看護学', k:'基', note:'看護技術・看護計算・看護過程', subjects:[
+    { id:'base', name:'基礎看護学', k:'基', note:'看護技術・看護過程', subjects:[
       { name:'看護技術', k:'技', units:U({ t:'バイタルサイン', ready:'vital' },'感染予防','清潔・衣生活','食事・排泄','活動・休息','与薬の技術') },
-      { name:'看護計算', k:'計', units:U({ t:'看護の計算', ready:'calc' }) },
       { name:'看護過程', k:'過', units:U('アセスメント','看護計画と記録') } ] },
     { id:'adult', name:'成人看護学', k:'成', note:'総論と疾患別（A〜P）', subjects:[
       { name:'成人看護学総論', k:'総', units:U('成人の特徴','急性期の看護','慢性期の看護','周手術期の看護','リハビリテーション・終末期') },
@@ -753,7 +752,13 @@ const CATALOG = [
     { id:'integ', name:'看護の統合と実践', k:'統', note:'看護管理・医療安全・災害看護', subjects:[
       { name:'看護の統合と実践', k:'統', units:U('看護管理','医療安全','災害看護','国際看護') } ] },
     { id:'law', name:'健康支援と社会保障制度', k:'社', note:'社会保障・法規・公衆衛生', subjects:[
-      { name:'健康支援と社会保障制度', k:'社', units:U('社会保障制度','保健医療福祉の制度','看護関係法規','公衆衛生・疫学') } ] } ] },
+      { name:'健康支援と社会保障制度', k:'社', units:U('社会保障制度','保健医療福祉の制度','看護関係法規','公衆衛生・疫学') } ] },
+    { id:'hissu', name:'必修トレーニング', k:'必', note:'国試の必修問題を毎日少しずつ', subjects:[
+      { name:'必修トレーニング', k:'必', units:U('健康の指標と社会','人間の特性と発達','人体の構造と機能','疾病と治療','基本的な看護技術','看護の対象と制度','よく出る薬','覚えておきたい基準値') } ] },
+    { id:'calc', name:'看護計算', k:'計', note:'単位・濃度・点滴・酸素', subjects:[
+      { name:'看護計算', k:'計', units:U({ t:'看護の計算', ready:'calc' }) } ] },
+    { id:'memo', name:'覚え方', k:'覚', note:'語呂合わせと暗記のコツ', subjects:[
+      { name:'覚え方', k:'覚', units:U('暗記のコツ','基準値の語呂合わせ','解剖の語呂合わせ','疾患の語呂合わせ','薬の語呂合わせ','法律・制度の語呂合わせ') } ] } ] },
 ];
 const allCourses = () => CATALOG.flatMap(g => g.courses);
 const courseById = id => allCourses().find(c => c.id === id);
