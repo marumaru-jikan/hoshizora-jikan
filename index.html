@@ -1,0 +1,1080 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#141842">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="星空時間">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+</head><body>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>星空時間</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=BIZ+UDPGothic:wght@400;700&display=swap">
+<style>
+/* Layout: one calm phone-width column under a night sky, views swapped in place, a fixed bottom tab bar (海月時間シリーズと同じ骨組み) */
+:root{
+  --bg:#EDEFF8; --bg-top:#D6DBF0; --surface:#FFFFFF; --sunk:#E3E6F3; --ink:#161B3A; --muted:#565E85; --line:#CBD0E6;
+  --teal:#3445A3; --teal-soft:#DDE1F6; --accent:#D9A520; --accent-soft:#FBF0D2; --accent-ink:#4E3800;
+  --good:#23845A; --good-bg:#DCF1E6; --bad:#B9503A; --bad-bg:#F8E1DA;
+  --night1:#2A2F6E; --night2:#141842; --night3:#070923; --star:#FFE9A8; --night-ink:#E8EAFB; --night-muted:#B9BEE6;
+  --f-display:"Zen Maru Gothic","Hiragino Maru Gothic ProN","BIZ UDPGothic",sans-serif;
+  --f-body:"BIZ UDPGothic","Hiragino Sans","Noto Sans JP",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#090C22; --bg-top:#151A45; --surface:#121735; --sunk:#0D1130; --ink:#E6E8FA; --muted:#A0A6D0; --line:#252B55;
+  --teal:#A3AEF5; --teal-soft:#1D2457; --accent:#F2C95B; --accent-soft:#3A2E10; --accent-ink:#FBE7B0;
+  --good:#6CCB94; --good-bg:#14332A; --bad:#E8826A; --bad-bg:#3A201A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#090C22; --bg-top:#151A45; --surface:#121735; --sunk:#0D1130; --ink:#E6E8FA; --muted:#A0A6D0; --line:#252B55;
+  --teal:#A3AEF5; --teal-soft:#1D2457; --accent:#F2C95B; --accent-soft:#3A2E10; --accent-ink:#FBE7B0;
+  --good:#6CCB94; --good-bg:#14332A; --bad:#E8826A; --bad-bg:#3A201A; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg) linear-gradient(180deg,var(--bg-top) 0,var(--bg) 360px) no-repeat;min-height:100%;color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px calc(96px + env(safe-area-inset-bottom,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.35}
+h1{font-size:1.6rem;font-weight:900}
+h2{font-size:1.25rem;font-weight:700}
+h3{font-size:1.05rem;font-weight:700}
+p{margin:0}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.stack{display:flex;flex-direction:column;gap:14px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.num{font-variant-numeric:tabular-nums}
+
+.top{display:flex;align-items:center;gap:10px;min-height:52px}
+.back{border:0;background:none;padding:8px 10px 8px 0;font-size:1rem;color:var(--teal);font-weight:700;white-space:nowrap;flex:none}
+.top .ttl{font-family:var(--f-display);font-weight:700;font-size:1.05rem;min-width:0}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.hello{padding-block:10px 4px}
+.hello .eyebrow{font-size:.8rem;letter-spacing:.08em;color:var(--teal);font-weight:700}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.stat b{display:block;font-family:var(--f-display);font-size:1.5rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.2}
+.stat span{font-size:.78rem;color:var(--muted)}
+
+.continue{display:flex;justify-content:space-between;align-items:center;gap:12px;width:100%;text-align:left;background:linear-gradient(120deg,var(--night1),var(--night2));color:var(--night-ink);border:0;border-radius:14px;padding:16px 18px}
+.continue small{display:block;opacity:.85;font-size:.8rem}
+.continue strong{font-family:var(--f-display);font-size:1.1rem}
+.continue .go{font-size:1.4rem;color:var(--star)}
+
+.subjects{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.subjects .subj:last-child:nth-child(odd){grid-column:1/-1}
+.subj{display:flex;flex-direction:column;gap:4px;align-items:flex-start;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;min-height:92px}
+.subj .k{font-family:var(--f-display);font-size:1.6rem;font-weight:900;line-height:1;color:var(--teal)}
+.subj b{font-family:var(--f-display);font-size:1.05rem}
+.subj .small{line-height:1.45}
+
+.list{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;background:none;padding:14px 16px;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item[disabled]{opacity:.5;cursor:default}
+.item .body{flex:1;min-width:0}
+.item .chev{color:var(--muted)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.tag.done{background:var(--good-bg);color:var(--good)}
+.tag.mid{background:var(--accent-soft);color:var(--accent-ink)}
+.lid{flex:none;min-width:44px;height:30px;padding:0 8px;border-radius:99px;display:grid;place-items:center;background:var(--teal-soft);color:var(--teal);font-weight:700;font-family:var(--f-display);font-variant-numeric:tabular-nums;font-size:.9rem}
+.lid.done{background:var(--teal);color:var(--surface)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+
+.btn{border:0;border-radius:12px;padding:13px 18px;font-weight:700;background:var(--teal);color:var(--surface)}
+.btn.ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line)}
+.btn.warm{background:var(--accent);color:#2B1F00}
+.btn.wide{width:100%}
+.btn.again{background:var(--teal-soft);color:var(--teal);border:2px solid var(--teal)}
+.btn[disabled]{opacity:.45;cursor:default}
+.btn:focus-visible,.item:focus-visible,.subj:focus-visible,.choice:focus-visible,.card:focus-visible,.tab:focus-visible,.rflip:focus-visible,.continue:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* lesson */
+.lesson section{display:flex;flex-direction:column;gap:10px}
+.rule{background:var(--accent-soft);color:var(--accent-ink);border-radius:12px;padding:12px 14px;font-weight:700;line-height:1.75}
+.ex{font-family:var(--f-display);font-size:1.1rem;font-weight:700;font-variant-numeric:tabular-nums}
+.fx{background:var(--sunk);border-radius:10px;padding:10px 14px;font-family:var(--f-display);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.8}
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.chain span{background:var(--teal-soft);color:var(--teal);border-radius:8px;padding:4px 10px;font-weight:700;font-size:.92rem}
+.chain i{font-style:normal;color:var(--muted)}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem;font-variant-numeric:tabular-nums}
+.tbl th,.tbl td{border-top:1px solid var(--line);padding:7px 6px;text-align:left;vertical-align:top}
+.tbl th{font-weight:700;color:var(--muted);font-size:.8rem}
+.tbl tr:first-child th,.tbl tr:first-child td{border-top:0}
+.scroll{overflow-x:auto}
+.fig{width:100%;max-width:340px;height:auto;display:block;margin:0 auto}
+.fig text{font-family:var(--f-body);font-size:12px;fill:var(--ink)}
+.fig .lb{font-weight:700}
+.fig .ch{fill:var(--teal-soft);stroke:var(--teal);stroke-width:1.5}
+.fig .chL{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.fig .wl{fill:none;stroke:var(--teal);stroke-width:2}
+.fig .mu{fill:var(--muted);font-size:10.5px}
+.fig .ac{fill:var(--accent)}
+.fig .grid{stroke:var(--line);stroke-width:1}
+.note{background:var(--sunk);border-radius:12px;padding:12px 14px;font-size:.9rem}
+
+/* cards */
+.card{position:relative;width:100%;min-height:230px;border:1px solid var(--line);border-radius:18px;background:var(--surface);padding:24px 20px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:10px;text-align:center}
+.card .side{font-size:.75rem;letter-spacing:.1em;color:var(--teal);font-weight:700}
+.card .term{font-family:var(--f-display);font-size:1.7rem;font-weight:900}
+.card .def{font-size:1.02rem;line-height:1.8;max-width:30em}
+.card.flipped{background:var(--teal-soft)}
+.meter{height:8px;border-radius:99px;background:var(--sunk);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--teal);border-radius:99px;transition:width .3s}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* quiz */
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.qbox{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px 18px;text-align:center}
+.qbox .prompt{color:var(--muted);font-size:.92rem}
+.qbox .expr{font-family:var(--f-display);font-size:1.6rem;font-weight:900;margin-top:6px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere;line-height:1.5}
+.qbox .expr.long{font-size:1.12rem;font-weight:700;line-height:1.7;text-align:left}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice{border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:14px 8px;font-family:var(--f-display);font-size:1.25rem;font-weight:700;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.choices.words{grid-template-columns:1fr}
+.choices.words .choice{font-size:1.02rem;padding:12px;text-align:left}
+.choice.ok{border-color:var(--good);background:var(--good-bg);color:var(--good)}
+.choice.ng{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+.choice[disabled]{cursor:default}
+.feedback{border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.feedback.ok{background:var(--good-bg)}
+.feedback.ng{background:var(--bad-bg)}
+.feedback .verdict{font-family:var(--f-display);font-weight:900;font-size:1.15rem}
+.feedback.ok .verdict{color:var(--good)} .feedback.ng .verdict{color:var(--bad)}
+.hint{background:var(--accent-soft);color:var(--accent-ink);border-radius:12px;padding:12px 14px;font-size:.95rem}
+.linkbtn{border:0;background:none;color:var(--teal);font-weight:700;padding:6px 0;text-decoration:underline;text-underline-offset:3px}
+.result{text-align:center;padding:24px 16px}
+.result .big{font-family:var(--f-display);font-size:3rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--teal);line-height:1.1}
+
+/* record */
+.days{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.day{aspect-ratio:1;max-width:100%;border-radius:8px;background:var(--sunk);display:grid;place-items:center;font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.day.on{background:var(--teal);color:var(--surface);font-weight:700}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.kv:first-child{border-top:0}
+input[type=text]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:11px 12px}
+input[type=text]:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+ol.steps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
+.status{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--muted)}
+.status.ok::before{background:var(--good)}
+.status.wait::before{background:var(--accent)}
+
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+.tabs .in{max-width:560px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.tab{border:0;background:none;padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.75rem;color:var(--muted);font-weight:700}
+.tab svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linejoin:round}
+.tab.on{color:var(--teal)}
+
+@keyframes pop{0%{transform:scale(.96);opacity:.4}100%{transform:none;opacity:1}}
+.pop{animation:pop .25s ease-out}
+
+/* night sky hero */
+.sky{position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(175deg,var(--night1) 0%,var(--night2) 55%,var(--night3) 100%);color:var(--night-ink);padding:22px 18px 20px;min-height:176px;display:flex;align-items:flex-end}
+.sky .art{position:absolute;inset:0;width:100%;height:100%}
+.sky .txt{position:relative;z-index:1;max-width:64%;display:flex;flex-direction:column;gap:4px}
+.sky .name{font-family:var(--f-display);font-weight:900;font-size:1.05rem;letter-spacing:.2em;color:var(--star)}
+.sky h1{color:#F4F5FF;font-size:1.45rem}
+.sky p{color:var(--night-muted);font-size:.88rem}
+@keyframes tw{0%,100%{opacity:1}50%{opacity:.35}}
+.tw{animation:tw 3.2s ease-in-out infinite}
+@keyframes shoot{0%,78%{opacity:0;transform:translate(0,0)}82%{opacity:1}100%{opacity:0;transform:translate(-120px,60px)}}
+.shoot{animation:shoot 9s ease-in infinite}
+
+/* reward card */
+.rcard{display:flex;flex-direction:column;align-items:center;gap:12px;padding:6px 0 4px}
+.rlead{font-family:var(--f-display);font-weight:700;color:var(--teal);text-align:center}
+.rflip{border:0;padding:0;background:none;width:min(100%,300px);max-width:100%;aspect-ratio:3/4;perspective:1200px;cursor:pointer}
+.rflip[disabled]{cursor:default}
+.rinner{position:relative;display:block;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.7,.2,1)}
+.rcard.open .rinner{transform:rotateY(180deg)}
+.rback,.rfront{position:absolute;inset:0;border-radius:18px;overflow:hidden;-webkit-backface-visibility:hidden;backface-visibility:hidden;box-shadow:0 12px 30px rgba(7,9,35,.35)}
+.rback{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:radial-gradient(120% 80% at 50% 0%,#3B44A0 0%,#171C4E 55%,#070923 100%);border:3px solid #E9C76A;color:#F2E2B0}
+.rback svg{width:56%;height:auto}
+.rhint{font-family:var(--f-display);font-weight:700;letter-spacing:.12em;font-size:.95rem;padding:6px 14px;border-radius:99px;background:rgba(242,201,91,.16)}
+.rcard:not(.open) .rflip{animation:nudge 2.6s ease-in-out 1s infinite}
+@keyframes nudge{0%,86%,100%{transform:none}90%{transform:rotate(-2deg)}94%{transform:rotate(2deg)}}
+.rfront{transform:rotateY(180deg);background:#0B0E2A;border:3px solid #A3AEF5}
+.rfront img,.rfront svg{display:block;width:100%;height:100%;object-fit:cover}
+.rfront.fit{background:#070A20}
+.rfront.fit img{object-fit:contain}
+.rcap,.viewer figcaption{display:flex;flex-direction:column;align-items:center;gap:2px;text-align:center}
+.rcap{transition:opacity .4s ease .55s}
+.rcard:not(.open) .rcap{opacity:0;visibility:hidden}
+.rno{font-size:.8rem;letter-spacing:.06em;color:var(--muted);display:inline-flex;gap:8px;align-items:center}
+.rno em{font-style:normal;background:var(--accent);color:#2B1F00;border-radius:99px;padding:0 9px;font-size:.72rem;font-weight:700;letter-spacing:.08em}
+.rname{font-family:var(--f-display);font-size:1.35rem;font-weight:700}
+.rnote{font-size:.9rem;color:var(--muted)}
+.rcount{font-size:.76rem;color:var(--muted);margin-top:4px}
+.coll{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.coll>*{aspect-ratio:3/4;max-width:100%;border-radius:8px;background:var(--sunk);overflow:hidden;display:grid;place-items:center;color:var(--muted);font-size:.8rem;border:0;padding:0}
+.coll button{cursor:pointer;box-shadow:inset 0 0 0 1px var(--line)}
+.coll img,.coll svg{width:100%;height:100%;object-fit:cover;display:block}
+.viewer{position:fixed;inset:0;z-index:20;background:rgba(5,7,25,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:max(16px,env(safe-area-inset-top,0px)) 16px max(16px,env(safe-area-inset-bottom,0px));color:#E8EAFB}
+.viewer figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:10px;max-width:420px;width:100%}
+.viewer img,.viewer .vsvg{max-width:100%;max-height:66vh;border-radius:14px;object-fit:contain;display:block}
+.viewer .vsvg{width:min(100%,46vh)}
+.viewer .vsvg svg{width:100%;height:auto;display:block;border-radius:14px}
+.viewer .rno,.viewer .rnote{color:#B9BEE6}
+
+/* grow a star */
+.skybox{border-radius:22px;overflow:hidden;background:linear-gradient(175deg,#232867 0%,#10143C 58%,#05071C 100%);color:#E8EAFB}
+.skybox .night{display:block;width:100%;height:auto}
+.skycount{display:flex;justify-content:space-between;padding:8px 16px 12px;font-size:.82rem;color:#C6CAEE}
+.skycount b{color:#fff;font-size:1rem}
+.night .tw{animation-duration:4s}
+.stg{width:150px;max-width:42%;height:auto;flex:none;background:linear-gradient(175deg,#232867,#10143C);border-radius:16px}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.stg .bob{animation:breathe 4s ease-in-out infinite;transform-origin:110px 85px}
+.growtop{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.growtop>div{min-width:0}
+.grow{display:flex;flex-direction:column;gap:10px}
+.shard{width:20px;height:20px;fill:var(--accent);stroke:var(--accent-ink);stroke-width:1;flex:none}
+.shardbal{display:flex;align-items:center;gap:6px;font-weight:700}
+.shardbal b{font-size:1.15rem;color:var(--teal)}
+.skymsg{margin:0;color:var(--teal);font-weight:700}
+.born{display:flex;gap:12px;align-items:center;background:linear-gradient(175deg,#232867,#10143C);color:#E8EAFB;border:0}
+.born h3{color:#fff;margin:2px 0}.born .muted{color:#C6CAEE}
+.bsv{width:104px;height:104px;flex:none}
+.zukan{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.zk{display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px;padding:8px 4px;border-radius:12px;background:linear-gradient(175deg,#232867,#10143C);color:#E8EAFB;min-width:0}
+.zk svg{width:56px;height:56px}.zk b{font-size:.8rem}.zk span{font-size:.66rem;line-height:1.4;color:#C6CAEE}
+.zk.no{background:var(--sunk);color:var(--muted)}
+.shardget{display:flex;align-items:center;gap:10px}.shardget>div{flex:1;min-width:0}.shardget .shard{width:28px;height:28px}
+
+/* PDF */
+.ladder{display:flex;flex-direction:column;gap:10px}
+.rung{display:flex;gap:14px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.rung .body{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.stage{flex:none;width:46px;height:46px;fill:var(--accent-soft);stroke:var(--teal);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.sname{font-family:var(--f-display);font-size:1.1rem}
+.pdfbar{display:flex;gap:8px;align-items:center}
+.pdfseg{display:flex;flex:1;background:var(--surface);border-radius:999px;padding:3px;border:1px solid var(--line)}
+.pdfseg button{flex:1;border:0;background:none;padding:8px 6px;border-radius:999px;font-size:.9rem}
+.pdfseg button.on{background:var(--teal);color:var(--surface);font-weight:700}
+.pdfzoom{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 12px;font-size:.85rem;white-space:nowrap}
+.pdfpages{display:flex;flex-direction:column;gap:12px;overflow-x:auto;min-height:200px}
+.pdfpage{background:#fff;border-radius:6px;box-shadow:0 1px 6px rgba(0,0,0,.15);flex:none}
+.pdfbtn{padding:9px 14px;font-size:.9rem}
+
+/* 流れ星のメッセージ */
+.meteor{position:fixed;inset:0;z-index:30;overflow:hidden;background:radial-gradient(120% 80% at 50% 20%,rgba(30,36,96,.92),rgba(5,7,28,.96));-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));animation:mfade .3s ease-out}
+.meteor .streak{position:absolute;top:14%;left:100%;width:240px;height:2px;border-radius:2px;background:linear-gradient(90deg,#fff 0%,rgba(255,233,168,.8) 12%,rgba(255,255,255,0) 100%);box-shadow:0 0 8px 1px rgba(255,240,200,.7);transform-origin:left center;animation:meteorRun 1.1s cubic-bezier(.2,.6,.4,1) .15s both}
+.meteor .streak::before{content:"";position:absolute;left:-3px;top:-3px;width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 12px 4px rgba(255,240,200,.9)}
+.meteor .streak.s2{top:30%;width:150px;animation-delay:.55s;animation-duration:.9s;opacity:.7}
+@keyframes meteorRun{0%{transform:translate(0,0) rotate(-26deg);opacity:0}10%{opacity:1}80%{opacity:1}100%{transform:translate(-120vw,58vw) rotate(-26deg);opacity:0}}
+@keyframes mfade{from{opacity:0}to{opacity:1}}
+@keyframes mcard{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.mcard{position:relative;max-width:360px;width:100%;text-align:center;display:flex;flex-direction:column;gap:14px;align-items:center;padding:26px 22px;border-radius:20px;background:linear-gradient(175deg,#2A2F6E,#0E1234);box-shadow:0 18px 40px rgba(0,0,0,.45);border:1px solid rgba(233,199,106,.45);color:#E8EAFB;animation:mcard .5s ease-out 1s both}
+.mcard .mlabel{font-size:.78rem;letter-spacing:.14em;color:#F2C95B;font-weight:700}
+.mcard .mtext{font-family:var(--f-display);font-size:1.25rem;font-weight:700;line-height:1.75;word-break:keep-all;overflow-wrap:anywhere}
+.mcard .btn{background:#F2C95B;color:#2B1F00;min-width:140px}
+@media (prefers-reduced-motion: reduce){.meteor,.mcard{animation:none}.meteor .streak{display:none}}
+@media (prefers-reduced-motion: reduce){.pop,.tw,.shoot,.stg .bob,.rcard .rflip{animation:none!important}.rinner,.rcap,.meter i{transition:none}}
+</style>
+
+<div class="wrap" id="app"></div>
+<nav class="tabs" aria-label="メニュー"><div class="in">
+  <button class="tab" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/></svg>ホーム</button>
+  <button class="tab" data-tab="sky"><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>夜空</button>
+  <button class="tab" data-tab="record"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="17" rx="2"/><path d="M8 2v4M16 2v4M4 10h16"/></svg>記録</button>
+  <button class="tab" data-tab="settings"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>設定</button>
+</div></nav>
+
+<script>
+(() => {
+/* ===== 設定（GitHubに置くときにここを書きかえます） ===== */
+// 先生用スプレッドシートの送信先（Apps Script のウェブアプリURL）。空のままだと送信しません。
+const GAS_URL = '';
+// 星屑（小単元）をクリアしたときに、流れ星といっしょに出るメッセージ。好きなだけ書き足せます。
+const METEOR_MSGS = [
+  '今日の5分が、未来の患者さんを支える力になる。',
+  '小さな星屑も、集めれば夜空を照らす。',
+  '昨日の自分より、ひとつ分だけ前へ。',
+  'わからなかった問題は、これから輝く星。',
+  '休むことも、続けるための大切な技術。',
+  '覚えたことは、いつか誰かの安心になる。',
+  'ゆっくりでも、星はちゃんと進んでいる。',
+  '今日もここに来てくれて、ありがとう。',
+  '疲れた日は、5分だけで十分。',
+  'あなたの手は、いつか誰かを支える手。',
+  '星座も、ひとつずつの星からできている。',
+  '間違えた分だけ、本番で迷わなくなる。',
+  'がんばった今日に、小さな輝きを。',
+  'たまには、本物の夜空も見上げて。',
+  '積み重ねた5分は、うそをつかない。',
+];
+// 確認用：true のあいだは、記録画面でカードを全部公開します。生徒に配る前に false に戻します。
+const SHOW_ALL_CARDS = false;
+// 章（単元）をクリアしたときにめくる星空の写真。写真は cards フォルダへ。
+// t は p（星空の写真）か h（星空の作品）。note は日付や場所（空でもOK）。
+// 例：{ t:'p', src:'cards/p01.jpg', name:'冬の大三角', note:'2025.1　豊栄' },
+// 写真を書き足すと、星座図鑑（アプリに入っている88枚）といっしょにめくれるようになります。
+const STAR_CARDS = [
+];
+// 天体観測の写真。cards フォルダの a01〜a07.jpg。note に日付や場所を書けます。
+const OBS = [
+  { src:'cards/a01.jpg', name:'高架にのぼる月', note:'' },
+  { src:'cards/a02.jpg', name:'満月', note:'' },
+  { src:'cards/a03.jpg', name:'半月', note:'' },
+  { src:'cards/a04.jpg', name:'夕暮れの月', note:'' },
+  { src:'cards/a05.jpg', name:'星の夜', note:'' },
+  { src:'cards/a06.jpg', name:'アトラス彗星', note:'' },
+  { src:'cards/a07.jpg', name:'星空テント', note:'' },
+  { src:'cards/a08.jpg', name:'オーストラリアからの月', note:'' },
+];
+// 星座図鑑。cards フォルダの z01〜z88.jpg（z01〜z12 黄道十二星座、z13〜z26 春、z27〜z38 夏、z39〜z49 秋、z50〜z58 冬、z59〜z61 北天、z62〜z88 南天の星座）。
+const ZODIAC = [
+  { src:'cards/z01.jpg', name:'おひつじ座', note:'秋の星座　目じるしはハマル（2等星）' },
+  { src:'cards/z02.jpg', name:'おうし座', note:'冬の星座　目じるしはアルデバラン（1等星）' },
+  { src:'cards/z03.jpg', name:'ふたご座', note:'冬の星座　目じるしはポルックス（1等星）' },
+  { src:'cards/z04.jpg', name:'かに座', note:'春の星座　目じるしはプレセペ星団（4等星アクベンス）' },
+  { src:'cards/z05.jpg', name:'しし座', note:'春の星座　目じるしはレグルス（1等星）' },
+  { src:'cards/z06.jpg', name:'おとめ座', note:'春の星座　目じるしはスピカ（1等星）' },
+  { src:'cards/z07.jpg', name:'てんびん座', note:'夏の星座　目じるしはズベン・エス・カマリ（3等星）' },
+  { src:'cards/z08.jpg', name:'さそり座', note:'夏の星座　目じるしはアンタレス（1等星）' },
+  { src:'cards/z09.jpg', name:'いて座', note:'夏の星座　目じるしは南斗六星（カウス・アウストラリス 2等星）' },
+  { src:'cards/z10.jpg', name:'やぎ座', note:'秋の星座　目じるしはデネブ・アルゲディ（3等星）' },
+  { src:'cards/z11.jpg', name:'みずがめ座', note:'秋の星座　目じるしはサダルスウド（3等星）' },
+  { src:'cards/z12.jpg', name:'うお座', note:'秋の星座　目じるしはアルフェルグ（4等星）' },
+  { src:'cards/z13.jpg', name:'おおぐま座', note:'春の星座　目じるしは北斗七星（アリオト 2等星）' },
+  { src:'cards/z14.jpg', name:'うしかい座', note:'春の星座　目じるしはアルクトゥルス（0等星）' },
+  { src:'cards/z15.jpg', name:'うみへび座', note:'春の星座　目じるしはアルファルド（2等星）' },
+  { src:'cards/z16.jpg', name:'からす座', note:'春の星座　目じるしは4つの3等星がつくる台形' },
+  { src:'cards/z17.jpg', name:'コップ座', note:'春の星座　目じるしは4等星がつくる杯の形' },
+  { src:'cards/z18.jpg', name:'ケンタウルス座', note:'春の星座　目じるしはリギル・ケンタウルス（0等星。日本の大部分からは見えない）' },
+  { src:'cards/z19.jpg', name:'りょうけん座', note:'春の星座　目じるしはコル・カロリ（3等星）' },
+  { src:'cards/z20.jpg', name:'かみのけ座', note:'春の星座　目じるしはかみのけ座星団（暗い星の集まり）' },
+  { src:'cards/z21.jpg', name:'こじし座', note:'春の星座　目じるしは4等星（とくに目立つ星はない）' },
+  { src:'cards/z22.jpg', name:'やまねこ座', note:'春の星座　目じるしは3等星（とくに目立つ星はない）' },
+  { src:'cards/z23.jpg', name:'ろくぶんぎ座', note:'春の星座　目じるしは4等星（とくに目立つ星はない）' },
+  { src:'cards/z24.jpg', name:'ポンプ座', note:'春の星座　目じるしは4等星（とくに目立つ星はない）' },
+  { src:'cards/z25.jpg', name:'らしんばん座', note:'春の星座　目じるしは4等星（とくに目立つ星はない）' },
+  { src:'cards/z26.jpg', name:'ほ座', note:'春の星座　目じるしはスハイル（2等星）' },
+  { src:'cards/z27.jpg', name:'こと座', note:'夏の星座　目じるしはベガ（0等星。七夕の織姫星）' },
+  { src:'cards/z28.jpg', name:'わし座', note:'夏の星座　目じるしはアルタイル（1等星。七夕の彦星）' },
+  { src:'cards/z29.jpg', name:'はくちょう座', note:'夏の星座　目じるしはデネブ（1等星）と北十字' },
+  { src:'cards/z30.jpg', name:'ヘルクレス座', note:'夏の星座　目じるしはラス・アルゲティ（3等星）' },
+  { src:'cards/z31.jpg', name:'へびつかい座', note:'夏の星座　目じるしはラス・アルハゲ（2等星）' },
+  { src:'cards/z32.jpg', name:'へび座', note:'夏の星座　目じるしはウヌクアルハイ（3等星）' },
+  { src:'cards/z33.jpg', name:'かんむり座', note:'夏の星座　目じるしはアルフェッカ（2等星）' },
+  { src:'cards/z34.jpg', name:'や座', note:'夏の星座　目じるしは4等星がつくる矢の形' },
+  { src:'cards/z35.jpg', name:'いるか座', note:'夏の星座　目じるしは4等星のひし形' },
+  { src:'cards/z36.jpg', name:'こぎつね座', note:'夏の星座　目じるしは4等星（亜鈴状星雲 M27）' },
+  { src:'cards/z37.jpg', name:'たて座', note:'夏の星座　目じるしは4等星（天の川の濃い部分）' },
+  { src:'cards/z38.jpg', name:'おおかみ座', note:'夏の星座　目じるしは3等星（日本からは一部のみ）' },
+  { src:'cards/z39.jpg', name:'ペガスス座', note:'秋の星座　目じるしは秋の四辺形（マルカブ 2等星）' },
+  { src:'cards/z40.jpg', name:'アンドロメダ座', note:'秋の星座　目じるしはアルフェラッツ（2等星）とアンドロメダ銀河' },
+  { src:'cards/z41.jpg', name:'カシオペヤ座', note:'秋の星座　目じるしはW字にならぶ5つの星（シェダル 2等星）' },
+  { src:'cards/z42.jpg', name:'ケフェウス座', note:'秋の星座　目じるしはアルデラミン（3等星）' },
+  { src:'cards/z43.jpg', name:'ペルセウス座', note:'秋の星座　目じるしはミルファク（2等星）とアルゴル' },
+  { src:'cards/z44.jpg', name:'くじら座', note:'秋の星座　目じるしはディフダ（2等星）と変光星ミラ' },
+  { src:'cards/z45.jpg', name:'みなみのうお座', note:'秋の星座　目じるしはフォーマルハウト（1等星。秋のひとつ星）' },
+  { src:'cards/z46.jpg', name:'こうま座', note:'秋の星座　目じるしは4等星の小さな四角形' },
+  { src:'cards/z47.jpg', name:'さんかく座', note:'秋の星座　目じるしは3〜4等星の細長い三角形' },
+  { src:'cards/z48.jpg', name:'とかげ座', note:'秋の星座　目じるしは4等星（とくに目立つ星はない）' },
+  { src:'cards/z49.jpg', name:'ちょうこくしつ座', note:'秋の星座　目じるしは4等星（とくに目立つ星はない）' },
+  { src:'cards/z50.jpg', name:'オリオン座', note:'冬の星座　目じるしはベテルギウス・リゲル（1等星）と三つ星' },
+  { src:'cards/z51.jpg', name:'おおいぬ座', note:'冬の星座　目じるしはシリウス（−1等星。夜空でいちばん明るい恒星）' },
+  { src:'cards/z52.jpg', name:'こいぬ座', note:'冬の星座　目じるしはプロキオン（0等星）' },
+  { src:'cards/z53.jpg', name:'ぎょしゃ座', note:'冬の星座　目じるしはカペラ（0等星）' },
+  { src:'cards/z54.jpg', name:'うさぎ座', note:'冬の星座　目じるしはアルネブ（3等星）' },
+  { src:'cards/z55.jpg', name:'エリダヌス座', note:'冬の星座　目じるしはアケルナル（0等星。日本の大部分からは見えない）' },
+  { src:'cards/z56.jpg', name:'いっかくじゅう座', note:'冬の星座　目じるしは4等星（冬の大三角の中）' },
+  { src:'cards/z57.jpg', name:'とも座', note:'冬の星座　目じるしはナオス（2等星。日本からは南の低空）' },
+  { src:'cards/z58.jpg', name:'はと座', note:'冬の星座　目じるしはファクト（3等星）' },
+  { src:'cards/z59.jpg', name:'こぐま座', note:'北天の星座　目じるしは北極星ポラリス（2等星）' },
+  { src:'cards/z60.jpg', name:'りゅう座', note:'北天の星座　目じるしはエルタニン（2等星）' },
+  { src:'cards/z61.jpg', name:'きりん座', note:'北天の星座　目じるしは4等星（とくに目立つ星はない）' },
+  { src:'cards/z62.jpg', name:'みなみじゅうじ座', note:'南天の星座　目じるしはアクルックス・ミモザ（1等星）' },
+  { src:'cards/z63.jpg', name:'りゅうこつ座', note:'南天の星座　目じるしはカノープス（−1等星。全天で2番目に明るい恒星）' },
+  { src:'cards/z64.jpg', name:'みなみのかんむり座', note:'南天の星座　目じるしは4等星の半円' },
+  { src:'cards/z65.jpg', name:'さいだん座', note:'南天の星座　目じるしは3等星' },
+  { src:'cards/z66.jpg', name:'みなみのさんかく座', note:'南天の星座　目じるしはアトリア（2等星）' },
+  { src:'cards/z67.jpg', name:'くじゃく座', note:'南天の星座　目じるしはピーコック（2等星）' },
+  { src:'cards/z68.jpg', name:'つる座', note:'南天の星座　目じるしはアルナイル（2等星）' },
+  { src:'cards/z69.jpg', name:'ほうおう座', note:'南天の星座　目じるしはアンカア（2等星）' },
+  { src:'cards/z70.jpg', name:'きょしちょう座', note:'南天の星座　目じるしは3等星と小マゼラン雲' },
+  { src:'cards/z71.jpg', name:'ふうちょう座', note:'南天の星座　目じるしは4等星' },
+  { src:'cards/z72.jpg', name:'とびうお座', note:'南天の星座　目じるしは4等星' },
+  { src:'cards/z73.jpg', name:'かじき座', note:'南天の星座　目じるしは4等星と大マゼラン雲' },
+  { src:'cards/z74.jpg', name:'みずへび座', note:'南天の星座　目じるしは3等星' },
+  { src:'cards/z75.jpg', name:'カメレオン座', note:'南天の星座　目じるしは4等星' },
+  { src:'cards/z76.jpg', name:'はえ座', note:'南天の星座　目じるしは3等星' },
+  { src:'cards/z77.jpg', name:'インディアン座', note:'南天の星座　目じるしは3等星' },
+  { src:'cards/z78.jpg', name:'はちぶんぎ座', note:'南天の星座　目じるしは5等星（天の南極がある）' },
+  { src:'cards/z79.jpg', name:'テーブルさん座', note:'南天の星座　目じるしは5等星と大マゼラン雲の一部' },
+  { src:'cards/z80.jpg', name:'コンパス座', note:'南天の星座　目じるしは3等星' },
+  { src:'cards/z81.jpg', name:'じょうぎ座', note:'南天の星座　目じるしは4等星' },
+  { src:'cards/z82.jpg', name:'ぼうえんきょう座', note:'南天の星座　目じるしは4等星' },
+  { src:'cards/z83.jpg', name:'けんびきょう座', note:'南天の星座　目じるしは5等星' },
+  { src:'cards/z84.jpg', name:'がか座', note:'南天の星座　目じるしは3等星' },
+  { src:'cards/z85.jpg', name:'ちょうこくぐ座', note:'南天の星座　目じるしは4等星' },
+  { src:'cards/z86.jpg', name:'とけい座', note:'南天の星座　目じるしは4等星' },
+  { src:'cards/z87.jpg', name:'レチクル座', note:'南天の星座　目じるしは3等星' },
+  { src:'cards/z88.jpg', name:'ろ座', note:'南天の星座　目じるしは4等星' },
+];
+
+// 演習問題PDF。pdf フォルダに入れたファイル名を書きます。空なら「準備中」と表示されます。
+const PDF = {
+  'cv-lv1':{q:'',a:''}, 'vital-lv1':{q:'',a:''}, 'calc-lv1':{q:'',a:''},
+};
+
+/* ===== 学籍番号（学校の記号＋学年＋番号　例：N101） ===== */
+const CODE_RE = /^[A-Z][1-9][0-9]{2}$/;
+const normCode = v => String(v).trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, ch => String.fromCharCode(ch.charCodeAt(0)-0xFEE0)).toUpperCase();
+
+/* ===== 保存（この端末の中） ===== */
+const KEY = 'hoshizora-jikan.v1';
+const fresh = () => ({ name:'', code:'', days:[], answered:0, correct:0, lessons:{}, known:{}, cards:[], outbox:[], sky:null, lastUnit:'' });
+let R = fresh();
+try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s) R = Object.assign(fresh(), s); } catch(e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(R)); } catch(e) {} };
+const dkey = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const today = () => dkey(new Date());
+const markDay = () => { const t = today(); if (!R.days.includes(t)) { R.days.push(t); save(); } };
+const streak = () => { const set=new Set(R.days); let n=0; const d=new Date(); if(!set.has(today())) d.setDate(d.getDate()-1);
+  while(set.has(dkey(d))){ n++; d.setDate(d.getDate()-1); } return n; };
+
+/* ===== 先生への送信（届かなければ次に開いたときに再送） ===== */
+function report(item){ R.outbox.push(Object.assign({ app:'星空時間', code:R.code, name:R.name, at:new Date().toISOString() }, item)); save(); flush(); }
+function flush(){
+  if (!GAS_URL || !R.outbox.length || navigator.onLine === false) return;
+  const batch = R.outbox.slice();
+  fetch(GAS_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'}, body:JSON.stringify({ items:batch }) })
+    .then(() => { R.outbox = R.outbox.slice(batch.length); save(); if (S.view==='settings') render(); })
+    .catch(() => {});
+}
+window.addEventListener('online', flush);
+
+/* ===== 道具 ===== */
+const ri = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+const shuffle = a => { for (let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]];} return a; };
+const pick = a => a[ri(0,a.length-1)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf = n => { const r=Math.round(n*1000)/1000; return String(r).replace(/\B(?=(\d{3})+(?!\d))/g, ','); };
+const nfx = n => String(Math.round(n*1000)/1000);
+// 数の選択肢：正解＋よくある間違い、足りなければ近い数で4つに
+function numChoices(ans, cands, unit=''){
+  const out=[ans], seen=new Set([nfx(ans)]);
+  for (const c of cands){ if(out.length>=4) break; if(c>0 && isFinite(c) && !seen.has(nfx(c))){ seen.add(nfx(c)); out.push(c);} }
+  const step = ans>=20 ? Math.max(1,Math.round(ans/10)) : ans>=2 ? 1 : 0.1; let k=1;
+  while(out.length<4){ for(const c of [ans+step*k, ans-step*k]){ const v=Math.round(c*1000)/1000; if(out.length<4 && v>0 && !seen.has(nfx(v))){ seen.add(nfx(v)); out.push(v);} } k++; }
+  return shuffle(out.map(v=>nf(v)+unit));
+}
+const nq = (prompt, expr, ans, wrongs, unit, hint, explain) => ({ prompt, expr, answer:nf(ans)+unit, choices:numChoices(ans,wrongs,unit), hint, explain });
+
+/* ===== 知識問題（[問いの見出し, 問題文, 正解, [まちがい], 解説]） ===== */
+const POOL = {
+  heart:[
+    ['心臓の壁','4つの部屋のうち、壁（心筋）が最も厚いのは？','左心室',['右心室','左心房','右心房'],'左心室は全身に血液を送り出すので、強い力が必要で壁が最も厚くなっています。'],
+    ['心臓の位置','心臓があるのはどこ？','縦隔（胸の中央からやや左）',['右の胸腔','腹腔の上部','左の肺の中'],'心臓は左右の肺にはさまれた縦隔にあり、約3分の2が正中線より左にあります。'],
+    ['心尖拍動','心尖拍動を触れやすい位置は？','左第5肋間と鎖骨中線の交わるあたり',['右第2肋間の胸骨縁','左第2肋間の胸骨縁','剣状突起のすぐ下'],'心尖は左下前方を向いていて、左第5肋間・鎖骨中線付近で拍動を触れます。'],
+    ['大きさ','成人の心臓の大きさの目安は？','握りこぶし大（約250〜300 g）',['頭くらい（約1 kg）','卵くらい（約60 g）','両手を広げたくらい'],'成人の心臓は本人の握りこぶしくらいで、重さは約250〜300 gです。'],
+    ['心膜','心臓を包む膜と、その中の液体の組み合わせは？','心膜と心膜液',['胸膜と胸水','腹膜と腹水','髄膜と髄液'],'心膜腔には少量の心膜液があり、拍動するときの摩擦を減らしています。'],
+  ],
+  flow:[
+    ['全身から戻る血液','全身から戻ってきた血液が最初に入る部屋は？','右心房',['左心房','右心室','左心室'],'全身の静脈血は、上大静脈・下大静脈を通って右心房に戻ります。'],
+    ['肺へ送る血管','右心室から肺へ血液を送る血管は？','肺動脈',['肺静脈','大動脈','上大静脈'],'肺動脈は心臓から出る血管なので「動脈」。ただし中を流れるのは静脈血です。'],
+    ['肺静脈','肺静脈を流れる血液は？','動脈血（酸素が多い）',['静脈血（酸素が少ない）','リンパ液','血しょうだけ'],'肺で酸素を受け取った動脈血が、肺静脈を通って左心房に戻ります。'],
+    ['肺循環の順番','右心室 → □ → 肺 → 肺静脈 → 左心房','肺動脈',['大動脈','上大静脈','冠状静脈洞'],'右心室から出た血液は肺動脈で肺へ運ばれ、ガス交換をして肺静脈から左心房へ戻ります。'],
+    ['体循環の順番','左心房 → □ → 大動脈 → 全身','左心室',['右心室','右心房','肺動脈'],'左心房の血液は僧帽弁を通って左心室へ入り、大動脈弁を通って大動脈へ送り出されます。'],
+    ['体循環','左心室から出て全身をめぐり、右心房に戻る流れは？','体循環（大循環）',['肺循環（小循環）','門脈循環','冠循環'],'左心室 → 大動脈 → 全身 → 大静脈 → 右心房、が体循環です。'],
+    ['門脈','胃や腸などから集めた血液を肝臓に運ぶ血管は？','門脈',['肝動脈','下大静脈','腎静脈'],'胃・腸・脾臓などからの血液は門脈に集まり、肝臓を通ってから肝静脈・下大静脈へ戻ります。'],
+  ],
+  valve:[
+    ['三尖弁','右心房と右心室の間にある弁は？','三尖弁',['僧帽弁','大動脈弁','肺動脈弁'],'右側の房室弁が三尖弁、左側の房室弁が僧帽弁（二尖弁）です。'],
+    ['僧帽弁','左心房と左心室の間にある弁は？','僧帽弁（二尖弁）',['三尖弁','肺動脈弁','大動脈弁'],'僧帽弁は2枚の弁尖からなるので、二尖弁ともいいます。'],
+    ['半月弁','心室から動脈への出口にある弁をまとめて何という？','半月弁',['房室弁','静脈弁','回盲弁'],'肺動脈弁と大動脈弁が半月弁。三尖弁と僧帽弁は房室弁です。'],
+    ['Ⅰ音','心音のⅠ音は、何が閉じる音？','房室弁（三尖弁・僧帽弁）',['半月弁（大動脈弁・肺動脈弁）','卵円孔','冠動脈の入り口'],'Ⅰ音は心室の収縮が始まるとき房室弁が閉じる音。収縮期の始まりの合図です。'],
+    ['Ⅱ音','心音のⅡ音は、何が閉じる音？','半月弁（大動脈弁・肺動脈弁）',['房室弁（三尖弁・僧帽弁）','卵円孔','冠動脈の入り口'],'Ⅱ音は心室の収縮が終わるとき半月弁が閉じる音。拡張期の始まりの合図です。'],
+    ['腱索','房室弁が心房側へひっくり返らないよう支えているのは？','腱索と乳頭筋',['心膜','冠動脈','ヒス束'],'心室の乳頭筋から伸びる腱索が弁尖を引っぱり、逆流を防いでいます。'],
+  ],
+  cond:[
+    ['ペースメーカー','正常な心臓のリズムをつくる場所は？','洞房結節',['房室結節','ヒス束','プルキンエ線維'],'右心房にある洞房結節が、心臓のペースメーカーです。'],
+    ['伝わる順番','洞房結節 → □ → ヒス束 → 左右の脚 → プルキンエ線維','房室結節',['洞房結節','冠状静脈洞','心尖'],'心房に広がった興奮は房室結節で少し遅れてから、ヒス束を通って心室へ伝わります。'],
+    ['P波','心電図のP波があらわすのは？','心房の興奮（脱分極）',['心室の興奮（脱分極）','心室の回復（再分極）','房室弁の閉鎖'],'P波は心房、QRS波は心室の興奮、T波は心室の回復（再分極）です。'],
+    ['QRS波','心電図のQRS波があらわすのは？','心室の興奮（脱分極）',['心房の興奮（脱分極）','心室の回復（再分極）','半月弁の閉鎖'],'QRS波は心室全体に興奮が広がるところ。幅が広いときは心室内の伝わり方に異常があります。'],
+    ['T波','心電図のT波があらわすのは？','心室の回復（再分極）',['心房の興奮（脱分極）','心室の興奮（脱分極）','心房の回復'],'T波は心室の再分極。心房の再分極はQRS波に隠れて見えません。'],
+  ],
+  cor:[
+    ['冠動脈','心臓の筋肉そのものに血液を送る血管は？','冠動脈（冠状動脈）',['肺動脈','総頸動脈','腹腔動脈'],'冠動脈は大動脈の根元（大動脈弁のすぐ上）から左右に分かれて出ます。'],
+    ['左冠動脈の枝','左冠動脈が分かれる2本の枝は？','前下行枝と回旋枝',['右冠動脈と後下行枝','鎖骨下動脈と総頸動脈','内胸動脈と肋間動脈'],'左冠動脈の主幹部は、前下行枝と回旋枝に分かれます。'],
+    ['流れるタイミング','冠動脈（特に左）に血液が多く流れるのは？','拡張期',['収縮期','どちらも同じ','心房が収縮するときだけ'],'収縮期は心筋が血管をしめつけるため、左冠動脈の血流は主に拡張期に流れます。'],
+    ['冠状静脈洞','心筋を流れた静脈血が集まり、右心房に注ぐところは？','冠状静脈洞',['上大静脈','肺静脈','門脈'],'心臓の静脈血の多くは冠状静脈洞に集まり、右心房へ注ぎます。'],
+    ['心筋梗塞','冠動脈が完全につまり、心筋が壊死するのは？','心筋梗塞',['狭心症','心房細動','心膜炎'],'狭心症は一時的な虚血で心筋は壊死しません。心筋梗塞では血流が途絶えて心筋が壊死します。'],
+  ],
+  tmp:[
+    ['日内変動','1日のうちで体温が最も低いのは？','早朝（明け方）',['正午ごろ','夕方','夜9時ごろ'],'体温は早朝に最も低く、午後〜夕方に最も高くなります。日内変動は1℃以内が目安です。'],
+    ['測定部位','一般に、体温が最も高く測定される部位は？','直腸',['口腔','腋窩','前額部'],'体の中心に近いほど高くなります。高い順に 直腸 ＞ 口腔 ＞ 腋窩 です。'],
+    ['腋窩での測定','腋窩で測るとき、体温計を入れる向きは？','前下方から後上方へ',['後下方から前上方へ','真横から水平に','上方から下方へ'],'感温部が腋窩の最も深いところに当たるよう、前下方から斜めに入れ、腕をしっかり閉じます。'],
+    ['稽留熱','高熱が続き、日差が1℃以内のものは？','稽留熱',['弛張熱','間欠熱','波状熱'],'稽留熱は日差1℃以内で高熱が持続します。'],
+    ['弛張熱','日差が1℃以上あり、37℃以下まで下がらないものは？','弛張熱',['稽留熱','間欠熱','うつ熱'],'弛張熱は日差1℃以上で、いちばん下がっても37℃以下にはなりません。'],
+    ['間欠熱','日差が1℃以上あり、37℃以下まで下がるときがあるものは？','間欠熱',['稽留熱','弛張熱','うつ熱'],'間欠熱は高熱と平熱が入れかわります（例：マラリア）。'],
+    ['発熱の程度','38.5℃ は一般にどう分類される？','中等度熱',['微熱','高熱','平熱'],'目安：微熱 37.0〜37.9℃、中等度熱 38.0〜38.9℃、高熱 39.0℃以上。'],
+  ],
+  pul:[
+    ['成人の脈拍','成人の脈拍の基準値（回/分）は？','60〜100',['40〜60','100〜140','120〜160'],'成人の脈拍は60〜100回/分が目安です。'],
+    ['頻脈','成人で頻脈とされるのは？','100回/分以上',['80回/分以上','60回/分以上','140回/分以上'],'100回/分以上を頻脈、60回/分未満を徐脈といいます。'],
+    ['徐脈','成人で徐脈とされるのは？','60回/分未満',['80回/分未満','100回/分未満','40回/分未満'],'60回/分未満を徐脈、100回/分以上を頻脈といいます。'],
+    ['測定部位','成人の脈拍測定で、ふつう使う動脈は？','橈骨動脈',['大腿動脈','足背動脈','総頸動脈'],'手首の母指側の橈骨動脈に、示指・中指・薬指をそろえて当てて測ります。'],
+    ['使わない指','脈拍を触れるときに使わない指は？','母指（親指）',['示指','中指','薬指'],'母指には自分の脈があるので、相手の脈とまちがえやすいからです。'],
+    ['乳児の脈拍','乳児の脈拍の目安（回/分）は？','120〜140',['60〜80','80〜100','160〜200'],'年齢が低いほど脈拍は速くなります。乳児は120〜140回/分程度が目安です。'],
+    ['脈拍欠損','心房細動などで、心拍数より脈拍数が少なくなることは？','脈拍欠損',['奇脈','交互脈','二段脈'],'心臓が収縮しても拍出量が少ないと、末梢で脈として触れません。心拍と脈拍を同時に数えて確かめます。'],
+  ],
+  res:[
+    ['成人の呼吸数','成人の呼吸数の基準値（回/分）は？','12〜20',['6〜10','20〜30','30〜40'],'成人の呼吸数は12〜20回/分が目安。25回/分以上を頻呼吸、12回/分未満を徐呼吸といいます。'],
+    ['チェーン・ストークス呼吸','無呼吸のあと呼吸がだんだん深くなり、また浅くなって無呼吸に戻る。これをくり返すのは？','チェーン・ストークス呼吸',['クスマウル呼吸','ビオー呼吸','起座呼吸'],'重い心不全や脳の障害、終末期などでみられます。'],
+    ['クスマウル呼吸','深く大きな呼吸が規則的に続く。糖尿病性ケトアシドーシスでみられるのは？','クスマウル呼吸',['チェーン・ストークス呼吸','ビオー呼吸','下顎呼吸'],'代謝性アシドーシスで、二酸化炭素を多く吐き出そうとして深く大きな呼吸になります。'],
+    ['ビオー呼吸','深い呼吸と無呼吸が不規則に現れる。髄膜炎や脳腫瘍でみられるのは？','ビオー呼吸',['チェーン・ストークス呼吸','クスマウル呼吸','口すぼめ呼吸'],'頭蓋内圧の上昇など、脳の障害でみられます。'],
+    ['起座呼吸','横になると苦しく、座ると楽になる呼吸困難。代表的な原因は？','左心不全',['気胸','貧血','脱水'],'臥位では心臓へ戻る血液が増えて肺うっ血が強まるので、座位のほうが楽になります。'],
+    ['SpO₂','健康な成人のSpO₂の基準値は？','96〜99%',['85〜90%','90〜93%','80%前後'],'SpO₂ 90%未満は、呼吸不全（PaO₂ 60 Torr以下）の目安です。'],
+    ['数え方','呼吸数の測り方として正しいのは？','脈拍を測っているようにして1分間数える',['「呼吸を数えます」と伝えてから数える','10秒数えて6倍する','会話をしながら数える'],'意識すると呼吸が変わるので、気づかれないように1分間数えます。'],
+  ],
+  bp:[
+    ['正常血圧','診察室血圧で「正常血圧」とされるのは？','120/80 mmHg 未満',['130/85 mmHg 未満','140/90 mmHg 未満','100/60 mmHg 未満'],'日本高血圧学会の基準（2019）では、収縮期120 mmHg未満かつ拡張期80 mmHg未満が正常血圧です。'],
+    ['高血圧','診察室血圧で高血圧とされるのは？','140/90 mmHg 以上',['120/80 mmHg 以上','130/80 mmHg 以上','160/100 mmHg 以上'],'収縮期140以上 または 拡張期90以上。家庭血圧では135/85 mmHg以上が高血圧です。'],
+    ['マンシェットの幅','マンシェットの幅が腕に対して狭すぎると、血圧は？','高く測定される',['低く測定される','変わらない','測定できない'],'狭いと高めに、広すぎると低めに出ます。成人では幅12〜14 cm程度です。'],
+    ['巻き方','マンシェットの巻き方として正しいのは？','指が1〜2本入るくらい',['指が入らないくらいきつく','手のひらが入るくらいゆるく','厚手の衣類の上から巻く'],'ゆるいと高く、きついと低く出ます。下縁は肘窩の2〜3 cm上にします。'],
+    ['測る高さ','上腕で測るとき、マンシェットの高さは？','心臓と同じ高さ',['心臓より高く','心臓より低く','高さは関係ない'],'心臓より低いと高く、心臓より高いと低く測定されます。'],
+    ['コロトコフ音','聴診法で、音が聞こえはじめたときの値は？','収縮期血圧',['拡張期血圧','平均血圧','脈圧'],'音が聞こえはじめた点が収縮期血圧、音が消えた点が拡張期血圧です。'],
+    ['加圧の目安','聴診法で、どこまで加圧する？','触診法の値より20〜30 mmHg高く',['いつも200 mmHgまで','触診法と同じ値まで','触診法より5 mmHg高く'],'先に触診法でおよその収縮期血圧を確かめ、それより20〜30 mmHg高く加圧して、1拍に2〜3 mmHgずつ下げます。'],
+  ],
+  jcs:[
+    ['JCSの桁','刺激しなくても覚醒している状態は、JCSでは？','Ⅰ桁',['Ⅱ桁','Ⅲ桁','0'],'Ⅰ桁：刺激しなくても覚醒、Ⅱ桁：刺激すると覚醒、Ⅲ桁：刺激しても覚醒しない。'],
+    ['JCSの桁','痛み刺激を加えても覚醒しない状態は、JCSでは？','Ⅲ桁',['Ⅱ桁','Ⅰ桁','0'],'Ⅲ桁は刺激しても覚醒しない状態で、最も重い段階です。'],
+    ['JCS','普通の呼びかけで容易に開眼する。JCSでは？','Ⅱ-10',['Ⅱ-20','Ⅱ-30','Ⅰ-3'],'Ⅱ-10 普通の呼びかけで開眼、Ⅱ-20 大きな声や体をゆさぶると開眼、Ⅱ-30 痛み刺激を加えつつ呼びかけるとかろうじて開眼。'],
+    ['JCS','痛み刺激に対して払いのけるような動作をする（開眼しない）。JCSでは？','Ⅲ-100',['Ⅲ-200','Ⅲ-300','Ⅱ-30'],'Ⅲ-100 払いのける、Ⅲ-200 少し手足を動かしたり顔をしかめる、Ⅲ-300 まったく反応しない。'],
+    ['JCS','覚醒しているが、自分の名前・生年月日が言えない。JCSでは？','Ⅰ-3',['Ⅰ-1','Ⅰ-2','Ⅱ-10'],'Ⅰ-1 だいたい清明だが今ひとつはっきりしない、Ⅰ-2 見当識障害がある、Ⅰ-3 名前・生年月日が言えない。'],
+    ['GCS','GCSの最高点と最低点は？','15点と3点',['15点と0点','10点と1点','300点と0点'],'開眼E（1〜4）、言語V（1〜5）、運動M（1〜6）の合計。点数が低いほど重症です。'],
+  ],
+};
+const fq = it => ({ prompt:it[0], expr:it[1], answer:it[2], choices:shuffle([it[2],...it[3]]), words:true, explain:it[4], hint:'説明のページのまとめを思い出してみよう。' });
+
+/* ===== 計算問題 ===== */
+const G = {
+  unit(){ const k=ri(0,4);
+    if(k===0){ const v=pick([0.1,0.2,0.25,0.5,1.5,2]); return nq('単位をそろえよう', `${nf(v)} g ＝ □ mg`, v*1000, [v*100,v*10,v*10000], ' mg', '1 g ＝ 1,000 mg', `1 g ＝ 1,000 mg なので、${nf(v)} × 1,000 ＝ ${nf(v*1000)} mg です。`); }
+    if(k===1){ const m=pick([50,100,250,500,1500,2500]); return nq('単位をそろえよう', `${nf(m)} mg ＝ □ g`, m/1000, [m/100,m/10,m*1000], ' g', '1 g ＝ 1,000 mg。mg を g にするときは ÷1,000', `${nf(m)} ÷ 1,000 ＝ ${nf(m/1000)} g です。`); }
+    if(k===2){ const v=pick([0.1,0.2,0.25,0.5,2]); return nq('単位をそろえよう', `${nf(v)} mg ＝ □ μg`, v*1000, [v*100,v*10,v*10000], ' μg', '1 mg ＝ 1,000 μg', `1 mg ＝ 1,000 μg なので、${nf(v)} × 1,000 ＝ ${nf(v*1000)} μg です。`); }
+    if(k===3){ const v=pick([0.2,0.25,0.5,1.5,2]); return nq('単位をそろえよう', `${nf(v)} L ＝ □ mL`, v*1000, [v*100,v*10,v*10000], ' mL', '1 L ＝ 1,000 mL', `${nf(v)} × 1,000 ＝ ${nf(v*1000)} mL です。`); }
+    const m=pick([50,100,250,500,1500]); return nq('単位をそろえよう', `${nf(m)} mL ＝ □ L`, m/1000, [m/100,m/10,m*1000], ' L', 'mL を L にするときは ÷1,000', `${nf(m)} ÷ 1,000 ＝ ${nf(m/1000)} L です。`); },
+  pct(){ const c=pick([0.5,1,2,5,10]); return nq('濃度を mg/mL に', `${nf(c)}% の薬液 1 mL に含まれる薬は？`, c*10, [c,c*100,c*1000], ' mg', '1% ＝ 100 mL に 1 g ＝ 1 mL に 10 mg', `1% は 1 mL に 10 mg。${nf(c)}% なら ${nf(c)} × 10 ＝ ${nf(c*10)} mg です。`); },
+  conc(){ const [c,lab]=pick([[0.9,'生理食塩液（0.9%）'],[5,'5% ブドウ糖液'],[10,'10% ブドウ糖液'],[20,'20% ブドウ糖液'],[50,'50% ブドウ糖液']]), V=pick([20,100,250,500]), a=c*V/100;
+    return nq('溶けている量を求めよう', `${lab} ${V} mL に含まれる溶質は何 g？`, a, [c*V/10,c*V/1000,c*V], ' g', '％（w/v）＝ 100 mL に何 g 溶けているか', `${nf(c)}% は 100 mL に ${nf(c)} g。${V} mL なら ${nf(c)} × ${V} ÷ 100 ＝ ${nf(a)} g です。`); },
+  dose(){ const [A,B]=pick([[20,2],[10,1],[40,2],[50,5],[100,10],[25,5],[200,20]]), f=pick([0.25,0.5,0.75,1.5,2]), want=A*f, ans=B*f;
+    return nq('必要な薬液量は？', `1アンプル ${A} mg / ${B} mL の注射薬。指示は ${nf(want)} mg。何 mL 吸う？`, ans, [want/A*10,B/f,want/B,ans*2], ' mL', `まず 1 mL に何 mg 入っているか（${A} ÷ ${B}）を求めよう`, `1 mL あたり ${nf(A/B)} mg。${nf(want)} ÷ ${nf(A/B)} ＝ ${nf(ans)} mL です。（比で ${A} : ${B} ＝ ${nf(want)} : x としても同じ）`); },
+  rate(){ const [V,h]=pick([[500,4],[500,5],[1000,8],[1000,10],[1000,5],[1500,12],[2000,24],[500,2]]), ans=Math.round(V/h);
+    return nq('1時間あたりの量は？', `${V} mL を ${h} 時間で投与。輸液ポンプの設定は何 mL/時？`, ans, [Math.round(V/h/60*10)/10,V*h,Math.round(V/(h*60)*20)], ' mL/時', '総量 ÷ 時間', `${V} ÷ ${h} ＝ ${nf(V/h)}${V%h?' → 約'+ans:''} mL/時 です。`); },
+  drip(){ const set=pick([20,60]), [V,h]=pick([[500,4],[500,5],[1000,8],[1000,10],[250,2],[200,4],[500,3],[1000,12]]), x=V*set/(h*60), ans=Math.round(x), other=set===20?60:20;
+    return nq('1分間の滴下数は？', `${set===20?'成人用輸液セット（1 mL ≒ 20滴）':'小児用輸液セット（1 mL ≒ 60滴）'}で、${V} mL を ${h} 時間で。1分間に何滴？（小数点以下は四捨五入）`, ans, [Math.round(V*other/(h*60)),Math.round(V*set/h),Math.round(V/(h*60)),ans+10], ' 滴/分', '総量 × 1 mL の滴数 ÷（時間 × 60）', `${V} × ${set} ÷（${h} × 60）＝ ${nf(Math.round(x*100)/100)} → 約 ${ans} 滴/分 です。${set===60?'小児用セットでは「滴/分」と「mL/時」が同じ数になります。':''}`); },
+  o2(){ const rem=pick([100,150,200,250,300,400]), P=Math.round(rem*14.7/500*100)/100;
+    if(Math.random()<0.5) return nq('ボンベの残量は？', `500 L 酸素ボンベ（満タン 14.7 MPa）の圧力計が ${P} MPa。残量は何 L？`, rem, [Math.round(P*500/10),Math.round(500-P*14.7),rem*2,Math.round(rem/2)], ' L', '残量 ＝ 500 × 現在の圧 ÷ 14.7', `500 × ${P} ÷ 14.7 ＝ ${rem} L です。`);
+    const fl=pick([1,2,3,4,5]), t=Math.floor(rem/fl);
+    return nq('あと何分使える？', `500 L ボンベの圧力計が ${P} MPa（残量 ${rem} L）。酸素 ${fl} L/分で使うと、あと何分？（切り捨て）`, t, [Math.floor(rem*fl),Math.floor(t/60*10)/10,Math.floor(500/fl),t+10], ' 分', '使える時間 ＝ 残量 ÷ 流量', `${rem} ÷ ${fl} ＝ ${nf(rem/fl)} → ${t} 分。足りなくならないよう端数は切り捨てます。`); },
+  pp(){ const d=pick([60,64,70,74,80,86,90]), s=d+pick([30,36,40,44,50,56,60]);
+    return nq('脈圧を求めよう', `血圧 ${s}/${d} mmHg の脈圧は？`, s-d, [s+d,Math.round((s+d)/2),d+Math.round((s-d)/3)], ' mmHg', '脈圧 ＝ 収縮期血圧 − 拡張期血圧', `${s} − ${d} ＝ ${s-d} mmHg です。`); },
+  map(){ const d=pick([60,66,70,72,78,80,84,90]), p=pick([30,36,39,42,45,48,51,54,60]), s=d+p, m=d+p/3;
+    return nq('平均血圧を求めよう', `血圧 ${s}/${d} mmHg の平均血圧は？`, m, [Math.round((s+d)/2),s-d,s-p/3], ' mmHg', '平均血圧 ＝ 拡張期血圧 ＋ 脈圧 ÷ 3', `脈圧は ${s} − ${d} ＝ ${p}。${d} ＋ ${p} ÷ 3 ＝ ${m} mmHg です。`); },
+  gcs(){ const e=ri(1,4), v=ri(1,5), m=ri(1,6), t=e+v+m;
+    return nq('GCSを合計しよう', `E${e} V${v} M${m} のGCSは？`, t, [t+1,t-1,e*v*m>15?t+2:e*v*m], ' 点', '開眼E・言語V・運動Mの合計', `${e} ＋ ${v} ＋ ${m} ＝ ${t} 点。${t<=8?'8点以下は重症の目安です。':''}`); },
+  rr(){ const r=pick([0.5,0.6,0.75,0.8,1,1.2,1.5]), hr=Math.round(60/r);
+    return nq('心拍数を求めよう', `心電図のRR間隔が ${nf(r)} 秒。心拍数は？`, hr, [Math.round(r*60),Math.round(100/r),hr+20], ' 回/分', '心拍数 ＝ 60 ÷ RR間隔（秒）', `60 ÷ ${nf(r)} ＝ ${hr} 回/分 です。`); },
+};
+const makeQs = plan => { const used={}; return plan.map(k=>{ if(G[k]) return G[k](); const P=POOL[k]; used[k]=used[k]||shuffle(P.map((_,i)=>i)); if(!used[k].length) used[k]=shuffle(P.map((_,i)=>i)); return fq(P[used[k].pop()]); }); };
+
+/* ===== 説明ページの部品 ===== */
+const rule = s => `<div class="rule">${s}</div>`;
+const chain = a => `<div class="chain">${a.map(x=>`<span>${x}</span>`).join('<i>→</i>')}</div>`;
+const heartFig = () => `<svg class="fig" viewBox="0 0 320 210" role="img" aria-label="心臓の4つの部屋。図の左が患者の右側"><rect class="ch" x="40" y="22" width="110" height="64" rx="12"/><rect class="ch" x="40" y="94" width="110" height="94" rx="14"/><rect class="chL" x="170" y="22" width="110" height="64" rx="12"/><rect class="chL" x="166" y="90" width="118" height="102" rx="18" style="stroke-width:5"/>
+  <text class="lb" x="95" y="58" text-anchor="middle">右心房</text><text class="lb" x="95" y="144" text-anchor="middle">右心室</text><text class="lb" x="225" y="58" text-anchor="middle">左心房</text><text class="lb" x="225" y="144" text-anchor="middle">左心室</text>
+  <text class="mu" x="95" y="74" text-anchor="middle">全身から戻る</text><text class="mu" x="95" y="160" text-anchor="middle">肺へ送る</text><text class="mu" x="225" y="74" text-anchor="middle">肺から戻る</text><text class="mu" x="225" y="160" text-anchor="middle">全身へ送る（壁が厚い）</text>
+  <text class="mu" x="95" y="92" text-anchor="middle">三尖弁</text><text class="mu" x="225" y="92" text-anchor="middle" dy="-2">僧帽弁</text><text class="mu" x="160" y="205" text-anchor="middle">向かい合って見た図（図の左 ＝ 患者の右）</text></svg>`;
+const ecgFig = () => `<svg class="fig" viewBox="0 0 320 130" role="img" aria-label="心電図の波形。P波、QRS波、T波"><line class="grid" x1="10" y1="90" x2="310" y2="90"/>
+  <polyline class="wl" points="10,90 40,90 48,80 56,76 64,80 72,90 92,90 98,98 106,18 114,108 120,90 150,90 165,74 180,66 195,74 210,90 240,90 248,80 256,76 264,80 272,90 292,90 298,98 306,30"/>
+  <text class="lb" x="56" y="70" text-anchor="middle">P</text><text class="lb" x="106" y="12" text-anchor="middle">QRS</text><text class="lb" x="180" y="58" text-anchor="middle">T</text>
+  <text class="mu" x="56" y="116" text-anchor="middle">心房の興奮</text><text class="mu" x="110" y="126" text-anchor="middle">心室の興奮</text><text class="mu" x="182" y="116" text-anchor="middle">心室の回復</text></svg>`;
+
+/* ===== 小単元（1つ約5分＝「星屑」） ===== */
+const CV_LESSONS = [
+  { id:'1-1', t:'心臓のつくり', sub:'4つの部屋・位置・大きさ', plan:['heart','heart','heart','heart','heart'], body:()=>`
+    <section class="panel"><h3>4つの部屋</h3>${heartFig()}
+    ${rule('右心房・右心室 → 静脈血を肺へ送る<br>左心房・左心室 → 動脈血を全身へ送る')}
+    <p class="small muted">全身に送り出す左心室は、壁（心筋）がいちばん厚い。</p></section>
+    <section class="panel"><h3>位置と大きさ</h3><p>心臓は左右の肺にはさまれた<b>縦隔</b>にあり、約3分の2が正中線より左。先端の<b>心尖</b>は左下前方を向いています。</p>
+    <div class="fx">心尖拍動：左第5肋間 × 鎖骨中線<br>大きさ：握りこぶし大（約250〜300 g）</div>
+    <p class="small muted">心臓は心膜に包まれ、心膜腔の少量の心膜液が摩擦を減らしています。</p></section>` },
+  { id:'1-2', t:'血液の流れ', sub:'肺循環と体循環', plan:['flow','flow','flow','flow','flow'], body:()=>`
+    <section class="panel"><h3>肺循環（小循環）</h3>${chain(['右心室','肺動脈','肺','肺静脈','左心房'])}</section>
+    <section class="panel"><h3>体循環（大循環）</h3>${chain(['左心室','大動脈','全身','上・下大静脈','右心房'])}</section>
+    <section class="panel"><h3>動脈と静脈の決まり方</h3>${rule('動脈 ＝ 心臓から出ていく血管<br>静脈 ＝ 心臓に戻ってくる血管')}
+    <p>中の血液の種類で決まるのではありません。だから<b>肺動脈には静脈血</b>、<b>肺静脈には動脈血</b>が流れます。</p>
+    <p class="small muted">胃・腸・脾臓からの血液は<b>門脈</b>に集まり、肝臓を通ってから下大静脈へ戻ります。</p></section>` },
+  { id:'1-3', t:'弁と心音', sub:'房室弁・半月弁・Ⅰ音とⅡ音', plan:['valve','valve','valve','valve','valve'], body:()=>`
+    <section class="panel"><h3>4つの弁</h3><div class="scroll"><table class="tbl"><tr><th>なかま</th><th>右</th><th>左</th></tr>
+    <tr><td>房室弁（心房→心室）</td><td>三尖弁</td><td>僧帽弁（二尖弁）</td></tr><tr><td>半月弁（心室→動脈）</td><td>肺動脈弁</td><td>大動脈弁</td></tr></table></div>
+    <p class="small muted">房室弁は腱索と乳頭筋に支えられ、心房側へひっくり返りません。</p></section>
+    <section class="panel"><h3>心音</h3>${rule('Ⅰ音 ＝ 房室弁が閉じる音（収縮期の始まり）<br>Ⅱ音 ＝ 半月弁が閉じる音（拡張期の始まり）')}</section>` },
+  { id:'1-4', t:'刺激伝導系と心電図', sub:'洞房結節からプルキンエ線維へ', plan:['cond','cond','cond','rr','cond'], body:()=>`
+    <section class="panel"><h3>興奮が伝わる順番</h3>${chain(['洞房結節','房室結節','ヒス束','左右の脚','プルキンエ線維'])}
+    <p class="small muted">右心房にある洞房結節がペースメーカー。房室結節で少し遅れてから心室へ伝わります。</p></section>
+    <section class="panel"><h3>心電図の波</h3>${ecgFig()}${rule('P波 ＝ 心房の興奮　QRS波 ＝ 心室の興奮　T波 ＝ 心室の回復')}
+    <div class="fx">心拍数 ＝ 60 ÷ RR間隔（秒）<br>例：RR 0.8秒 → 60 ÷ 0.8 ＝ 75 回/分</div></section>` },
+  { id:'1-5', t:'冠動脈', sub:'心臓を養う血管', plan:['cor','cor','cor','cor','cor'], body:()=>`
+    <section class="panel"><h3>冠動脈の枝</h3><p>冠動脈は大動脈の根元（大動脈弁のすぐ上）から左右に出ます。</p>
+    ${chain(['左冠動脈','前下行枝 ／ 回旋枝'])}<p class="small muted">右冠動脈は主に右心系と心臓の下壁を養います。</p></section>
+    <section class="panel"><h3>流れるタイミング</h3>${rule('冠動脈（特に左）は、主に拡張期に流れる')}<p>収縮期は心筋が血管をしめつけるからです。使い終わった血液は<b>冠状静脈洞</b>から右心房へ戻ります。</p></section>
+    <section class="panel"><h3>狭心症と心筋梗塞</h3><p>狭心症は一時的な虚血で、心筋は壊死しません。心筋梗塞は冠動脈がつまって心筋が<b>壊死</b>します。</p></section>` },
+  { id:'1-6', t:'まとめテスト', sub:'循環器の10問', test:true, plan:['heart','flow','flow','valve','valve','cond','rr','cor','cor','heart'], body:()=>`
+    <section class="panel"><h3>まとめテスト</h3><p>1-1〜1-5 から10問。問題の順番は毎回かわります。わからなかった問題は、あとで見直せます。</p></section>` },
+];
+const VITAL_LESSONS = [
+  { id:'2-1', t:'体温', sub:'日内変動・測定部位・熱型', plan:['tmp','tmp','tmp','tmp','tmp'], body:()=>`
+    <section class="panel"><h3>体温の基本</h3>${rule('高い順：直腸 ＞ 口腔 ＞ 腋窩<br>1日で最も低いのは早朝、高いのは午後〜夕方')}
+    <p class="small muted">腋窩では、体温計を前下方から後上方へ斜めに入れ、腕をしっかり閉じて測ります。</p></section>
+    <section class="panel"><h3>熱型</h3><div class="scroll"><table class="tbl"><tr><th>熱型</th><th>日差</th><th>37℃以下に</th></tr>
+    <tr><td><b>稽留熱</b></td><td>1℃以内</td><td>下がらない</td></tr><tr><td><b>弛張熱</b></td><td>1℃以上</td><td>下がらない</td></tr><tr><td><b>間欠熱</b></td><td>1℃以上</td><td>下がるときがある</td></tr></table></div>
+    <p class="small muted">発熱の目安：微熱 37.0〜37.9℃、中等度熱 38.0〜38.9℃、高熱 39.0℃以上。</p></section>` },
+  { id:'2-2', t:'脈拍', sub:'基準値・測り方・脈拍欠損', plan:['pul','pul','pul','pul','pul'], body:()=>`
+    <section class="panel"><h3>基準値</h3>${rule('成人 60〜100 回/分<br>頻脈 100 回/分以上　徐脈 60 回/分未満')}<p class="small muted">年齢が低いほど速い（乳児は120〜140 回/分程度）。</p></section>
+    <section class="panel"><h3>測り方</h3><p>ふつうは<b>橈骨動脈</b>。示指・中指・薬指の3本をそろえて当てます。<b>母指</b>は自分の脈とまちがえやすいので使いません。</p>
+    <p>リズムが不整のときは1分間数えます。心房細動では心拍数より脈拍数が少なくなる<b>脈拍欠損</b>が起こることがあります。</p></section>` },
+  { id:'2-3', t:'呼吸とSpO₂', sub:'異常な呼吸のパターン', plan:['res','res','res','res','res'], body:()=>`
+    <section class="panel"><h3>基準値</h3>${rule('成人の呼吸数 12〜20 回/分<br>SpO₂ 96〜99%（90%未満は呼吸不全の目安）')}<p class="small muted">意識すると呼吸が変わるので、脈拍を測っているようにして1分間数えます。</p></section>
+    <section class="panel"><h3>覚えたい呼吸</h3><div class="scroll"><table class="tbl"><tr><th>呼吸</th><th>特徴</th></tr>
+    <tr><td><b>チェーン・ストークス</b></td><td>無呼吸 → だんだん深く → 浅く → 無呼吸 を周期的にくり返す</td></tr>
+    <tr><td><b>クスマウル</b></td><td>深く大きな呼吸が規則的に続く（糖尿病性ケトアシドーシス）</td></tr>
+    <tr><td><b>ビオー</b></td><td>深い呼吸と無呼吸が不規則（髄膜炎・脳腫瘍）</td></tr>
+    <tr><td><b>起座呼吸</b></td><td>座ると楽になる（左心不全）</td></tr></table></div></section>` },
+  { id:'2-4', t:'血圧', sub:'基準値・測定の注意・脈圧', plan:['bp','bp','pp','bp','map'], body:()=>`
+    <section class="panel"><h3>基準値（診察室血圧）</h3>${rule('正常血圧 120/80 mmHg 未満<br>高血圧 140/90 mmHg 以上（家庭血圧は 135/85 以上）')}</section>
+    <section class="panel"><h3>高く出る・低く出る</h3><div class="scroll"><table class="tbl"><tr><th>こうすると</th><th>結果</th></tr>
+    <tr><td>マンシェットの幅が狭い・巻き方がゆるい</td><td>高く出る</td></tr><tr><td>マンシェットの幅が広い・巻き方がきつい</td><td>低く出る</td></tr>
+    <tr><td>腕が心臓より低い</td><td>高く出る</td></tr></table></div>
+    <p class="small muted">巻く強さは指が1〜2本入るくらい。下縁は肘窩の2〜3 cm上。聴診法は、触診法の値より20〜30 mmHg高く加圧してから下げます。</p></section>
+    <section class="panel"><h3>計算</h3><div class="fx">脈圧 ＝ 収縮期 − 拡張期<br>平均血圧 ＝ 拡張期 ＋ 脈圧 ÷ 3</div><p class="small muted">例：120/84 → 脈圧 36、平均血圧 84 ＋ 12 ＝ 96 mmHg</p></section>` },
+  { id:'2-5', t:'意識レベル', sub:'JCS と GCS', plan:['jcs','jcs','jcs','gcs','jcs'], body:()=>`
+    <section class="panel"><h3>JCS（3-3-9度方式）</h3><div class="scroll"><table class="tbl"><tr><th>桁</th><th>状態</th><th>数字</th></tr>
+    <tr><td><b>Ⅰ</b></td><td>刺激しなくても覚醒</td><td>1・2・3</td></tr><tr><td><b>Ⅱ</b></td><td>刺激すると覚醒</td><td>10・20・30</td></tr><tr><td><b>Ⅲ</b></td><td>刺激しても覚醒しない</td><td>100・200・300</td></tr></table></div>
+    <p class="small muted">数字が大きいほど重い。Ⅲ-300 は痛み刺激にまったく反応しない状態です。</p></section>
+    <section class="panel"><h3>GCS</h3>${rule('開眼 E 1〜4 ＋ 言語 V 1〜5 ＋ 運動 M 1〜6<br>最高 15点、最低 3点（低いほど重症）')}</section>` },
+  { id:'2-6', t:'まとめテスト', sub:'バイタルサインの10問', test:true, plan:['tmp','tmp','pul','pul','res','res','bp','map','jcs','gcs'], body:()=>`
+    <section class="panel"><h3>まとめテスト</h3><p>2-1〜2-5 から10問。問題の順番は毎回かわります。</p></section>` },
+];
+const CALC_LESSONS = [
+  { id:'3-1', t:'単位の換算', sub:'g・mg・μg・L・mL', plan:['unit','unit','unit','unit','unit'], body:()=>`
+    <section class="panel"><h3>1,000倍ずつ</h3>${rule('1 g ＝ 1,000 mg ＝ 1,000,000 μg<br>1 L ＝ 1,000 mL')}<p>大きい単位 → 小さい単位は <b>×1,000</b>、小さい → 大きいは <b>÷1,000</b>。</p>
+    <p class="small muted">「μg（マイクログラム）」は mg のさらに 1,000分の1。桁をまちがえると1,000倍の事故になるので、必ず単位をそろえてから計算します。</p></section>` },
+  { id:'3-2', t:'濃度', sub:'％ と mg/mL', plan:['pct','conc','pct','conc','conc'], body:()=>`
+    <section class="panel"><h3>％（w/v）の意味</h3>${rule('1% ＝ 100 mL に 1 g ＝ 1 mL に 10 mg')}
+    <div class="fx">溶質（g）＝ 濃度（%）× 液量（mL）÷ 100</div>
+    <p class="small muted">例：5% ブドウ糖液 500 mL → 5 × 500 ÷ 100 ＝ 25 g。生理食塩液は 0.9%（500 mL に 4.5 g）。</p></section>` },
+  { id:'3-3', t:'薬液量', sub:'指示量から何 mL 吸うか', plan:['dose','dose','dose','dose','dose'], body:()=>`
+    <section class="panel"><h3>2ステップで</h3>${rule('① 1 mL に何 mg？（mg ÷ mL）<br>② 指示量 ÷ ①')}
+    <div class="fx">例：20 mg / 2 mL のアンプル、指示 15 mg<br>① 20 ÷ 2 ＝ 10 mg/mL　② 15 ÷ 10 ＝ 1.5 mL</div>
+    <p class="small muted">比で考えてもOK：20 mg : 2 mL ＝ 15 mg : x mL → x ＝ 1.5</p></section>` },
+  { id:'3-4', t:'輸液の流量', sub:'mL/時 の設定', plan:['rate','rate','rate','rate','rate'], body:()=>`
+    <section class="panel"><h3>輸液ポンプの設定</h3>${rule('流量（mL/時）＝ 総量（mL）÷ 時間（時）')}<div class="fx">例：1,000 mL を 8 時間 → 1,000 ÷ 8 ＝ 125 mL/時</div></section>` },
+  { id:'3-5', t:'点滴の滴下数', sub:'成人用 20滴・小児用 60滴', plan:['drip','drip','drip','drip','drip'], body:()=>`
+    <section class="panel"><h3>滴下数の式</h3>${rule('滴/分 ＝ 総量（mL）× 1 mL の滴数 ÷（時間 × 60）')}
+    <div class="scroll"><table class="tbl"><tr><th>輸液セット</th><th>1 mL あたり</th></tr><tr><td>成人用（一般用）</td><td>約 20 滴</td></tr><tr><td>小児用（微量用）</td><td>約 60 滴</td></tr></table></div>
+    <div class="fx">例：成人用で 500 mL を 4 時間<br>500 × 20 ÷ 240 ≒ 41.7 → 約 42 滴/分</div>
+    <p class="small muted">小児用（60滴）では、滴/分 と mL/時 が同じ数になります。</p></section>` },
+  { id:'3-6', t:'酸素ボンベ', sub:'残量と使える時間', plan:['o2','o2','o2','o2','o2'], body:()=>`
+    <section class="panel"><h3>500 L ボンベの残量</h3>${rule('残量（L）＝ 500 × 圧力計の値（MPa）÷ 14.7')}
+    <div class="fx">使える時間（分）＝ 残量（L）÷ 流量（L/分）</div>
+    <p class="small muted">例：5.88 MPa → 500 × 5.88 ÷ 14.7 ＝ 200 L。2 L/分なら 100 分。現場では安全のため、さらに 0.8 をかけて余裕をみることもあります。</p></section>` },
+  { id:'3-7', t:'まとめテスト', sub:'看護計算の10問', test:true, plan:['unit','unit','pct','conc','dose','dose','rate','drip','drip','o2'], body:()=>`
+    <section class="panel"><h3>まとめテスト</h3><p>3-1〜3-6 から10問。計算用紙を用意して、式を書いてから選ぼう。</p></section>` },
+];
+
+/* ===== 用語カード ===== */
+const TERMS = {
+  cv:[['縦隔','左右の肺にはさまれた胸の中央部分。心臓・大血管・食道・気管などがある。'],['心尖','心臓の先端。左下前方を向き、左第5肋間・鎖骨中線あたりで拍動を触れる。'],['房室弁','心房と心室の間の弁。右が三尖弁、左が僧帽弁。'],['半月弁','心室と動脈の間の弁。肺動脈弁と大動脈弁。'],['洞房結節','右心房にある心臓のペースメーカー。'],['冠動脈','心筋を養う動脈。大動脈の根元から出て、主に拡張期に流れる。'],['門脈','腹部の消化管・脾臓の血液を集めて肝臓へ運ぶ血管。']],
+  vital:[['稽留熱','日差1℃以内で高熱が続く熱型。'],['弛張熱','日差1℃以上で、37℃以下にはならない熱型。'],['間欠熱','日差1℃以上で、37℃以下になるときがある熱型。'],['脈拍欠損','心拍数より脈拍数が少なくなること。心房細動などでみられる。'],['クスマウル呼吸','深く大きな規則的な呼吸。代謝性アシドーシスでみられる。'],['脈圧','収縮期血圧 − 拡張期血圧。'],['JCS','3-3-9度方式。Ⅰ桁は刺激なしで覚醒、Ⅱ桁は刺激で覚醒、Ⅲ桁は刺激しても覚醒しない。']],
+  calc:[['μg','マイクログラム。1 mg の 1,000分の1。'],['1%','100 mL に 1 g。1 mL に 10 mg。'],['流量','総量（mL）÷ 時間（時）＝ mL/時。'],['滴下数','総量 × 1 mL の滴数 ÷（時間 × 60）。'],['成人用輸液セット','1 mL ≒ 20滴。'],['小児用輸液セット','1 mL ≒ 60滴。滴/分 ＝ mL/時。'],['酸素ボンベ残量','500 L ボンベ：500 × 圧力（MPa）÷ 14.7。']],
+};
+
+/* ===== 単元とコース ===== */
+const UNITS = {
+  cv:   { no:'解1', title:'循環器', subject:'解剖生理', course:'body', subj:0, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
+  vital:{ no:'技1', title:'バイタルサイン', subject:'基礎看護技術', course:'base', subj:0, lessons:VITAL_LESSONS, cards:'vital', drill:'vital' },
+  calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'calc', subj:0, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
+};
+const U = (...t) => t.map(x => typeof x === 'string' ? { t:x } : x);
+const CATALOG = [
+  { group:'', courses:[
+    { id:'body', name:'人体の構造と機能', k:'体', note:'解剖生理・生化学', subjects:[
+      { name:'解剖生理', k:'解', units:U('細胞と組織',{ t:'循環器', ready:'cv' },'呼吸器','消化器','腎・泌尿器','内分泌','神経','運動器','血液・免疫','感覚器') },
+      { name:'生化学・栄養', k:'栄', units:U('栄養素と代謝','水・電解質と酸塩基平衡') } ] },
+    { id:'dis', name:'疾病の成り立ち', k:'疾', note:'病理・微生物・薬理', subjects:[
+      { name:'病理学', k:'病', units:U('炎症','腫瘍','循環障害') },
+      { name:'微生物学', k:'微', units:U('細菌','ウイルス','感染症と予防') },
+      { name:'薬理学', k:'薬', units:U('薬の作用と体内動態','与薬の方法','注意が必要な薬') } ] },
+    { id:'base', name:'基礎看護学', k:'基', note:'看護技術・看護過程', subjects:[
+      { name:'看護技術', k:'技', units:U({ t:'バイタルサイン', ready:'vital' },'感染予防','清潔・衣生活','食事・排泄','活動・休息','与薬の技術') },
+      { name:'看護過程', k:'過', units:U('アセスメント','看護計画と記録') } ] },
+    { id:'calc', name:'看護計算', k:'計', note:'単位・濃度・点滴・酸素', subjects:[
+      { name:'看護計算', k:'計', units:U({ t:'看護の計算', ready:'calc' }) } ] },
+    { id:'area', name:'領域別看護', k:'領', subjects:[
+      { name:'成人看護', k:'成', units:U('急性期','慢性期','周手術期') },
+      { name:'老年看護', k:'老', units:U('加齢による変化','高齢者に多い症状') },
+      { name:'小児看護', k:'小', units:U('成長と発達','小児に多い疾患') },
+      { name:'母性看護', k:'母', units:U('妊娠','分娩','産褥と新生児') },
+      { name:'精神看護', k:'精', units:U('精神症状のとらえ方','主な精神疾患','向精神薬') },
+      { name:'在宅・地域', k:'在', units:U('在宅看護','地域・公衆衛生') } ] } ] },
+  { group:'看護師国家試験', courses:[
+    { id:'hissu', name:'必修問題', k:'必', note:'絶対に落とせない基本', subjects:[
+      { name:'必修', k:'必', units:U('健康の指標と社会','人体の構造と機能','基本的な看護技術','よく出る薬') } ] },
+    { id:'law', name:'健康支援と社会保障', k:'社', subjects:[
+      { name:'制度', k:'制', units:U('社会保障制度','保健医療福祉の制度','看護関係法規') } ] } ] },
+];
+const allCourses = () => CATALOG.flatMap(g => g.courses);
+const courseById = id => allCourses().find(c => c.id === id);
+const readyCount = c => c.subjects.reduce((n, s) => n + s.units.filter(u => u.ready).length, 0);
+const unitCount = c => c.subjects.reduce((n, s) => n + s.units.length, 0);
+const lkey = (uid,id) => uid+':'+id;
+const doneCount = uid => UNITS[uid].lessons.filter(l=>R.lessons[lkey(uid,l.id)]).length;
+const nextOf = uid => { const u=UNITS[uid]; return u.lessons.find(l=>!R.lessons[lkey(uid,l.id)]) || u.lessons[u.lessons.length-1]; };
+const unitDone = uid => doneCount(uid) === UNITS[uid].lessons.length;
+
+/* ===== 章クリアでめくるカード（星座図鑑＋星空の写真） ===== */
+// 星座図鑑：s は星 [x, y, 大きさ, 色, 名前]、l は星をつなぐ線、d は点線（北極星の探し方など）、cl は星団
+const CONST = [
+  { id:'ori', name:'オリオン座', season:'冬', note:'冬の南の空。まん中に三つ星が並ぶ。', s:[[105,105,3.8,'#FFB27A','ベテルギウス'],[195,122,2.6],[130,205,2.4],[150,198,2.4],[170,190,2.4],[118,295,2.4],[205,282,3.8,'#BFD3FF','リゲル'],[152,62,1.6]], l:[[0,1],[0,2],[1,4],[2,3],[3,4],[2,5],[4,6],[0,7],[1,7]] },
+  { id:'cma', name:'おおいぬ座', season:'冬', note:'夜空でいちばん明るい恒星シリウスがある。', s:[[120,110,4.4,'#DDEBFF','シリウス'],[82,92,2],[150,175,2.2],[178,235,2.6],[138,252,2.2],[208,285,2.4],[108,302,1.8]], l:[[0,1],[0,2],[2,3],[3,4],[3,5],[4,6]] },
+  { id:'tau', name:'おうし座', season:'冬', note:'赤いアルデバランと、すばる（プレアデス星団）。', s:[[140,195,3.6,'#FFB27A','アルデバラン'],[188,228,1.8],[172,190,1.8],[78,108,2.2],[112,82,2.2]], l:[[1,0],[0,3],[1,2],[2,4]], cl:[232,128,'すばる'] },
+  { id:'gem', name:'ふたご座', season:'冬', note:'カストルとポルックスが、ふたごの兄弟の頭。', s:[[108,72,2.8,'#F2F5FF','カストル'],[172,86,3.2,'#FFE2B0','ポルックス'],[96,172,1.8],[158,182,1.8],[80,282,2],[148,292,2.2]], l:[[0,2],[2,4],[1,3],[3,5],[2,3]] },
+  { id:'leo', name:'しし座', season:'春', note:'「？」を裏返したような形がししの頭。胸にレグルス。', s:[[200,255,3.4,'#DDE6FF','レグルス'],[195,205,2],[210,165,2.2],[190,135,1.8],[160,140,1.8],[150,170,1.6],[110,215,2.2],[60,248,2.6,'#F2F5FF','デネボラ'],[115,268,1.8]], l:[[0,1],[1,2],[2,3],[3,4],[4,5],[1,6],[6,7],[7,8],[8,0]] },
+  { id:'vir', name:'おとめ座', season:'春', note:'青白いスピカは、春の大曲線の終点。', s:[[150,300,3.6,'#C9D8FF','スピカ'],[140,222,1.8],[176,172,2],[118,160,1.8],[212,120,1.8],[88,100,1.8],[236,215,1.8]], l:[[0,1],[1,2],[1,3],[2,4],[3,5],[2,6]] },
+  { id:'uma', name:'おおぐま座', season:'春', note:'しっぽと背中が北斗七星。ひしゃくの先をのばすと北極星。', s:[[45,175,2.6],[80,140,2.6],[115,132,2.6],[160,140,2.4],[165,182,2.6],[225,172,2.6],[230,122,2.8],[250,40,3,'#FFF4D6','北極星']], l:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,3]], d:[[5,7]] },
+  { id:'lyr', name:'こと座', season:'夏', note:'七夕の織姫星ベガ。夏の大三角の1つ。', s:[[118,90,4,'#F2F5FF','ベガ'],[160,150,1.8],[186,144,1.8],[202,240,2],[176,246,2]], l:[[0,1],[0,2],[1,2],[1,4],[2,3],[3,4]], mw:true },
+  { id:'cyg', name:'はくちょう座', season:'夏', note:'天の川の上を飛ぶ白鳥。北十字ともよばれる。', s:[[150,62,3.4,'#F2F5FF','デネブ'],[150,165,2.4],[150,300,2.2,'#FFE2B0','アルビレオ'],[100,190,2],[55,225,1.8],[200,140,2],[245,115,1.8]], l:[[0,1],[1,2],[1,3],[3,4],[1,5],[5,6]], mw:true },
+  { id:'aql', name:'わし座', season:'夏', note:'七夕の彦星アルタイル。夏の大三角の1つ。', s:[[150,170,3.6,'#FFF7E2','アルタイル'],[132,140,2],[168,198,1.8],[108,258,1.8],[72,150,1.8],[232,215,1.8]], l:[[1,0],[0,2],[0,3],[1,4],[2,5]], mw:true },
+  { id:'sco', name:'さそり座', season:'夏', note:'赤いアンタレスが、さそりの心臓。', s:[[150,140,3.6,'#FF9A7A','アンタレス'],[175,110,2],[195,72,2],[208,102,1.8],[212,134,1.8],[140,180,2],[130,220,2],[136,260,2],[160,292,2],[196,302,2],[220,282,2.2],[208,262,1.8]], l:[[0,1],[1,2],[1,3],[1,4],[0,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11]], mw:true },
+  { id:'cas', name:'カシオペヤ座', season:'秋', note:'W の形。北極星を探す、もう1つの目じるし。', s:[[50,170,2.4],[100,215,2.4],[150,170,2.2],[200,210,2.4],[250,150,2.4]], l:[[0,1],[1,2],[2,3],[3,4]] },
+];
+const ALLC = [ ...ZODIAC.map(c=>Object.assign({ key:c.src, t:'z', zimg:true },c)), ...OBS.map(c=>Object.assign({ key:c.src, t:'a' },c)), ...STAR_CARDS.map(c=>Object.assign({key:c.src},c)) ];
+const CTYPE = { z:'星座図鑑', a:'天体観測', p:'星空写真', h:'星空作品' };
+const cardNo = i => ALLC.slice(0,i+1).filter(c=>c.t===ALLC[i].t).length;
+const cardLabel = i => `${CTYPE[ALLC[i].t]}　No.${cardNo(i)}`;
+function seeded(n){ let s=n*9301+49297; return () => (s=(s*233280+49297)%2147483647)/2147483647; }
+const SEASON_BG = { 春:['#0B0F35','#1A1F55','#2B2F6B'], 夏:['#05071C','#0B0F33','#151B4A'], 秋:['#08102E','#132050','#1E2C62'], 冬:['#060828','#0E1442','#19205A'] };
+function constSVG(id){
+  const c=CONST.find(x=>x.id===id), v=CONST.indexOf(c), rnd=seeded(v*17+3), bg=SEASON_BG[c.season]; let o='';
+  for(let i=0;i<70;i++){ o+=`<circle cx="${(rnd()*300).toFixed(1)}" cy="${(rnd()*340).toFixed(1)}" r="${(.4+rnd()*1).toFixed(2)}" fill="#fff" opacity="${(.25+rnd()*.5).toFixed(2)}"/>`; }
+  if(c.mw){ let band=''; for(let i=0;i<260;i++){ const t=rnd(), off=(rnd()-.5)*90; band+=`<circle cx="${(t*340-20+off*.4).toFixed(1)}" cy="${(400-t*420+off).toFixed(1)}" r="${(.3+rnd()*.7).toFixed(2)}" fill="#fff" opacity="${(.2+rnd()*.4).toFixed(2)}"/>`; } o=`<path d="M-30 420 L330 -10 L330 70 L-30 470Z" fill="#B9B4FF" opacity=".06"/>`+band+o; }
+  const P=c.s, L=(a,b,dash)=>`<line x1="${P[a][0]}" y1="${P[a][1]}" x2="${P[b][0]}" y2="${P[b][1]}" stroke="${dash?'#FFE9A8':'#9FB0FF'}" stroke-width="1.1" ${dash?'stroke-dasharray="3 4"':''} opacity="${dash?.6:.6}"/>`;
+  o+=c.l.map(([a,b])=>L(a,b)).join('')+(c.d||[]).map(([a,b])=>L(a,b,1)).join('');
+  if(c.cl){ const [x,y,lab]=c.cl; [[0,0],[7,-4],[12,3],[4,8],[-6,5],[9,12]].forEach(([dx,dy])=>o+=`<circle cx="${x+dx}" cy="${y+dy}" r="1.6" fill="#DCE6FF"/>`); o+=`<circle cx="${x+4}" cy="${y+4}" r="16" fill="#AFC4FF" opacity=".12"/><text x="${x+4}" y="${y+32}" fill="#DCE0FF" font-size="12" text-anchor="middle" font-family="sans-serif">${lab}</text>`; }
+  P.forEach(([x,y,r,col,lab])=>{ col=col||'#EEF1FF'; o+=`<circle cx="${x}" cy="${y}" r="${r*3}" fill="${col}" opacity=".16"/><circle cx="${x}" cy="${y}" r="${r}" fill="${col}"/>`; if(lab) o+=`<text x="${x}" y="${y+r*3+12}" fill="#DCE0FF" font-size="12" text-anchor="middle" font-family="sans-serif">${lab}</text>`; });
+  return `<svg viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs><linearGradient id="g-${c.id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${bg[0]}"/><stop offset=".6" stop-color="${bg[1]}"/><stop offset="1" stop-color="${bg[2]}"/></linearGradient></defs><rect width="300" height="400" fill="url(#g-${c.id})"/>${o}
+  <path d="M0 352 Q60 334 120 346 T240 338 T300 344 V400 H0Z" fill="#05061A"/><text x="16" y="384" fill="#C9CDF2" font-size="13" font-family="sans-serif" letter-spacing="2">${c.season}の星座</text><text x="284" y="384" fill="#FFE9A8" font-size="15" font-weight="700" text-anchor="end" font-family="sans-serif">${c.name}</text></svg>`;
+}
+const cardFace = (i, lazy) => { const c=ALLC[i]; return c.id ? constSVG(c.id) : `<img src="${esc(c.src)}" alt="${esc(c.name)}"${lazy?' loading="lazy"':''}${lazy&&c.zimg?' style="object-position:center 18%"':''}>`; };
+const CARD_BACK = `<svg viewBox="0 0 120 120" aria-hidden="true"><g fill="none" stroke="#E9C76A" stroke-width="2.2" stroke-linejoin="round"><path d="M60 14l10 24 26 3-19 18 5 26-22-13-22 13 5-26-19-18 26-3z" fill="rgba(233,199,106,.16)"/><circle cx="60" cy="60" r="50" opacity=".35"/></g><g fill="#F2E2B0"><circle cx="18" cy="28" r="1.8"/><circle cx="102" cy="22" r="2.2"/><circle cx="96" cy="100" r="1.6"/><circle cx="22" cy="96" r="2"/></g></svg>`;
+function drawReward(){
+  const has=new Set(R.cards), unseen=ALLC.map((_,i)=>i).filter(i=>!has.has(ALLC[i].key));
+  const i = unseen.length ? pick(unseen) : ri(0,ALLC.length-1), isNew=!has.has(ALLC[i].key);
+  if(isNew){ R.cards.push(ALLC[i].key); save(); } return { i, isNew };
+}
+function rewardCard(rw){ const c=ALLC[rw.i];
+  return `<div class="rcard pop"><p class="rlead">${rw.title?esc(rw.title)+'を':''}ぜんぶクリア！ カードが1まい届きました</p>
+  <button class="rflip" data-act="openReward" aria-label="カードをめくる"><span class="rinner"><span class="rback">${CARD_BACK}<span class="rhint">タップしてめくる</span></span><span class="rfront${c.zimg?' fit':''}">${cardFace(rw.i)}</span></span></button>
+  <div class="rcap"><span class="rno">${cardLabel(rw.i)}${rw.isNew?'<em>NEW</em>':''}</span><b class="rname">${esc(c.name)}</b>${c.note?`<span class="rnote">${esc(c.note)}</span>`:''}<span class="rcount num">集めたカード ${ALLC.filter(x=>R.cards.includes(x.key)).length} / ${ALLC.length}</span></div></div>`;
+}
+
+/* ===== 星屑を30個集めて、新星を生み出す ===== */
+const NOVA_NEED = 30;
+const GROW = [ {n:'星屑の雲', at:0, d:'集めた星屑が、ふわりと集まりはじめました。'}, {n:'分子雲コア', at:8, d:'星屑がぎゅっと集まって、濃いかたまりになりました。'}, {n:'原始星', at:16, d:'まわりに円盤をまとい、熱をおびて光りはじめました。'}, {n:'若い星', at:24, d:'自分の力で輝きはじめています。あと少し。'}, {n:'新星の準備ができました', at:30, d:'どんな色の星が生まれるかは、お楽しみ。'} ];
+function skyInit(){
+  if(!R.sky || R.sky.dust==null){ const n=Object.keys(R.lessons||{}).length; R.sky={ dust:n, total:n, novae:[] }; save(); }
+  return R.sky;
+}
+const growOf = n => { let g=GROW[0]; for(const s of GROW) if(n>=s.at) g=s; return g; };
+const hueName = (h,l) => h<15||h>=345?'赤':h<40?'オレンジ':h<65?'金':h<150?'緑':h<190?'水':h<250?'青':h<290?'紫':'ピンク';
+function starG(sp,x,y,k){ const c=`hsl(${sp.h},${sp.s}%,${sp.l}%)`, r=sp.r*k;
+  return `<circle cx="${x}" cy="${y}" r="${14*r}" fill="${c}" opacity=".14"/><circle cx="${x}" cy="${y}" r="${7*r}" fill="${c}" opacity=".32"/><path d="M${x} ${y-16*r} Q${x+1.6*r} ${y-1.6*r} ${x+16*r} ${y} Q${x+1.6*r} ${y+1.6*r} ${x} ${y+16*r} Q${x-1.6*r} ${y+1.6*r} ${x-16*r} ${y} Q${x-1.6*r} ${y-1.6*r} ${x} ${y-16*r}Z" fill="${c}" opacity=".9"/><circle cx="${x}" cy="${y}" r="${3.2*r}" fill="#fff"/>`; }
+function stageSVG(n){
+  const g=growOf(n).n, x=110, y=85, rnd=seeded(5); let s='';
+  if(n<16){ for(let i=0;i<9;i++){ const a=rnd()*6.28, d=(n<8?36:22)*rnd(); s+=`<ellipse cx="${(x+Math.cos(a)*d).toFixed(1)}" cy="${(y+Math.sin(a)*d*.6).toFixed(1)}" rx="${26+rnd()*20}" ry="${14+rnd()*10}" fill="hsla(${250+rnd()*40},60%,72%,.16)"/>`; }
+    const dots=Math.min(n,15); for(let i=0;i<dots;i++){ const a=rnd()*6.28, d=8+rnd()*40; s+=`<circle cx="${(x+Math.cos(a)*d).toFixed(1)}" cy="${(y+Math.sin(a)*d*.6).toFixed(1)}" r="1.4" fill="#FFF3C9"/>`; }
+    if(n>=8) s+=`<circle cx="${x}" cy="${y}" r="16" fill="hsla(280,70%,80%,.35)"/><circle cx="${x}" cy="${y}" r="6" fill="hsla(40,90%,85%,.6)"/>`; }
+  else if(n<24){ s=`<ellipse cx="${x}" cy="${y}" rx="64" ry="12" fill="hsla(25,80%,65%,.3)" transform="rotate(-14 ${x} ${y})"/><ellipse cx="${x}" cy="${y}" rx="40" ry="7" fill="hsla(35,90%,75%,.45)" transform="rotate(-14 ${x} ${y})"/><path d="M${x+6} ${y-12} L${x+22} ${y-66} M${x-6} ${y+12} L${x-22} ${y+66}" stroke="hsla(200,90%,85%,.5)" stroke-width="3" stroke-linecap="round"/><circle cx="${x}" cy="${y}" r="14" fill="hsla(40,100%,80%,.45)"/><circle cx="${x}" cy="${y}" r="6" fill="#FFF4D6"/>`; }
+  else s=`<circle cx="${x}" cy="${y}" r="46" fill="hsla(260,60%,70%,.1)"/>`+starG({h:48,s:90,l:88,r:n>=30?1.9:1.4},x,y,1);
+  return `<svg class="stg" viewBox="0 0 220 170" role="img" aria-label="${g}"><g class="bob">${s}</g></svg>`;
+}
+function nightSVG(novae){
+  const n=novae.length, rnd=seeded(11); let bg=''; for(let i=0;i<60;i++) bg+=`<circle cx="${(rnd()*360).toFixed(1)}" cy="${(rnd()*190).toFixed(1)}" r="${(.4+rnd()*.9).toFixed(2)}" fill="#fff" opacity="${(.25+rnd()*.5).toFixed(2)}"/>`;
+  const k=n>16?.62:n>8?.78:.95; let st='';
+  novae.slice(-40).forEach((t,i)=>{ const r=seeded((n-novae.slice(-40).length+i)*31+7), x=24+r()*312, y=22+r()*150; st+=`<g class="tw" style="animation-delay:${-(i*1.7)%4}s">${starG(t,x.toFixed(1),y.toFixed(1),k)}</g>`; });
+  return `<svg class="night" viewBox="0 0 360 230" role="img" aria-label="夜空　新星 ${n} こ">${bg}${st}${n?'':`<text x="180" y="110" text-anchor="middle" fill="#B9BEE6" font-size="13">まだ新星はありません</text>`}<path d="M0 208 Q60 188 120 200 T240 194 T360 202 V230 H0Z" fill="#05061A"/></svg>`;
+}
+const SHARD_I = `<svg class="shard" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 6.6L21 12l-6.6 2.4L12 22l-2.4-7.6L3 12l6.6-3.4z"/></svg>`;
+function launchNova(){
+  const s=skyInit(); if(s.dust<NOVA_NEED) return;
+  s.dust-=NOVA_NEED; const nv={ h:ri(0,359), s:ri(60,95), l:ri(68,84), r:Math.round((.85+Math.random()*.4)*100)/100, d:today() };
+  s.novae.push(nv); S.launched=s.novae.length; save();
+}
+
+/* ===== 画面 ===== */
+const S = { view: R.code ? 'home' : 'setup', stack:[], uid:'cv', quiz:null, deck:null, flipped:false, lessonStart:0, reward:null, viewCard:null };
+const CU = () => UNITS[S.uid];
+const LX = id => CU().lessons.find(l=>l.id===id);
+const app = document.getElementById('app'), tabs = document.querySelector('.tabs');
+const go = (v, push=true) => { if (push) S.stack.push(S.view); S.view=v; render(); window.scrollTo(0,0); };
+const back = () => { S.view = S.stack.pop() || 'home'; render(); window.scrollTo(0,0); };
+const top = t => `<div class="top"><button class="back" data-act="back" aria-label="戻る">‹ 戻る</button><span class="ttl">${t}</span></div>`;
+const greet = () => { const h=new Date().getHours(); return h<10?'おはよう':h<17?'こんにちは':'こんばんは'; };
+const lTag = (uid,id) => { const s=R.lessons[lkey(uid,id)]; if(!s) return '<span class="tag">未学習</span>'; return `<span class="tag ${s.best===s.total?'done':'mid'}">${s.best}/${s.total}</span>`; };
+
+function heroArt(){
+  const rnd=seeded(2); let st='';
+  for(let i=0;i<46;i++){ const x=rnd()*360, y=rnd()*130, r=.5+rnd()*1.3; st+=`<circle class="${i%4===0?'tw':''}" style="animation-delay:${(-rnd()*3).toFixed(2)}s" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#fff" opacity="${(.4+rnd()*.6).toFixed(2)}"/>`; }
+  return `<svg class="art" viewBox="0 0 360 176" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">${st}
+  <g stroke="rgba(255,233,168,.35)" stroke-width="1"><line x1="248" y1="44" x2="300" y2="30"/><line x1="300" y1="30" x2="322" y2="76"/><line x1="322" y1="76" x2="248" y2="44"/></g>
+  <circle cx="248" cy="44" r="2.6" fill="#FFF7E2"/><circle cx="300" cy="30" r="3" fill="#F2F5FF"/><circle cx="322" cy="76" r="2.4" fill="#FFF7E2"/>
+  <g class="shoot"><path d="M330 12 L292 32" stroke="rgba(255,255,255,.85)" stroke-width="1.6" stroke-linecap="round"/></g>
+  <circle cx="200" cy="38" r="15" fill="#FFF0C2"/><circle cx="208" cy="33" r="14" fill="#262B66"/>
+  <path d="M0 150 Q60 128 120 142 T240 132 T360 140 V176 H0Z" fill="rgba(5,6,26,.85)"/></svg>`;
+}
+function vSetup(){
+  return `<div class="stack" style="padding-top:24px"><div class="sky" style="min-height:150px">${heroArt()}<div class="txt"><span class="name">星空時間</span></div></div><div class="hello"><div class="eyebrow">はじめまして</div><h1>星空時間へ ようこそ</h1><p class="muted small">1つ5分の学習アプリです。</p></div>
+  <div class="panel stack"><label for="su-code"><b>学籍番号</b><br><span class="small muted">学校の記号＋学年＋番号（先生から受け取った番号）</span></label><input type="text" id="su-code" maxlength="6" placeholder="例：N101" autocomplete="off" inputmode="latin" style="text-transform:uppercase">
+  <label for="su-name"><b>呼び名</b><br><span class="small muted">先生にも表示されます（ニックネームでOK）</span></label><input type="text" id="su-name" maxlength="12" placeholder="例：みお" autocomplete="off">
+  <p class="small" id="su-err" style="color:var(--bad)" hidden>学籍番号は「N101」のように、アルファベット1文字と数字3けたで入力してください。</p>
+  <button class="btn wide" data-act="setupDone">始める</button></div></div>`;
+}
+function vHome(){
+  const acc=R.answered?Math.round(R.correct/R.answered*100):0, uid=UNITS[R.lastUnit]?R.lastUnit:'cv', u=UNITS[uid], n=nextOf(uid);
+  return `<div class="stack" style="padding-top:8px"><div class="sky">${heroArt()}<div class="txt"><span class="name">星空時間</span><h1>${greet()}${R.name?'、'+esc(R.name)+'さん':''}</h1><p>今日も五分だけ。<br>小さな輝き。</p></div></div>
+  <div class="stats"><div class="stat"><b>${R.days.length}</b><span>学習した日</span></div><div class="stat"><b>${streak()}</b><span>連続した日</span></div><div class="stat"><b>${R.answered}</b><span>解いた問題${R.answered?'（'+acc+'%）':''}</span></div></div>
+  <button class="continue" data-act="lesson" data-arg="${n.id}" data-uid="${uid}"><span><small>続きから　${u.subject}・${u.title}（${doneCount(uid)}/${u.lessons.length}）</small><strong>${n.id}　${n.t}</strong></span><span class="go" aria-hidden="true">→</span></button>
+  ${CATALOG.map(g=>`${g.group?`<h2>${g.group}</h2>`:''}<div class="subjects">${g.courses.map(c=>{ const r=readyCount(c);
+    return `<button class="subj" data-act="course" data-arg="${c.id}"><span class="k">${c.k}</span><b>${c.name}</b><span class="small muted">${c.note||c.subjects.map(x=>x.name).join('・')}</span><span class="small ${r?'':'muted'}">${r?'公開中 '+r+'単元':'準備中'}</span></button>`; }).join('')}</div>`).join('')}
+  <button class="item panel" data-act="go" data-arg="install"><span class="body"><b>ホーム画面に追加</b><br><span class="small muted">アプリのようにアイコンから開けます</span></span><span class="chev">›</span></button></div>`;
+}
+function vCourse(){
+  const c=courseById(S.course);
+  return `${top(c.name)}<div class="stack"><p class="muted small">${c.subjects.length}科目・${unitCount(c)}単元</p><div class="list">
+  ${c.subjects.map((sb,i)=>{ const r=sb.units.filter(u=>u.ready).length;
+    return `<button class="item" data-act="subject" data-arg="${i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${sb.units.length}単元</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
+}
+function vSubject(){
+  const c=courseById(S.course), sb=c.subjects[S.subj];
+  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた単元から順に公開します。</p><div class="list">
+  ${sb.units.map((un,i)=>{ const u=un.ready&&UNITS[un.ready];
+    if(u){ const d=doneCount(un.ready), n=u.lessons.length;
+      return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
+    return `<button class="item" disabled><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">準備中</span></span></button>`; }).join('')}</div></div>`;
+}
+function vUnit(){
+  const u=CU(), uid=S.uid, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length, hasPdf=Object.keys(PDF).some(k=>k.startsWith(u.drill+'-')&&PDF[k].q);
+  return `${top(u.no+'　'+u.title)}<div class="stack"><p class="muted small">${u.lessons.length}つの星屑　1つ約5分。上から順に進めるのがおすすめです。ぜんぶクリアすると、星座図鑑か星空の写真が1まいめくれます。</p><div class="list">
+  ${u.lessons.map(l=>`<button class="item" data-act="lesson" data-arg="${l.id}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')}
+  ${hasPdf?`<button class="item" data-act="go" data-arg="drill"><span class="lid">▶</span><span class="body"><b>演習問題</b><br><span class="small muted">PDF・Lv1〜Lv5</span></span><span class="chev">›</span></button>`:''}
+  </div>${T.length?`<div class="list"><button class="item" data-act="cards"><span class="body"><b>用語カード</b><br><span class="small muted">用語の確認 ${T.length}枚</span></span><span class="tag ${kn===T.length?'done':kn?'mid':''}">${kn}/${T.length}</span><span class="chev">›</span></button></div>`:''}</div>`;
+}
+function vLesson(){
+  const l=LX(S.lid);
+  return `${top(l.id+'　'+l.t)}<div class="stack lesson">
+  <div class="chips"><span class="tag">約5分</span><span class="tag">${l.test?'テスト':'説明 → 練習'} ${l.plan.length}問</span>${R.lessons[lkey(S.uid,l.id)]?'<span class="tag done">クリア済み</span>':''}</div>
+  ${l.body()}<button class="btn wide" data-act="quiz">${l.test?'テストを始める':'練習を始める（'+l.plan.length+'問）'}</button></div>`;
+}
+const terms = () => TERMS[CU().cards]||[];
+const knownList = () => (R.known[S.uid] = R.known[S.uid] || []);
+function deckNext(){ const left=terms().map((_,i)=>i).filter(i=>!knownList().includes(i)); return left.length?left[0]:-1; }
+function vCards(){
+  const T=terms(), d=S.deck, known=knownList().length;
+  if (d.cur===-1) return `${top('用語カード')}<div class="stack"><div class="panel result pop"><div class="big">${T.length}/${T.length}</div><h2>全部覚えました</h2><p class="muted">ときどき見直すと、忘れにくくなります。</p></div><button class="btn ghost wide" data-act="cardsReset">最初から見直す</button></div>`;
+  const [term,def]=T[d.cur];
+  return `${top('用語カード')}<div class="stack"><div class="row" style="justify-content:space-between"><span class="small muted">覚えた ${known} / ${T.length}</span><span class="small muted">タップで裏返す</span></div>
+  <div class="meter"><i style="width:${Math.round(known/T.length*100)}%"></i></div>
+  <button class="card ${S.flipped?'flipped':''} pop" data-act="flip" aria-label="カードを裏返す">${S.flipped?`<span class="side">意味</span><span class="term" style="font-size:1.2rem">${term}</span><span class="def">${def}</span>`:`<span class="side">用語</span><span class="term">${term}</span><span class="small muted">意味を思い出してからタップ</span>`}</button>
+  <div class="two"><button class="btn ghost" data-act="cardLater">もう一回</button><button class="btn" data-act="cardKnown">覚えた</button></div></div>`;
+}
+function startQuiz(list){
+  const l=LX(S.lid), plan=l.test?shuffle([...l.plan]):[...l.plan];
+  S.quiz={ qs:list||makeQs(plan), i:0, score:0, picked:null, hint:false, wrong:[], retry:!!list };
+  if (!list) S.lessonStart=Date.now();
+  go('quiz');
+}
+function vQuiz(){
+  const Q=S.quiz, q=Q.qs[Q.i], n=Q.qs.length, ans=Q.picked!==null, ok=ans&&Q.picked===q.answer, l=LX(S.lid);
+  const longExpr = q.expr.length>14;
+  return `${top(Q.retry?'間違えた問題':l.id+'　'+l.t)}<div class="stack">
+  <div class="qhead"><span class="num small muted">${Q.i+1} / ${n}</span><span class="num small muted">正解 ${Q.score}</span></div>
+  <div class="meter"><i style="width:${Math.round(Q.i/n*100)}%"></i></div>
+  <div class="qbox pop"><div class="prompt">${q.prompt}</div><div class="expr ${longExpr?'long':''}">${q.expr}</div></div>
+  <div class="choices ${q.words||q.choices.some(c=>c.length>9)?'words':''}">${q.choices.map(c=>{ let cls=''; if(ans){ if(c===q.answer) cls='ok'; else if(c===Q.picked) cls='ng'; } return `<button class="choice ${cls}" data-act="pick" data-arg="${esc(c)}" ${ans?'disabled':''}>${esc(c)}</button>`; }).join('')}</div>
+  ${!ans?(Q.hint?`<div class="hint">${q.hint}</div>`:`<button class="linkbtn" data-act="hint">ヒントを見る</button>`):`
+  <div class="feedback ${ok?'ok':'ng'} pop"><span class="verdict">${ok?'正解！':'惜しい！ 答えは '+esc(q.answer)}</span><p>${q.explain}</p></div>
+  <button class="btn wide" data-act="next">${Q.i+1<n?'次の問題 →':'結果を見る'}</button>`}</div>`;
+}
+function vResult(){
+  const Q=S.quiz, n=Q.qs.length, u=CU(), l=LX(S.lid), idx=u.lessons.indexOf(l), nx=u.lessons[idx+1];
+  const msg = Q.score===n?'全問正解。よく頑張りました。':Q.score>=n*0.6?'あと少し。間違えた問題を見直せば完璧です。':'大丈夫。間違えた問題こそ、伸びるところです。';
+  const meteor = S.meteor ? `<div class="meteor" role="dialog" aria-label="流れ星のメッセージ"><i class="streak"></i><i class="streak s2"></i><div class="mcard"><span class="mlabel">流れ星からのメッセージ</span><p class="mtext">${esc(S.meteor)}</p><button class="btn" data-act="meteorClose">受け取る</button></div></div>` : '';
+  return `${meteor}${top('結果')}<div class="stack">
+  <div class="panel result pop"><div class="big">${Q.score}/${n}</div><h2>${Q.retry?'見直し完了':l.id+'　'+l.t}</h2><p class="muted">${msg}</p></div>
+  ${S.reward?rewardCard(S.reward):''}
+  ${S.gotShard?`<div class="panel shardget pop">${SHARD_I}<div><b>星屑が1つ集まりました</b><br><span class="small muted">星屑 ${R.sky.dust} / ${NOVA_NEED}${R.sky.dust>=NOVA_NEED?'　新星を生み出せます！':''}</span></div><button class="btn" data-act="toSky">夜空へ →</button></div>`:''}
+  ${Q.wrong.length?`<button class="btn warm wide" data-act="retry">間違えた ${Q.wrong.length}問 をもう一度</button>`:''}
+  ${nx&&!Q.retry?`<button class="btn wide" data-act="lessonNext" data-arg="${nx.id}">次へ　${nx.id} ${nx.t} →</button>`:''}
+  <button class="btn again wide" data-act="again">新しい問題でもう一度</button>
+  <button class="btn ghost wide" data-act="tounit">星屑の一覧へ</button></div>`;
+}
+function vRecord(){
+  const acc=R.answered?Math.round(R.correct/R.answered*100):0, set=new Set(R.days); let cells='';
+  for(let i=27;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); cells+=`<div class="day ${set.has(dkey(d))?'on':''}">${d.getDate()}</div>`; }
+  const has=new Set(SHOW_ALL_CARDS ? ALLC.map(c=>c.key) : R.cards);
+  const coll = `<div class="panel stack"><h3>星座図鑑と天体観測　<span class="num">${ALLC.filter(c=>has.has(c.key)).length} / ${ALLC.length}</span></h3>${Object.keys(CTYPE).map(t=>{ const idx=ALLC.map((c,i)=>c.t===t?i:-1).filter(i=>i>=0); if(!idx.length) return ''; const got=idx.filter(i=>has.has(ALLC[i].key)).length;
+    return `<div class="stack" style="gap:6px"><p class="small"><b>${CTYPE[t]}</b>　<span class="muted num">${got} / ${idx.length}</span></p><div class="coll">${idx.map(i=>has.has(ALLC[i].key)?`<button data-act="viewCard" data-arg="${i}" aria-label="${esc(cardLabel(i)+'　'+ALLC[i].name)}">${cardFace(i,true)}</button>`:`<div class="num">${cardNo(i)}</div>`).join('')}</div></div>`; }).join('')}<p class="small muted">1つの単元（章）の星屑をぜんぶクリアすると、カードを1まいめくれます。まだ持っていないカードから出てきます。集めたカードはタップで大きく見られます。</p></div>`;
+  const vc = S.viewCard!=null && ALLC[S.viewCard] && has.has(ALLC[S.viewCard].key) ? ALLC[S.viewCard] : null;
+  const viewer = vc ? `<div class="viewer" data-act="closeCard" role="dialog" aria-label="${esc(vc.name)}"><figure>${vc.id?`<div class="vsvg">${constSVG(vc.id)}</div>`:`<img src="${esc(vc.src)}" alt="${esc(vc.name)}">`}<figcaption><span class="rno">${cardLabel(S.viewCard)}</span><b class="rname">${esc(vc.name)}</b>${vc.note?`<span class="rnote">${esc(vc.note)}</span>`:''}</figcaption></figure><button class="btn ghost" data-act="closeCard">閉じる</button></div>` : '';
+  const units = Object.entries(UNITS).filter(([uid])=>doneCount(uid)>0);
+  return `<div class="stack"><div class="hello"><div class="eyebrow">記録</div><h1>学習の記録</h1></div>
+  <div class="panel stack"><h3>この4週間</h3><div class="days">${cells}</div></div>
+  <div class="panel"><div class="kv"><span>解いた問題</span><b class="num">${R.answered}問</b></div><div class="kv"><span>正答率</span><b class="num">${acc}%</b></div><div class="kv"><span>連続した日</span><b class="num">${streak()}日</b></div></div>
+  ${coll}${viewer}
+  ${units.length?units.map(([uid,u])=>`<div class="panel"><h3 style="margin-bottom:6px">${u.subject}　${u.no}　${u.title}</h3>${u.lessons.map(l=>`<div class="kv"><span>${l.id}　${l.t}</span>${lTag(uid,l.id)}</div>`).join('')}</div>`).join(''):'<p class="small muted">星屑（5分の学習）を終えると、ここに記録が並びます。</p>'}</div>`;
+}
+function vSky(){
+  const s=skyInit(), n=Math.min(s.dust,NOVA_NEED), g=growOf(n), nextG=GROW.find(x=>x.at>n), ready=s.dust>=NOVA_NEED, L=S.launched?s.novae[S.launched-1]:null;
+  return `<div class="stack"><div class="hello"><div class="eyebrow">夜空</div><h1>星屑を集めて新星を生み出そう</h1></div>
+  <div class="skybox">${nightSVG(s.novae)}<div class="skycount"><span>夜空の新星 <b class="num">${s.novae.length}</b> こ</span><span>集めた星屑 <b class="num">${s.total}</b></span></div></div>
+  ${L?`<div class="panel born pop"><svg viewBox="0 0 120 120" class="bsv">${starG(L,60,60,2)}</svg><div><p class="small muted">新星が生まれました！</p><h3>新星 No.${S.launched}</h3><p class="small">${hueName(L.h)}色に輝く星になりました。</p></div></div>`:''}
+  <div class="panel grow"><div class="growtop"><div><p class="small muted">いま育っている星</p><h3>${g.n}</h3><p class="small">${g.d}</p></div>${stageSVG(n)}</div>
+    <div class="meter"><i style="width:${n/NOVA_NEED*100}%"></i></div>
+    <div class="shardbal">${SHARD_I}<span>星屑 <b class="num">${s.dust}</b> / ${NOVA_NEED}</span></div>
+    <p class="small muted">${ready?'30個そろいました。どんな色の星が生まれるかは、お楽しみ。':(nextG&&nextG.at<NOVA_NEED?`あと <b class="num">${nextG.at-n}</b> 個で${nextG.n}、`:'')+`あと <b class="num">${NOVA_NEED-n}</b> 個で新星を生み出せます。`}</p>
+    <button class="btn warm wide" data-act="launch" ${ready?'':'disabled'}>新星を生み出す</button>
+    ${ready?'':'<p class="small muted">まだクリアしていない星屑（5分の学習）を1つクリアすると、星屑が1つ集まります。</p>'}</div>
+  <div class="panel"><h3>これまでの新星</h3>${s.novae.length?`<div class="list" style="margin-top:10px">${s.novae.map((v,i)=>`<div class="item"><svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">${starG(v,20,20,.9)}</svg><span class="body"><b>新星 No.${i+1}</b><br><span class="small muted">${hueName(v.h)}色</span></span><span class="small muted num">${v.d.replace(/-/g,'.')}</span></div>`).reverse().join('')}</div>`:'<p class="small muted" style="margin-top:6px">星屑を30個集めると、1つめの新星を空にあげられます。</p>'}</div></div>`;
+}
+function vSettings(){
+  const send = !GAS_URL ? `<span class="status">送信先がまだ設定されていません</span>` : R.outbox.length ? `<span class="status wait">送信待ち ${R.outbox.length}件（つながったら送ります）</span>` : `<span class="status ok">先生に送信済み</span>`;
+  return `<div class="stack"><div class="hello"><div class="eyebrow">設定</div><h1>学生情報と記録</h1></div>
+  <div class="panel stack"><label for="st-code"><b>学籍番号</b></label><input type="text" id="st-code" value="${esc(R.code)}" maxlength="6" autocomplete="off" style="text-transform:uppercase"><p class="small muted">学校の記号＋学年＋番号（例：N101）</p>
+  <label for="st-name"><b>呼び名</b></label><input type="text" id="st-name" value="${esc(R.name)}" maxlength="12" autocomplete="off"></div>
+  <div class="panel stack"><h3>先生への記録</h3><p class="small">${send}</p><p class="small muted">星屑（5分の学習）を終えるたびに、学籍番号・呼び名・点数・かかった時間が先生に届きます。</p></div></div>`;
+}
+function vInstall(){
+  return `${top('ホーム画面に追加')}<div class="stack">
+  <div class="panel stack"><h3>iPhone・iPad（Safari）</h3><ol class="steps"><li>下の共有ボタン（□に↑）をタップ</li><li>「ホーム画面に追加」を選ぶ</li><li>右上の「追加」をタップ</li></ol></div>
+  <div class="panel stack"><h3>Android（Chrome）</h3><ol class="steps"><li>右上の「︙」メニューをタップ</li><li>「ホーム画面に追加」または「アプリをインストール」を選ぶ</li></ol></div></div>`;
+}
+
+/* ===== 演習問題（PDF） ===== */
+const STAGES = [
+  { lv:1, name:'星間雲', desc:'基礎問題', icon:'<ellipse cx="18" cy="26" rx="12" ry="7"/><ellipse cx="30" cy="22" rx="12" ry="8"/>' },
+  { lv:2, name:'原始星', desc:'標準問題', icon:'<ellipse cx="24" cy="24" rx="18" ry="5" transform="rotate(-14 24 24)"/><circle cx="24" cy="24" r="5"/>' },
+  { lv:3, name:'主系列星', desc:'定期試験対策', icon:'<circle cx="24" cy="24" r="9"/><path d="M24 8v4M24 36v4M8 24h4M36 24h4"/>' },
+  { lv:4, name:'巨星', desc:'国家試験レベル', icon:'<circle cx="24" cy="24" r="14"/>' },
+  { lv:5, name:'一等星', desc:'国家試験・応用', icon:'<path d="M24 6l5 12 13 1.5-10 9 3 13L24 35l-11 6.5 3-13-10-9 13-1.5z"/>' },
+];
+function vDrill(){
+  const u=CU();
+  return `${top(u.no+'　'+u.title+'　演習問題')}<div class="stack"><p class="small muted">この単元の演習問題（PDF）です。印刷しても、画面で解いても大丈夫です。星の一生と同じように、Lv1から順にレベルが上がります。</p>
+  <div class="ladder">${STAGES.map(s=>{ const p=PDF[u.drill+'-lv'+s.lv]||{};
+    return `<div class="rung"><svg class="stage" viewBox="0 0 48 48" aria-hidden="true">${s.icon}</svg><div class="body"><div class="row" style="gap:8px"><span class="tag">Lv${s.lv}</span><b class="sname">${s.name}</b></div><p class="small">${s.desc}</p>
+    ${p.q?`<div class="row"><button class="btn pdfbtn" data-act="pdf" data-arg="${s.lv}|0">問題を開く</button><button class="btn ghost pdfbtn" data-act="pdf" data-arg="${s.lv}|1">解答・解説</button></div>`:'<span class="small muted">準備中</span>'}</div></div>`; }).join('')}</div></div>`;
+}
+const PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+let pdfLibP=null;
+const loadScript = src => new Promise((ok,ng)=>{ const s=document.createElement('script'); s.src=src; s.onload=ok; s.onerror=ng; document.head.appendChild(s); });
+function pdfLib(){ if(!pdfLibP) pdfLibP=loadScript(PDFJS+'pdf.min.js').then(()=>{ pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+'pdf.worker.min.js'; return pdfjsLib; }).catch(e=>{ pdfLibP=null; throw e; }); return pdfLibP; }
+function openPdf(arg){ const [lv,i]=arg.split('|'), u=CU(), st=STAGES.find(s=>s.lv===+lv), p=PDF[u.drill+'-lv'+lv]||{};
+  S.pdf={ title:`Lv${lv} ${st.name}`, list:[{label:'問題',url:p.q},{label:'解答・解説',url:p.a}], i:+i, z:1, tok:0 }; go('pdf'); }
+function vPdf(){ const P=S.pdf;
+  return `${top(CU().title+'　'+P.title)}<div class="stack"><div class="pdfbar"><div class="pdfseg">${P.list.map((x,i)=>`<button class="${i===P.i?'on':''}" data-act="pdfTab" data-arg="${i}">${x.label}</button>`).join('')}</div>
+  <button class="pdfzoom" data-act="pdfZoom">${P.z>1?'－ 縮小':'＋ 拡大'}</button></div><div id="pdfpages" class="pdfpages"><p class="small muted" style="padding:24px;text-align:center">読みこみ中…</p></div>
+  <a class="btn ghost wide pdfbtn" style="text-align:center;text-decoration:none" href="${esc(P.list[P.i].url||'')}" target="_blank" rel="noopener">PDFを別の画面で開く（印刷用）</a></div>`; }
+async function renderPdf(){ const P=S.pdf, box=document.getElementById('pdfpages'); if(!box) return; const tok=++P.tok;
+  try{ const lib=await pdfLib(), r=await fetch(P.list[P.i].url); if(!r.ok) throw 0; const data=await r.arrayBuffer(); if(tok!==P.tok) return;
+    const doc=await lib.getDocument({ data, isEvalSupported:false }).promise; if(tok!==P.tok) return; box.innerHTML='';
+    const W=Math.floor(box.clientWidth*P.z), dpr=Math.min(Math.max(window.devicePixelRatio||1,2)*1.5,4);
+    for(let n=1;n<=doc.numPages;n++){ const pg=await doc.getPage(n); if(tok!==P.tok) return; const v0=pg.getViewport({scale:1}), vp=pg.getViewport({scale:W/v0.width*dpr}), cv=document.createElement('canvas');
+      cv.width=vp.width; cv.height=vp.height; cv.className='pdfpage'; cv.style.width=W+'px'; box.appendChild(cv); await pg.render({ canvasContext:cv.getContext('2d'), viewport:vp }).promise; } }
+  catch(e){ if(tok===P.tok) box.innerHTML='<p class="small muted" style="padding:24px;text-align:center">PDFを読みこめませんでした。下のボタンから開いてください。</p>'; } }
+
+const VIEWS={ setup:vSetup, home:vHome, course:vCourse, subject:vSubject, unit:vUnit, lesson:vLesson, cards:vCards, quiz:vQuiz, result:vResult, record:vRecord, settings:vSettings, install:vInstall, drill:vDrill, pdf:vPdf, sky:vSky };
+function render(){
+  app.innerHTML=VIEWS[S.view]();
+  tabs.hidden = S.view==='setup';
+  const tabFor={record:'record',settings:'settings',sky:'sky'}[S.view]||'home';
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.tab===tabFor));
+  const c=document.getElementById('st-code'), n=document.getElementById('st-name');
+  if(c) c.addEventListener('change',e=>{ const v=normCode(e.target.value); if(CODE_RE.test(v)){ R.code=v; save(); } e.target.value=R.code; });
+  if(n) n.addEventListener('input',e=>{ R.name=e.target.value.trim(); save(); });
+  if (S.view==='pdf') renderPdf();
+}
+function answerQ(picked){
+  const Q=S.quiz, q=Q.qs[Q.i], ok=picked===q.answer; Q.picked=picked; R.answered++;
+  if(ok){ Q.score++; R.correct++; } else Q.wrong.push(q);
+  markDay(); save(); render();
+}
+
+document.addEventListener('click', e=>{
+  const tab=e.target.closest('[data-tab]');
+  if(tab){ S.stack=[]; S.viewCard=null; S.launched=0; S.view=tab.dataset.tab; render(); window.scrollTo(0,0); return; }
+  const b=e.target.closest('[data-act]'); if(!b||b.disabled) return;
+  const a=b.dataset.act, arg=b.dataset.arg;
+  if(a==='back') back();
+  else if(a==='openReward'){ const rc=b.closest('.rcard'); if(rc) rc.classList.add('open'); b.disabled=true; }
+  else if(a==='viewCard'){ S.viewCard=+arg; render(); }
+  else if(a==='closeCard'){ S.viewCard=null; render(); }
+  else if(a==='meteorClose'){ S.meteor=''; render(); }
+  else if(a==='go') go(arg);
+  else if(a==='pdf') openPdf(arg);
+  else if(a==='pdfTab'){ S.pdf.i=+arg; render(); }
+  else if(a==='pdfZoom'){ S.pdf.z=S.pdf.z>1?1:1.8; render(); }
+  else if(a==='course'){ S.course=arg; go('course'); }
+  else if(a==='subject'){ S.subj=+arg; go('subject'); }
+  else if(a==='unit'){ S.uid=arg; go('unit'); }
+  else if(a==='setupDone'){ const code=normCode(document.getElementById('su-code').value); if(!CODE_RE.test(code)){ document.getElementById('su-err').hidden=false; return; }
+    R.code=code; R.name=document.getElementById('su-name').value.trim(); save(); S.stack=[]; S.view='home'; render(); }
+  else if(a==='lesson'){ if(b.dataset.uid) S.uid=b.dataset.uid; S.lid=arg; go('lesson'); }
+  else if(a==='lessonNext'){ const u=CU(); S.lid=arg; S.course=u.course; S.subj=u.subj; S.stack=['home','course','subject','unit']; S.view='lesson'; render(); window.scrollTo(0,0); }
+  else if(a==='quiz') startQuiz();
+  else if(a==='cards'){ S.deck={cur:deckNext()}; S.flipped=false; markDay(); go('cards'); }
+  else if(a==='flip'){ S.flipped=!S.flipped; render(); }
+  else if(a==='cardKnown'){ const k=knownList(); if(!k.includes(S.deck.cur)) k.push(S.deck.cur); save(); S.deck.cur=deckNext(); S.flipped=false; render(); }
+  else if(a==='cardLater'){ const left=terms().map((_,i)=>i).filter(i=>!knownList().includes(i)); S.deck.cur=left[(left.indexOf(S.deck.cur)+1)%left.length]; S.flipped=false; render(); }
+  else if(a==='cardsReset'){ R.known[S.uid]=[]; save(); S.deck.cur=deckNext(); S.flipped=false; render(); }
+  else if(a==='hint'){ S.quiz.hint=true; render(); }
+  else if(a==='pick') answerQ(arg);
+  else if(a==='next'){ const Q=S.quiz;
+    if(Q.i+1<Q.qs.length){ Q.i++; Q.picked=null; Q.hint=false; render(); window.scrollTo(0,0); return; }
+    S.reward=null; S.gotShard=false;
+    if(!Q.retry){ skyInit(); const u=CU(), l=LX(S.lid), k=lkey(S.uid,l.id), first=!R.lessons[k], wasDone=unitDone(S.uid), n=Q.qs.length, s=R.lessons[k]||{best:0,tries:0,total:n};
+      s.tries++; s.best=Math.max(s.best,Q.score); s.total=n; R.lessons[k]=s; R.lastUnit=S.uid; save();
+      report({ subject:u.subject, unit:u.no+' '+u.title, lesson:l.id, title:l.t, score:Q.score, total:n, sec:Math.round((Date.now()-S.lessonStart)/1000) });
+      if(!wasDone&&unitDone(S.uid)){ S.reward=drawReward(); S.reward.title=u.title; }
+      if(first){ R.sky.dust++; R.sky.total++; S.gotShard=true; save(); } }
+    S.meteor = Q.retry ? '' : pick(METEOR_MSGS);
+    S.view='result'; render(); window.scrollTo(0,0); }
+  else if(a==='retry'){ const list=S.quiz.wrong.map(q=>Object.assign({},q,{choices:shuffle([...q.choices])})); S.view=S.stack.pop()||'lesson'; startQuiz(list); }
+  else if(a==='again'){ S.view=S.stack.pop()||'lesson'; startQuiz(); }
+  else if(a==='launch'){ launchNova(); render(); window.scrollTo(0,0); }
+  else if(a==='toSky'){ S.stack=[]; S.launched=0; S.view='sky'; render(); window.scrollTo(0,0); }
+  else if(a==='tounit'){ const u=CU(); S.course=u.course; S.subj=u.subj; S.stack=['home','course','subject']; S.view='unit'; render(); window.scrollTo(0,0); }
+});
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.viewCard!=null){ S.viewCard=null; render(); } });
+
+render(); flush();
+if('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]')) navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+
+
+</body></html>
+</body></html>

@@ -1,0 +1,36 @@
+星空時間　スマホのアプリにする手順
+====================================
+
+このフォルダを GitHub Pages に置くと、スマホのホーム画面のアイコンから開けるアプリになります。
+一度開けば、電波がないところでも動きます。
+
+■ 中に入っているもの
+  index.html            アプリ本体
+  manifest.webmanifest  アプリの名前・アイコンの設定
+  sw.js                 オフラインでも開けるようにするしくみ
+  icons/                アプリのアイコン
+  cards/                星座図鑑（z01〜z88）と天体観測（a01〜a08）の写真
+
+■ GitHub Pages に置く
+  1. GitHub で新しいリポジトリを作る（例：hoshizora-jikan）。公開（Public）にする。
+  2. 「Add file」→「Upload files」で、このフォルダの中身をフォルダごとドラッグして「Commit changes」。
+     （index.html がリポジトリのいちばん上にくるようにします）
+  3. 「Settings」→「Pages」→ Branch を「main」「/(root)」にして「Save」。
+  4. 1〜2分たつと https://ユーザー名.github.io/hoshizora-jikan/ で開けます。
+
+■ ホーム画面に追加
+  iPhone（Safari）：共有ボタン（□に↑）→「ホーム画面に追加」→「追加」
+  Android（Chrome）：右上の「︙」→「アプリをインストール」または「ホーム画面に追加」
+
+■ アプリを直したとき
+  index.html などを上書きでアップロードしたあと、sw.js の VERSION を
+  'hoshizora-v1' → 'hoshizora-v2' のように1つ上げてアップロードしてください。
+  生徒のスマホでは、次に開いたときに新しい版に入れかわります（入れかわらないときは、アプリを閉じてもう一度開く）。
+
+■ 先生への記録
+  index.html の GAS_URL に、先生用スプレッドシート（Apps Script）のURLを入れると、
+  学習の記録が届くようになります。空のままだと送信しません。
+
+■ 確認用の表示
+  このフォルダの index.html は、SHOW_ALL_CARDS = false（生徒用）になっています。
+  カードを全部見て確かめたいときは true にします。
