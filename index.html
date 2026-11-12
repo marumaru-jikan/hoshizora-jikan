@@ -855,7 +855,7 @@ function vSetup(){
 }
 function vHome(){
   const acc=R.answered?Math.round(R.correct/R.answered*100):0, uid=UNITS[R.lastUnit]?R.lastUnit:'cv', u=UNITS[uid], n=nextOf(uid);
-  return `<div class="stack" style="padding-top:8px"><div class="sky">${heroArt()}<div class="txt"><span class="name">星空時間</span><h1>${greet()}${R.name?'、'+esc(R.name)+'さん':''}</h1><p>今日も五分だけ。<br>小さな輝き。</p></div></div>
+  return `<div class="stack" style="padding-top:8px"><div class="sky">${heroArt()}<div class="txt"><span class="name">星空時間</span><h1>${greet()}${R.name?'、'+esc(R.name)+'さん':''}</h1><p>今日も5分だけ。<br>小さな輝き。</p></div></div>
   <div class="stats"><div class="stat"><b>${R.days.length}</b><span>学習した日</span></div><div class="stat"><b>${streak()}</b><span>連続した日</span></div><div class="stat"><b>${R.answered}</b><span>解いた問題${R.answered?'（'+acc+'%）':''}</span></div></div>
   <button class="continue" data-act="lesson" data-arg="${n.id}" data-uid="${uid}"><span><small>続きから　${u.subject}・${u.title}（${doneCount(uid)}/${u.lessons.length}）</small><strong>${n.id}　${n.t}</strong></span><span class="go" aria-hidden="true">→</span></button>
   ${CATALOG.map(g=>`${g.group?`<h2>${g.group}</h2>`:''}<div class="subjects">${g.courses.map(c=>{ const r=readyCount(c);
