@@ -705,37 +705,55 @@ const TERMS = {
 
 /* ===== 単元とコース ===== */
 const UNITS = {
-  cv:   { no:'解1', title:'循環器', subject:'解剖生理', course:'body', subj:0, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
+  cv:   { no:'解1', title:'循環器', subject:'解剖生理', course:'med', subj:0, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
   vital:{ no:'技1', title:'バイタルサイン', subject:'基礎看護技術', course:'base', subj:0, lessons:VITAL_LESSONS, cards:'vital', drill:'vital' },
-  calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'calc', subj:0, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
+  calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'base', subj:1, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
 };
 const U = (...t) => t.map(x => typeof x === 'string' ? { t:x } : x);
 const CATALOG = [
   { group:'', courses:[
-    { id:'body', name:'人体の構造と機能', k:'体', note:'解剖生理・生化学', subjects:[
+    { id:'med', name:'基礎医学', k:'医', note:'解剖生理・生化学・病理・微生物・薬理', subjects:[
       { name:'解剖生理', k:'解', units:U('細胞と組織',{ t:'循環器', ready:'cv' },'呼吸器','消化器','腎・泌尿器','内分泌','神経','運動器','血液・免疫','感覚器') },
-      { name:'生化学・栄養', k:'栄', units:U('栄養素と代謝','水・電解質と酸塩基平衡') } ] },
-    { id:'dis', name:'疾病の成り立ち', k:'疾', note:'病理・微生物・薬理', subjects:[
+      { name:'生化学・栄養', k:'栄', units:U('栄養素と代謝','水・電解質と酸塩基平衡') },
       { name:'病理学', k:'病', units:U('炎症','腫瘍','循環障害') },
       { name:'微生物学', k:'微', units:U('細菌','ウイルス','感染症と予防') },
       { name:'薬理学', k:'薬', units:U('薬の作用と体内動態','与薬の方法','注意が必要な薬') } ] },
-    { id:'base', name:'基礎看護学', k:'基', note:'看護技術・看護過程', subjects:[
+    { id:'base', name:'基礎看護学', k:'基', note:'看護技術・看護計算・看護過程', subjects:[
       { name:'看護技術', k:'技', units:U({ t:'バイタルサイン', ready:'vital' },'感染予防','清潔・衣生活','食事・排泄','活動・休息','与薬の技術') },
+      { name:'看護計算', k:'計', units:U({ t:'看護の計算', ready:'calc' }) },
       { name:'看護過程', k:'過', units:U('アセスメント','看護計画と記録') } ] },
-    { id:'calc', name:'看護計算', k:'計', note:'単位・濃度・点滴・酸素', subjects:[
-      { name:'看護計算', k:'計', units:U({ t:'看護の計算', ready:'calc' }) } ] },
-    { id:'area', name:'領域別看護', k:'領', subjects:[
-      { name:'成人看護', k:'成', units:U('急性期','慢性期','周手術期') },
-      { name:'老年看護', k:'老', units:U('加齢による変化','高齢者に多い症状') },
-      { name:'小児看護', k:'小', units:U('成長と発達','小児に多い疾患') },
-      { name:'母性看護', k:'母', units:U('妊娠','分娩','産褥と新生児') },
-      { name:'精神看護', k:'精', units:U('精神症状のとらえ方','主な精神疾患','向精神薬') },
-      { name:'在宅・地域', k:'在', units:U('在宅看護','地域・公衆衛生') } ] } ] },
-  { group:'看護師国家試験', courses:[
-    { id:'hissu', name:'必修問題', k:'必', note:'絶対に落とせない基本', subjects:[
-      { name:'必修', k:'必', units:U('健康の指標と社会','人体の構造と機能','基本的な看護技術','よく出る薬') } ] },
-    { id:'law', name:'健康支援と社会保障', k:'社', subjects:[
-      { name:'制度', k:'制', units:U('社会保障制度','保健医療福祉の制度','看護関係法規') } ] } ] },
+    { id:'adult', name:'成人看護学', k:'成', note:'総論と疾患別（A〜P）', subjects:[
+      { name:'成人看護学総論', k:'総', units:U('成人の特徴','急性期の看護','慢性期の看護','周手術期の看護','リハビリテーション・終末期') },
+      { name:'消化管疾患', k:'A', units:U('食道疾患','胃・十二指腸疾患','腸疾患') },
+      { name:'肝・胆・膵疾患', k:'B', units:U('肝炎・肝硬変','胆道疾患','膵炎・膵がん') },
+      { name:'循環器疾患', k:'C', units:U('虚血性心疾患','心不全','不整脈','血管疾患') },
+      { name:'内分泌・代謝疾患', k:'D', units:U('糖尿病','甲状腺疾患','副腎・下垂体疾患') },
+      { name:'腎・泌尿器疾患', k:'E', units:U('腎不全・透析','腎炎・ネフローゼ症候群','泌尿器疾患') },
+      { name:'免疫・アレルギー／膠原病', k:'F', units:U('アレルギー','膠原病','免疫不全') },
+      { name:'血液・造血器疾患', k:'G', units:U('貧血','白血病・リンパ腫','出血性疾患') },
+      { name:'感染症', k:'H', units:U('主な感染症','院内感染対策') },
+      { name:'呼吸器疾患', k:'I', units:U('呼吸不全','COPD・喘息','肺炎・肺がん') },
+      { name:'脳・神経疾患', k:'J', units:U('脳血管疾患','神経変性疾患','てんかん・頭部外傷') },
+      { name:'運動器疾患', k:'K', units:U('骨折','関節疾患','脊椎疾患') },
+      { name:'眼疾患', k:'L', units:U('白内障・緑内障','網膜疾患') },
+      { name:'耳鼻咽喉疾患', k:'M', units:U('耳疾患','鼻・咽頭・喉頭疾患') },
+      { name:'歯・口腔疾患', k:'N', units:U('口腔疾患','口腔ケア') },
+      { name:'皮膚疾患', k:'O', units:U('皮膚疾患','褥瘡・熱傷') },
+      { name:'女性生殖器疾患', k:'P', units:U('子宮・卵巣疾患','乳がん') } ] },
+    { id:'old', name:'老年看護学', k:'老', note:'加齢・認知症・生活支援', subjects:[
+      { name:'老年看護学', k:'老', units:U('加齢による変化','高齢者に多い症状','認知症','高齢者の生活支援') } ] },
+    { id:'child', name:'小児看護学', k:'小', note:'成長発達・小児の疾患', subjects:[
+      { name:'小児看護学', k:'小', units:U('成長と発達','小児に多い疾患','小児の看護技術') } ] },
+    { id:'mat', name:'母性看護学', k:'母', note:'妊娠・分娩・産褥・新生児', subjects:[
+      { name:'母性看護学', k:'母', units:U('妊娠','分娩','産褥','新生児') } ] },
+    { id:'psy', name:'精神看護学', k:'精', note:'精神症状・精神疾患・向精神薬', subjects:[
+      { name:'精神看護学', k:'精', units:U('精神症状のとらえ方','主な精神疾患','向精神薬','精神保健福祉法') } ] },
+    { id:'home', name:'在宅看護論', k:'在', note:'訪問看護・在宅での医療', subjects:[
+      { name:'在宅看護論', k:'在', units:U('在宅看護の基本','訪問看護','在宅での医療処置') } ] },
+    { id:'integ', name:'看護の統合と実践', k:'統', note:'看護管理・医療安全・災害看護', subjects:[
+      { name:'看護の統合と実践', k:'統', units:U('看護管理','医療安全','災害看護','国際看護') } ] },
+    { id:'law', name:'健康支援と社会保障制度', k:'社', note:'社会保障・法規・公衆衛生', subjects:[
+      { name:'健康支援と社会保障制度', k:'社', units:U('社会保障制度','保健医療福祉の制度','看護関係法規','公衆衛生・疫学') } ] } ] },
 ];
 const allCourses = () => CATALOG.flatMap(g => g.courses);
 const courseById = id => allCourses().find(c => c.id === id);
