@@ -119,6 +119,10 @@ p{margin:0}
 .fig .mu{fill:var(--muted);font-size:10.5px}
 .fig .ac{fill:var(--accent)}
 .fig .grid{stroke:var(--line);stroke-width:1}
+.lsec{padding:10px 16px 6px;border-top:1px solid var(--line);background:var(--sunk);color:var(--teal);font-family:var(--f-display);font-weight:700;font-size:.85rem;letter-spacing:.06em}
+.lsec:first-child{border-top:0}
+.lsec+.item{border-top:1px solid var(--line)}
+.stars{color:var(--accent);font-size:.78rem;letter-spacing:.04em;margin-right:6px;white-space:nowrap}
 .note-box{background:var(--sunk);border-color:transparent;display:flex;flex-direction:column;gap:10px}
 .note{background:var(--sunk);border-radius:12px;padding:12px 14px;font-size:.9rem}
 
@@ -733,19 +737,22 @@ const TERMS = {
 const UNITS = {
   cog: { no:'検5-1', title:'認知機能の検査', subject:'検査室', course:'lab', subj:4, lessons:COG_LESSONS, cards:'cog', drill:'cog' },
   phy: { no:'検5-2', title:'身体機能・ADLの評価', subject:'検査室', course:'lab', subj:4, lessons:PHY_LESSONS, cards:'phy', drill:'phy' },
-  cv:   { no:'解1', title:'循環器', subject:'解剖生理', course:'med', subj:0, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
+  cv:   { no:'成C1', title:'循環器の解剖生理', subject:'循環器疾患', course:'adult', subj:3, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
   vital:{ no:'技1', title:'バイタルサイン', subject:'基礎看護技術', course:'base', subj:0, lessons:VITAL_LESSONS, cards:'vital', drill:'vital' },
   calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'calc', subj:0, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
 };
 const U = (...t) => t.map(x => typeof x === 'string' ? { t:x } : x);
 const CATALOG = [
   { group:'', courses:[
-    { id:'med', name:'基礎医学', k:'医', note:'解剖生理・生化学・病理・微生物・薬理', subjects:[
-      { name:'解剖生理', k:'解', units:U('細胞と組織',{ t:'循環器', ready:'cv' },'呼吸器','消化器','腎・泌尿器','内分泌','神経','運動器','血液・免疫','感覚器') },
-      { name:'生化学・栄養', k:'栄', units:U('栄養素と代謝','水・電解質と酸塩基平衡') },
-      { name:'病理学', k:'病', units:U('炎症','腫瘍','循環障害') },
-      { name:'微生物学', k:'微', units:U('細菌','ウイルス','感染症と予防') },
-      { name:'薬理学', k:'薬', units:U('薬の作用と体内動態','与薬の方法','注意が必要な薬') } ] },
+    { id:'med', name:'基礎医学', k:'医', note:'解剖生理学・病態生理学・薬理学', subjects:[
+      { sec:'解剖生理学', name:'細胞', k:'細', units:U('細胞総論','細胞膜／細胞質','細胞小器官','核') },
+      { sec:'解剖生理学', name:'DNAとタンパク質合成', k:'D', units:U('DNA','タンパク質合成') },
+      { sec:'解剖生理学', name:'組織の解剖生理', k:'組', units:U('上皮組織','支持組織','筋組織',{ t:'神経組織', s:1 }) },
+      { sec:'解剖生理学', name:'生命活動', k:'生', units:U('エネルギー代謝','ホメオスタシス',{ t:'体温調節', s:1 },{ t:'体液と浸透圧', s:3 },{ t:'酸塩基平衡', s:2 },{ t:'サーカディアンリズムと睡眠', s:1 },{ t:'人間の死', s:1 }) },
+      { sec:'病態生理学', name:'細胞の病態生理', k:'障', units:U('細胞の障害と適応','細胞の死') },
+      { sec:'病態生理学', name:'基本的な病変・病態', k:'病', units:U('循環障害',{ t:'浮腫', s:1 },{ t:'炎症', s:1 },{ t:'脱水', s:1 },'腫瘍') },
+      { sec:'薬理学', name:'薬理総論', k:'総', units:U({ t:'薬物動態', s:1 },{ t:'薬物の有害事象', s:1 },{ t:'薬物相互作用', s:1 }) },
+      { sec:'薬理学', name:'薬物の作用と副作用', k:'薬', units:U('抗菌薬','抗真菌薬','抗ウイルス薬',{ t:'抗がん薬', s:2 },'自律神経作用薬',{ t:'強心薬', s:1 },'抗不整脈薬','狭心症治療薬','降圧薬','利尿薬',{ t:'抗血栓薬', s:2 },{ t:'副腎皮質ステロイド薬', s:3 },'糖尿病治療薬',{ t:'精神疾患治療薬', s:3 },{ t:'オピオイド（麻薬性鎮痛薬）', s:1 },'非ステロイド性抗炎症薬（NSAIDs）','呼吸器系の薬物') } ] },
     { id:'base', name:'基礎看護学', k:'基', note:'看護技術・看護過程', subjects:[
       { name:'看護技術', k:'技', units:U({ t:'バイタルサイン', ready:'vital' },'感染予防','清潔・衣生活','食事・排泄','活動・休息','与薬の技術') },
       { name:'看護過程', k:'過', units:U('アセスメント','看護計画と記録') } ] },
@@ -753,7 +760,7 @@ const CATALOG = [
       { name:'成人看護学総論', k:'総', units:U('成人の特徴','急性期の看護','慢性期の看護','周手術期の看護','リハビリテーション・終末期') },
       { name:'消化管疾患', k:'A', units:U('食道疾患','胃・十二指腸疾患','腸疾患') },
       { name:'肝・胆・膵疾患', k:'B', units:U('肝炎・肝硬変','胆道疾患','膵炎・膵がん') },
-      { name:'循環器疾患', k:'C', units:U('虚血性心疾患','心不全','不整脈','血管疾患') },
+      { name:'循環器疾患', k:'C', units:U({ t:'循環器の解剖生理', ready:'cv' },'虚血性心疾患','心不全','不整脈','血管疾患') },
       { name:'内分泌・代謝疾患', k:'D', units:U('糖尿病','甲状腺疾患','副腎・下垂体疾患') },
       { name:'腎・泌尿器疾患', k:'E', units:U('腎不全・透析','腎炎・ネフローゼ症候群','泌尿器疾患') },
       { name:'免疫・アレルギー／膠原病', k:'F', units:U('アレルギー','膠原病','免疫不全') },
@@ -923,16 +930,16 @@ function vHome(){
 function vCourse(){
   const c=courseById(S.course);
   return `${top(c.name)}<div class="stack"><p class="muted small">${c.subjects.length}項目・${unitCount(c)}章</p><div class="list">
-  ${c.subjects.map((sb,i)=>{ const r=sb.units.filter(u=>u.ready).length;
-    return `<button class="item" data-act="subject" data-arg="${i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${sb.units.length}章</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
+  ${c.subjects.map((sb,i)=>{ const r=sb.units.filter(u=>u.ready).length, head=sb.sec&&(i===0||c.subjects[i-1].sec!==sb.sec)?`<div class="lsec">${sb.sec}</div>`:'';
+    return `${head}<button class="item" data-act="subject" data-arg="${i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${sb.units.length}章</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
 }
 function vSubject(){
   const c=courseById(S.course), sb=c.subjects[S.subj];
-  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑か天体観測のカードが1まいめくれます。</p><div class="list">
+  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑か天体観測のカードが1まいめくれます。${sb.units.some(x=>x.s)?'★は国試での重要度です。':''}</p><div class="list">
   ${sb.units.map((un,i)=>{ const u=un.ready&&UNITS[un.ready];
     if(u){ const d=doneCount(un.ready), n=u.lessons.length;
-      return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
-    return `<button class="item" disabled><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">準備中</span></span></button>`; }).join('')}</div></div>`;
+      return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.s?`<span class="stars" aria-label="重要度${un.s}">${'★'.repeat(un.s)}</span>`:''}${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
+    return `<button class="item" disabled><span class="lid">${i+1}</span><span class="body"><b>${un.s?`<span class="stars" aria-label="重要度${un.s}">${'★'.repeat(un.s)}</span>`:''}${un.t}</b><br><span class="small muted">準備中</span></span></button>`; }).join('')}</div></div>`;
 }
 function vUnit(){
   const u=CU(), uid=S.uid, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length, hasPdf=Object.keys(PDF).some(k=>k.startsWith(u.drill+'-')&&PDF[k].q);
