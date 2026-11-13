@@ -1316,6 +1316,37 @@ Object.assign(POOL, {
     ['治療','急性心不全の治療に使う薬として正しい組み合わせは？','利尿薬・血管拡張薬・強心薬',['抗菌薬・抗真菌薬・抗ウイルス薬','抗コリン薬・α1刺激薬・β2刺激薬','抗がん薬・ホルモン薬'],'うっ血をとる利尿薬、心臓の負担を減らす血管拡張薬、収縮力を上げる強心薬を使います。酸素投与も行います。'],
   ],
 });
+const hfFig = (side) => {
+  const L = side==='L';
+  const R='#d9473f', B='#3a7fc4', P='#8b5cf6';
+  const ln='stroke-linecap="round" stroke-linejoin="round" fill="none" stroke-width="9"';
+  const lungFill = L ? 'rgba(139,92,246,.35)' : 'var(--surface)';
+  const bodyFill = L ? 'var(--surface)' : 'rgba(139,92,246,.35)';
+  const lung = (cx,flip) => `<path d="M${cx} 22 q${flip*-26} 4 ${flip*-26} 40 q0 22 ${flip*12} 22 q${flip*14} 0 ${flip*14}-14 z" fill="${lungFill}" stroke="var(--ink)" stroke-width="2"/>`;
+  return `<svg viewBox="0 0 340 260" width="100%" role="img" aria-label="${L?'左心不全：左心の働きが落ち、肺に血液がたまる':'右心不全：右心の働きが落ち、全身の静脈に血液がたまる'}" style="display:block;max-width:420px;margin:4px auto 6px;font-family:var(--f-body)">
+  <path d="M146 112 V92 H112 V54 H128" stroke="${B}" ${ln}/>
+  <path d="M212 54 H228 V92 H194 V112" stroke="${R}" ${ln}/>
+  <path d="M206 150 H262 V228 H188" stroke="${R}" ${ln}/>
+  <path d="M152 228 H78 V150 H134" stroke="${L?B:B}" ${ln} ${L?'':'stroke-width="14"'}/>
+  ${lung(160,1)}${lung(180,-1)}
+  <rect x="166" y="16" width="8" height="26" rx="2" fill="var(--surface)" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M170 108 C150 92 124 104 128 128 C132 150 158 166 170 176 C182 166 208 150 212 128 C216 104 190 92 170 108 Z" fill="#f6c9cf" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M170 110 V174" stroke="var(--ink)" stroke-width="1.5"/>
+  <path d="M170 110 C190 96 214 104 211 128 C208 150 182 166 170 175 Z" fill="${L?P:'transparent'}" opacity=".45"/>
+  <path d="M170 110 C150 96 126 104 129 128 C132 150 158 166 170 175 Z" fill="${L?'transparent':P}" opacity=".45"/>
+  <text x="150" y="146" font-size="12" text-anchor="middle" fill="var(--ink)" font-weight="700">右心</text>
+  <text x="190" y="146" font-size="12" text-anchor="middle" fill="var(--ink)" font-weight="700">左心</text>
+  <circle cx="170" cy="204" r="11" fill="${bodyFill}" stroke="var(--ink)" stroke-width="2"/>
+  <path d="M156 252 V226 q0-10 14-10 q14 0 14 10 V252" fill="${bodyFill}" stroke="var(--ink)" stroke-width="2"/>
+  ${L ? `<text x="236" y="30" font-size="13" fill="${P}" font-weight="700">肺にたまる</text>
+  <path d="M232 36 q-6 6 -12 10" stroke="${P}" stroke-width="2" fill="none"/>
+  <text x="246" y="122" font-size="13" fill="${P}" font-weight="700">送り出せない</text>
+  <path d="M236 90 q14 6 10 18" stroke="${P}" stroke-width="2" fill="none"/>`
+  : `<text x="10" y="120" font-size="13" fill="${P}" font-weight="700">戻れない</text>
+  <text x="196" y="250" font-size="13" fill="${P}" font-weight="700">全身にたまる</text>
+  <path d="M100 222 l-8-8 M92 222 l8-8" stroke="${P}" stroke-width="3"/>`}
+  </svg>`;
+};
 const INO_LESSONS = [
   { id:'6-1', t:'急性心不全', sub:'急性心不全とは・左心不全と右心不全', plan:['ahf','ahf','ahf','ahf','ahf'], body:()=>`
     <section class="panel"><h3>急性心不全とは</h3>
@@ -1327,8 +1358,12 @@ const INO_LESSONS = [
     <tr><td style="white-space:nowrap"><b>右心不全</b><br><span class="small muted">体静脈うっ血</span></td><td><b>頸静脈怒張</b>、<b>胸水</b>、<b>腹水</b>、<b>肝腫大</b>、<b>下腿浮腫</b>、体重増加。</td></tr></table></div>
     <p class="small muted" style="margin-top:10px">呼吸が苦しいときは、上半身を起こした体位（起座位・ファウラー位）にすると、心臓に戻る血液が減って楽になります。治療では、酸素投与に加えて、利尿薬・血管拡張薬・<b>強心薬</b>（6-2）を使います。</p></section>
     <section class="panel"><h3>左心不全と右心不全</h3>
-    <img src="img/hf1.jpg" alt="左心不全は肺に症状（肺うっ血・肺水腫・呼吸困難）、右心不全は全身に症状（頸静脈怒張・胸水・腹水・肝腫大・下腿浮腫）" loading="lazy" style="display:block;width:100%;height:auto;border-radius:12px;margin:0 0 12px">
-    <img src="img/hf2.jpg" alt="左心不全：肺うっ血→肺水腫→呼吸困難。右心不全：頸静脈怒張、胸水、肝腫大、腹水、下腿浮腫" loading="lazy" style="display:block;width:100%;height:auto;border-radius:12px;margin:0 0 12px">
+    <h4 style="margin:4px 0">左心不全 <span class="small muted">肺に症状</span></h4>
+    ${hfFig('L')}
+    <p class="small">左心が血液を送り出せず、手前の<b>肺</b>に血液がたまる → <b>肺うっ血 → 肺水腫 → 呼吸困難</b></p>
+    <h4 style="margin:16px 0 4px">右心不全 <span class="small muted">全身に症状</span></h4>
+    ${hfFig('R')}
+    <p class="small">全身から右心へ血液が戻れず、<b>全身の静脈</b>に血液がたまる → <b>頸静脈怒張・胸水・腹水・肝腫大・下腿浮腫</b></p>
     </section>` },
   { id:'6-2', t:'強心薬', sub:'ジギタリス製剤・カテコールアミン・PDEⅢ阻害薬', plan:['ino','ino','ino','ino','ino'], body:()=>`
     <section class="panel"><h3>強心薬とは</h3>
