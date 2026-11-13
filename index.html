@@ -294,7 +294,7 @@ ol.steps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
 /* ===== 設定（GitHubに置くときにここを書きかえます） ===== */
 // 先生用スプレッドシートの送信先（Apps Script のウェブアプリURL）。空のままだと送信しません。
 const GAS_URL = '';
-// 星屑（小単元）をクリアしたときに、流れ星といっしょに出るメッセージ。好きなだけ書き足せます。
+// 章をクリアしたときに、流れ星といっしょに出るメッセージ。好きなだけ書き足せます。
 const METEOR_MSGS = [
   '今日の5分が、未来の患者さんを支える力になる。',
   '小さな星屑も、集めれば夜空を照らす。',
@@ -314,7 +314,7 @@ const METEOR_MSGS = [
 ];
 // 確認用：true のあいだは、記録画面でカードを全部公開します。生徒に配る前に false に戻します。
 const SHOW_ALL_CARDS = false;
-// 章（単元）をクリアしたときにめくる星空の写真。写真は cards フォルダへ。
+// 項目をクリアしたときにめくる星空の写真。写真は cards フォルダへ。
 // t は p（星空の写真）か h（星空の作品）。note は日付や場所（空でもOK）。
 // 例：{ t:'p', src:'cards/p01.jpg', name:'冬の大三角', note:'2025.1　豊栄' },
 // 写真を書き足すと、星座図鑑（アプリに入っている88枚）といっしょにめくれるようになります。
@@ -882,18 +882,18 @@ function vHome(){
   <div class="stats"><div class="stat"><b>${R.days.length}</b><span>学習した日</span></div><div class="stat"><b>${streak()}</b><span>連続した日</span></div><div class="stat"><b>${R.answered}</b><span>解いた問題${R.answered?'（'+acc+'%）':''}</span></div></div>
   <button class="continue" data-act="lesson" data-arg="${n.id}" data-uid="${uid}"><span><small>続きから　${u.subject}・${u.title}（${doneCount(uid)}/${u.lessons.length}）</small><strong>${n.id}　${n.t}</strong></span><span class="go" aria-hidden="true">→</span></button>
   ${CATALOG.map(g=>`${g.group?`<h2>${g.group}</h2>`:''}<div class="subjects">${g.courses.map(c=>{ const r=readyCount(c);
-    return `<button class="subj" data-act="course" data-arg="${c.id}"><span class="k">${c.k}</span><b>${c.name}</b><span class="small muted">${c.note||c.subjects.map(x=>x.name).join('・')}</span><span class="small ${r?'':'muted'}">${r?'公開中 '+r+'単元':'準備中'}</span></button>`; }).join('')}</div>`).join('')}
+    return `<button class="subj" data-act="course" data-arg="${c.id}"><span class="k">${c.k}</span><b>${c.name}</b><span class="small muted">${c.note||c.subjects.map(x=>x.name).join('・')}</span><span class="small ${r?'':'muted'}">${r?'公開中 '+r+'章':'準備中'}</span></button>`; }).join('')}</div>`).join('')}
   <button class="item panel" data-act="go" data-arg="install"><span class="body"><b>ホーム画面に追加</b><br><span class="small muted">アプリのようにアイコンから開けます</span></span><span class="chev">›</span></button></div>`;
 }
 function vCourse(){
   const c=courseById(S.course);
-  return `${top(c.name)}<div class="stack"><p class="muted small">${c.subjects.length}科目・${unitCount(c)}単元</p><div class="list">
+  return `${top(c.name)}<div class="stack"><p class="muted small">${c.subjects.length}項目・${unitCount(c)}章</p><div class="list">
   ${c.subjects.map((sb,i)=>{ const r=sb.units.filter(u=>u.ready).length;
-    return `<button class="item" data-act="subject" data-arg="${i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${sb.units.length}単元</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
+    return `<button class="item" data-act="subject" data-arg="${i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${sb.units.length}章</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
 }
 function vSubject(){
   const c=courseById(S.course), sb=c.subjects[S.subj];
-  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた単元から順に公開します。</p><div class="list">
+  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑か天体観測のカードが1まいめくれます。</p><div class="list">
   ${sb.units.map((un,i)=>{ const u=un.ready&&UNITS[un.ready];
     if(u){ const d=doneCount(un.ready), n=u.lessons.length;
       return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
@@ -901,7 +901,7 @@ function vSubject(){
 }
 function vUnit(){
   const u=CU(), uid=S.uid, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length, hasPdf=Object.keys(PDF).some(k=>k.startsWith(u.drill+'-')&&PDF[k].q);
-  return `${top(u.no+'　'+u.title)}<div class="stack"><p class="muted small">${u.lessons.length}つの星屑　1つ約5分。上から順に進めるのがおすすめです。ぜんぶクリアすると、星座図鑑か星空の写真が1まいめくれます。</p><div class="list">
+  return `${top(u.no+'　'+u.title)}<div class="stack"><p class="muted small">${u.lessons.length}つの星屑　1つ約5分。上から順に進めるのがおすすめです。1つクリアするごとに星屑が1つ、ぜんぶクリアすると流れ星のメッセージが届きます。</p><div class="list">
   ${u.lessons.map(l=>`<button class="item" data-act="lesson" data-arg="${l.id}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')}
   ${hasPdf?`<button class="item" data-act="go" data-arg="drill"><span class="lid">▶</span><span class="body"><b>演習問題</b><br><span class="small muted">PDF・Lv1〜Lv5</span></span><span class="chev">›</span></button>`:''}
   </div>${T.length?`<div class="list"><button class="item" data-act="cards"><span class="body"><b>用語カード</b><br><span class="small muted">用語の確認 ${T.length}枚</span></span><span class="tag ${kn===T.length?'done':kn?'mid':''}">${kn}/${T.length}</span><span class="chev">›</span></button></div>`:''}</div>`;
@@ -960,7 +960,7 @@ function vRecord(){
   for(let i=27;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); cells+=`<div class="day ${set.has(dkey(d))?'on':''}">${d.getDate()}</div>`; }
   const has=new Set(SHOW_ALL_CARDS ? ALLC.map(c=>c.key) : R.cards);
   const coll = `<div class="panel stack"><h3>星座図鑑と天体観測　<span class="num">${ALLC.filter(c=>has.has(c.key)).length} / ${ALLC.length}</span></h3>${Object.keys(CTYPE).map(t=>{ const idx=ALLC.map((c,i)=>c.t===t?i:-1).filter(i=>i>=0); if(!idx.length) return ''; const got=idx.filter(i=>has.has(ALLC[i].key)).length;
-    return `<div class="stack" style="gap:6px"><p class="small"><b>${CTYPE[t]}</b>　<span class="muted num">${got} / ${idx.length}</span></p><div class="coll">${idx.map(i=>has.has(ALLC[i].key)?`<button data-act="viewCard" data-arg="${i}" aria-label="${esc(cardLabel(i)+'　'+ALLC[i].name)}">${cardFace(i,true)}</button>`:`<div class="num">${cardNo(i)}</div>`).join('')}</div></div>`; }).join('')}<p class="small muted">1つの単元（章）の星屑をぜんぶクリアすると、カードを1まいめくれます。まだ持っていないカードから出てきます。集めたカードはタップで大きく見られます。</p></div>`;
+    return `<div class="stack" style="gap:6px"><p class="small"><b>${CTYPE[t]}</b>　<span class="muted num">${got} / ${idx.length}</span></p><div class="coll">${idx.map(i=>has.has(ALLC[i].key)?`<button data-act="viewCard" data-arg="${i}" aria-label="${esc(cardLabel(i)+'　'+ALLC[i].name)}">${cardFace(i,true)}</button>`:`<div class="num">${cardNo(i)}</div>`).join('')}</div></div>`; }).join('')}<p class="small muted">1つの項目の章をぜんぶクリアすると、カードを1まいめくれます。まだ持っていないカードから出てきます。集めたカードはタップで大きく見られます。</p></div>`;
   const vc = S.viewCard!=null && ALLC[S.viewCard] && has.has(ALLC[S.viewCard].key) ? ALLC[S.viewCard] : null;
   const viewer = vc ? `<div class="viewer" data-act="closeCard" role="dialog" aria-label="${esc(vc.name)}"><figure>${vc.id?`<div class="vsvg">${constSVG(vc.id)}</div>`:`<img src="${esc(vc.src)}" alt="${esc(vc.name)}">`}<figcaption><span class="rno">${cardLabel(S.viewCard)}</span><b class="rname">${esc(vc.name)}</b>${vc.note?`<span class="rnote">${esc(vc.note)}</span>`:''}</figcaption></figure><button class="btn ghost" data-act="closeCard">閉じる</button></div>` : '';
   const units = Object.entries(UNITS).filter(([uid])=>doneCount(uid)>0);
@@ -1077,13 +1077,17 @@ document.addEventListener('click', e=>{
   else if(a==='pick') answerQ(arg);
   else if(a==='next'){ const Q=S.quiz;
     if(Q.i+1<Q.qs.length){ Q.i++; Q.picked=null; Q.hint=false; render(); window.scrollTo(0,0); return; }
-    S.reward=null; S.gotShard=false;
+    S.reward=null; S.gotShard=false; let chapterJust=false;
     if(!Q.retry){ skyInit(); const u=CU(), l=LX(S.lid), k=lkey(S.uid,l.id), first=!R.lessons[k], wasDone=unitDone(S.uid), n=Q.qs.length, s=R.lessons[k]||{best:0,tries:0,total:n};
       s.tries++; s.best=Math.max(s.best,Q.score); s.total=n; R.lessons[k]=s; R.lastUnit=S.uid; save();
       report({ subject:u.subject, unit:u.no+' '+u.title, lesson:l.id, title:l.t, score:Q.score, total:n, sec:Math.round((Date.now()-S.lessonStart)/1000) });
-      if(!wasDone&&unitDone(S.uid)){ S.reward=drawReward(); S.reward.title=u.title; }
+      chapterJust = !wasDone && unitDone(S.uid);
+      if(chapterJust){ // 章をクリア → 流れ星のメッセージ。その項目の章がぜんぶクリアになったらカード
+        const sb=courseById(u.course).subjects[u.subj], ready=sb.units.filter(x=>x.ready&&UNITS[x.ready]).map(x=>x.ready), sk=u.course+':'+u.subj;
+        R.subjCards=R.subjCards||{};
+        if(ready.every(unitDone) && ready.length>(R.subjCards[sk]||0)){ R.subjCards[sk]=ready.length; S.reward=drawReward(); S.reward.title=sb.name; save(); } }
       if(first){ R.sky.dust++; R.sky.total++; S.gotShard=true; save(); } }
-    S.meteor = Q.retry ? '' : pick(METEOR_MSGS);
+    S.meteor = chapterJust ? pick(METEOR_MSGS) : '';
     S.view='result'; render(); window.scrollTo(0,0); }
   else if(a==='retry'){ const list=S.quiz.wrong.map(q=>Object.assign({},q,{choices:shuffle([...q.choices])})); S.view=S.stack.pop()||'lesson'; startQuiz(list); }
   else if(a==='again'){ S.view=S.stack.pop()||'lesson'; startQuiz(); }
