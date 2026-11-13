@@ -954,11 +954,11 @@ function vCourse(){
 }
 function vSubject(){
   const c=courseById(S.course), sb=c.subjects[S.subj];
-  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑か天体観測のカードが1まいめくれます。${sb.units.some(x=>x.s)?'★は国試での重要度です。':''}</p><div class="list">
+  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑か天体観測のカードが1まいめくれます。</p><div class="list">
   ${sb.units.map((un,i)=>{ const u=un.ready&&UNITS[un.ready];
     if(u){ const d=doneCount(un.ready), n=u.lessons.length;
-      return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.s?`<span class="stars" aria-label="重要度${un.s}">${'★'.repeat(un.s)}</span>`:''}${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
-    return `<button class="item" disabled><span class="lid">${i+1}</span><span class="body"><b>${un.s?`<span class="stars" aria-label="重要度${un.s}">${'★'.repeat(un.s)}</span>`:''}${un.t}</b><br><span class="small muted">準備中</span></span></button>`; }).join('')}</div></div>`;
+      return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
+    return `<button class="item" disabled><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">準備中</span></span></button>`; }).join('')}</div></div>`;
 }
 function vUnit(){
   const u=CU(), uid=S.uid, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length, hasPdf=Object.keys(PDF).some(k=>k.startsWith(u.drill+'-')&&PDF[k].q);
