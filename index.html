@@ -1368,11 +1368,13 @@ function vCourse(){
 }
 function vSubject(){
   const c=courseById(S.course), sb=c.subjects[S.subj];
-  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑・惑星図鑑・天体観測のカードが1まいめくれます。</p><div class="list">
+  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">1つの星屑は約5分。上から順に進めるのがおすすめです。項目の星屑をぜんぶクリアすると、星座図鑑・惑星図鑑・天体観測のカードが1まいめくれます。</p><div class="list">
   ${sb.units.map((un,i)=>{ const u=un.ready&&UNITS[un.ready];
-    if(u){ const d=doneCount(un.ready), n=u.lessons.length;
-      return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
-    return `<button class="item" disabled><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">準備中</span></span></button>`; }).join('')}</div></div>`;
+    if(u){ const uid=un.ready, d=doneCount(uid), n=u.lessons.length, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length;
+      return `<div class="lsec" style="display:flex;justify-content:space-between;align-items:center"><span>${i+1}　${un.t}</span><span class="small">${d}/${n}</span></div>`
+        + u.lessons.map(l=>`<button class="item" data-act="lesson" data-arg="${l.id}" data-uid="${uid}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')
+        + (T.length?`<button class="item" data-act="cards" data-uid="${uid}"><span class="lid">◇</span><span class="body"><b>用語カード</b><br><span class="small muted">用語の確認 ${T.length}枚</span></span><span class="tag ${kn===T.length?'done':kn?'mid':''}">${kn}/${T.length}</span><span class="chev">›</span></button>`:''); }
+    return `<div class="lsec" style="display:flex;justify-content:space-between;align-items:center;opacity:.6"><span>${i+1}　${un.t}</span><span class="small">準備中</span></div>`; }).join('')}</div></div>`;
 }
 function vUnit(){
   const u=CU(), uid=S.uid, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length, hasPdf=Object.keys(PDF).some(k=>k.startsWith(u.drill+'-')&&PDF[k].q);
@@ -1541,9 +1543,9 @@ document.addEventListener('click', e=>{
   else if(a==='setupDone'){ const code=normCode(document.getElementById('su-code').value); if(!CODE_RE.test(code)){ document.getElementById('su-err').hidden=false; return; }
     R.code=code; R.name=document.getElementById('su-name').value.trim(); save(); S.stack=[]; S.view='home'; render(); }
   else if(a==='lesson'){ if(b.dataset.uid) S.uid=b.dataset.uid; S.lid=arg; go('lesson'); }
-  else if(a==='lessonNext'){ const u=CU(); S.lid=arg; S.course=u.course; S.subj=u.subj; S.stack=[...navBase(u),'course','subject','unit']; S.view='lesson'; render(); window.scrollTo(0,0); }
+  else if(a==='lessonNext'){ const u=CU(); S.lid=arg; S.course=u.course; S.subj=u.subj; S.stack=[...navBase(u),'course','subject']; S.view='lesson'; render(); window.scrollTo(0,0); }
   else if(a==='quiz') startQuiz();
-  else if(a==='cards'){ S.deck={cur:deckNext()}; S.flipped=false; markDay(); go('cards'); }
+  else if(a==='cards'){ if(b.dataset.uid) S.uid=b.dataset.uid; S.deck={cur:deckNext()}; S.flipped=false; markDay(); go('cards'); }
   else if(a==='flip'){ S.flipped=!S.flipped; render(); }
   else if(a==='cardKnown'){ const k=knownList(); if(!k.includes(S.deck.cur)) k.push(S.deck.cur); save(); S.deck.cur=deckNext(); S.flipped=false; render(); }
   else if(a==='cardLater'){ const left=terms().map((_,i)=>i).filter(i=>!knownList().includes(i)); S.deck.cur=left[(left.indexOf(S.deck.cur)+1)%left.length]; S.flipped=false; render(); }
@@ -1568,7 +1570,7 @@ document.addEventListener('click', e=>{
   else if(a==='again'){ S.view=S.stack.pop()||'lesson'; startQuiz(); }
   else if(a==='launch'){ launchNova(); render(); window.scrollTo(0,0); }
   else if(a==='toSky'){ S.stack=[]; S.launched=0; S.view='sky'; render(); window.scrollTo(0,0); }
-  else if(a==='tounit'){ const u=CU(); S.course=u.course; S.subj=u.subj; S.stack=[...navBase(u),'course','subject']; S.view='unit'; render(); window.scrollTo(0,0); }
+  else if(a==='tounit'){ const u=CU(); S.course=u.course; S.subj=u.subj; S.stack=[...navBase(u),'course']; S.view='subject'; render(); window.scrollTo(0,0); }
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.viewCard!=null){ S.viewCard=null; render(); } });
 
