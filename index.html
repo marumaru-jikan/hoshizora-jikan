@@ -737,7 +737,7 @@ const TERMS = {
 const UNITS = {
   cog: { no:'検5-1', title:'認知機能の検査', subject:'検査室', course:'lab', subj:4, lessons:COG_LESSONS, cards:'cog', drill:'cog' },
   phy: { no:'検5-2', title:'身体機能・ADLの評価', subject:'検査室', course:'lab', subj:4, lessons:PHY_LESSONS, cards:'phy', drill:'phy' },
-  cv:   { no:'成C1', title:'循環器の解剖生理', subject:'循環器疾患', course:'adult', subj:18, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
+  cv:   { no:'C1', title:'循環器の解剖生理', subject:'循環器疾患', course:'adC', subj:0, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
   vital:{ no:'基観1', title:'バイタルサインの基本', subject:'基礎看護学', course:'base', subj:8, lessons:VITAL_LESSONS, cards:'vital', drill:'vital' },
   calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'calc', subj:0, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
 };
@@ -792,22 +792,22 @@ const CATALOG = [
       { sec:'がん看護', name:'がんと主な治療', k:'が', units:U('診断と告知','化学（薬物）療法','放射線療法') },
       { sec:'がん看護', name:'緩和ケア', k:'緩', units:U('緩和ケア総論','がん疼痛コントロール') },
       { sec:'終末期看護', name:'終末期看護', k:'終', units:U('終末期にある患者・家族の看護','終末期の意思決定','患者・家族の悲嘆の看護','臨終のケアと死後のケア') },
-      { sec:'疾患別', name:'消化管疾患', k:'A', units:U('食道疾患','胃・十二指腸疾患','腸疾患') },
-      { sec:'疾患別', name:'肝・胆・膵疾患', k:'B', units:U('肝炎・肝硬変','胆道疾患','膵炎・膵がん') },
-      { sec:'疾患別', name:'循環器疾患', k:'C', units:U({ t:'循環器の解剖生理', ready:'cv' },'虚血性心疾患','心不全','不整脈','血管疾患') },
-      { sec:'疾患別', name:'内分泌・代謝疾患', k:'D', units:U('糖尿病','甲状腺疾患','副腎・下垂体疾患') },
-      { sec:'疾患別', name:'腎・泌尿器疾患', k:'E', units:U('腎不全・透析','腎炎・ネフローゼ症候群','泌尿器疾患') },
-      { sec:'疾患別', name:'免疫・アレルギー／膠原病', k:'F', units:U('アレルギー','膠原病','免疫不全') },
-      { sec:'疾患別', name:'血液・造血器疾患', k:'G', units:U('貧血','白血病・リンパ腫','出血性疾患') },
-      { sec:'疾患別', name:'感染症', k:'H', units:U('主な感染症','院内感染対策') },
-      { sec:'疾患別', name:'呼吸器疾患', k:'I', units:U('呼吸不全','COPD・喘息','肺炎・肺がん') },
-      { sec:'疾患別', name:'脳・神経疾患', k:'J', units:U('脳血管疾患','神経変性疾患','てんかん・頭部外傷') },
-      { sec:'疾患別', name:'運動器疾患', k:'K', units:U('骨折','関節疾患','脊椎疾患') },
-      { sec:'疾患別', name:'眼疾患', k:'L', units:U('白内障・緑内障','網膜疾患') },
-      { sec:'疾患別', name:'耳鼻咽喉疾患', k:'M', units:U('耳疾患','鼻・咽頭・喉頭疾患') },
-      { sec:'疾患別', name:'歯・口腔疾患', k:'N', units:U('口腔疾患','口腔ケア') },
-      { sec:'疾患別', name:'皮膚疾患', k:'O', units:U('皮膚疾患','褥瘡・熱傷') },
-      { sec:'疾患別', name:'女性生殖器疾患', k:'P', units:U('子宮・卵巣疾患','乳がん') } ] },
+      { sec:'疾患別', link:'adA', name:'消化管疾患', k:'A', units:[] },
+      { sec:'疾患別', link:'adB', name:'肝・胆・膵疾患', k:'B', units:[] },
+      { sec:'疾患別', link:'adC', name:'循環器疾患', k:'C', units:[] },
+      { sec:'疾患別', link:'adD', name:'内分泌・代謝疾患', k:'D', units:[] },
+      { sec:'疾患別', link:'adE', name:'腎・泌尿器疾患', k:'E', units:[] },
+      { sec:'疾患別', link:'adF', name:'免疫・アレルギー／膠原病', k:'F', units:[] },
+      { sec:'疾患別', link:'adG', name:'血液・造血器疾患', k:'G', units:[] },
+      { sec:'疾患別', link:'adH', name:'感染症', k:'H', units:[] },
+      { sec:'疾患別', link:'adI', name:'呼吸器疾患', k:'I', units:[] },
+      { sec:'疾患別', link:'adJ', name:'脳・神経疾患', k:'J', units:[] },
+      { sec:'疾患別', link:'adK', name:'運動器疾患', k:'K', units:[] },
+      { sec:'疾患別', link:'adL', name:'眼疾患', k:'L', units:[] },
+      { sec:'疾患別', link:'adM', name:'耳鼻咽喉疾患', k:'M', units:[] },
+      { sec:'疾患別', link:'adN', name:'歯・口腔疾患', k:'N', units:[] },
+      { sec:'疾患別', link:'adO', name:'皮膚疾患', k:'O', units:[] },
+      { sec:'疾患別', link:'adP', name:'女性生殖器疾患', k:'P', units:[] } ] },
     { id:'old', name:'老年看護学', k:'老', note:'高齢者の理解・看護・老年症候群・老年期疾患', subjects:[
       { sec:'高齢者の特徴と理解', name:'高齢者に関する統計', k:'統', units:U('高齢者の人口','高齢者の健康指標','高齢者の生活') },
       { sec:'高齢者の特徴と理解', name:'高齢者の特徴', k:'特', units:U('加齢による身体的機能の変化','加齢による精神的機能の変化','加齢による社会的機能の変化') },
@@ -932,7 +932,204 @@ const CATALOG = [
       { name:'心電図', k:'3', units:U('波形の基本','不整脈','虚血性心疾患','薬と心電図（QT延長など）') },
       { name:'画像検査', k:'4', units:U('X線・CT','MRI','超音波','核医学') },
       { name:'評価スケール', k:'5', units:U({ t:'認知機能の検査', ready:'cog' },{ t:'身体機能・ADLの評価', ready:'phy' },'意識レベル（JCS・GCS）','栄養・嚥下の評価','こころの評価（うつ・不安）','痛みの評価') },
-      { name:'その他', k:'6', units:U('呼吸機能検査','内視鏡','病理・細胞診') } ] } ] },
+      { name:'その他', k:'6', units:U('呼吸機能検査','内視鏡','病理・細胞診') } ] } ] },,
+  { hidden:true, courses:[
+    { id:'adA', name:'A　消化管疾患', k:'A', subjects:[
+      { sec:'消化管の解剖と生理', name:'消化管の解剖', k:'1', units:U('消化管の解剖総論','食道','胃','小腸','大腸') },
+      { sec:'消化管の解剖と生理', name:'腹部の血管系・神経系の解剖', k:'2', units:U('腹部の血管系','腹部の神経系') },
+      { sec:'消化管の解剖と生理', name:'消化管の生理と機能', k:'3', units:U('消化管運動','消化と吸収','消化管ホルモン','水分の吸収と分泌','腸内細菌叢','排便') },
+      { sec:'消化管疾患の症候・観察・検査', name:'消化管疾患の主要症候', k:'4', units:U('腹痛','腹部膨満','便秘','下痢','吐血','下血','悪心／嘔吐') },
+      { sec:'消化管疾患の症候・観察・検査', name:'消化管の観察', k:'5', units:U('腹部のフィジカルアセスメント') },
+      { sec:'消化管疾患の症候・観察・検査', name:'消化管の検査', k:'6', units:U('生体検査','検体検査') },
+      { sec:'消化管疾患の治療', name:'侵襲的治療', k:'7', units:U('消化管疾患術後のドレナージ','ストーマ（人工肛門）') },
+      { sec:'消化管疾患の治療', name:'術後合併症', k:'8', units:U('縫合不全') },
+      { sec:'消化管疾患', name:'食道疾患', k:'9', units:U('食道癌','胃食道逆流症（GERD）','食道静脈瘤') },
+      { sec:'消化管疾患', name:'胃・十二指腸疾患', k:'10', units:U('消化性潰瘍（胃・十二指腸潰瘍）','急性胃粘膜病変（AGML）','胃癌','胃切除後症候群') },
+      { sec:'消化管疾患', name:'腸・腹膜疾患', k:'11', units:U('クローン病','潰瘍性大腸炎','イレウス／腸閉塞','大腸癌','大腸ポリープ','急性虫垂炎','鼠径ヘルニア') },
+      { sec:'消化管疾患', name:'その他の消化管疾患', k:'12', units:U('過敏性腸症候群（IBS）','急性（びまん性）腹膜炎','痔核') } ] },
+    { id:'adB', name:'B　肝・胆・膵疾患', k:'B', subjects:[
+      { sec:'肝・胆・膵の解剖と生理', name:'肝臓の解剖と生理', k:'1', units:U('肝臓','肝機能') },
+      { sec:'肝・胆・膵の解剖と生理', name:'胆嚢／胆道の解剖と生理', k:'2', units:U('胆嚢／胆道','胆汁') },
+      { sec:'肝・胆・膵の解剖と生理', name:'膵臓の解剖と生理', k:'3', units:U('膵臓','膵液') },
+      { sec:'肝・胆・膵の症候・検査・処置', name:'肝・胆・膵の主要症候', k:'4', units:U('黄疸','腹水','肝性脳症（肝性昏睡）') },
+      { sec:'肝・胆・膵の症候・検査・処置', name:'肝・胆・膵の検査・処置', k:'5', units:U('肝機能検査','腹部超音波（エコー）検査','肝生検','胆道・膵臓の検査','腹腔穿刺','胆道ドレナージ') },
+      { sec:'肝・胆・膵疾患', name:'肝疾患', k:'6', units:U('ウイルス性肝炎概論','急性ウイルス性肝炎','慢性ウイルス性肝炎','急性肝不全（劇症肝炎）','肝硬変','肝癌','脂肪肝','アルコール性肝障害') },
+      { sec:'肝・胆・膵疾患', name:'その他の肝疾患', k:'7', units:U('薬剤性肝障害','自己免疫性肝炎（AIH）') },
+      { sec:'肝・胆・膵疾患', name:'胆道疾患', k:'8', units:U('胆石症','胆嚢炎／胆管炎') },
+      { sec:'肝・胆・膵疾患', name:'膵疾患', k:'9', units:U('急性膵炎','慢性膵炎','膵癌') } ] },
+    { id:'adC', name:'C　循環器疾患', k:'C', subjects:[
+      { sec:'循環器系の解剖と生理', name:'心臓の解剖と生理', k:'1', units:U({ t:'循環器の解剖生理', ready:'cv' },'心臓の解剖','心臓の生理') },
+      { sec:'循環器系の解剖と生理', name:'血管系の解剖と生理', k:'2', units:U('血管系の解剖','血管系の生理','肺循環','体循環','胎児・新生児の血液循環') },
+      { sec:'循環器系の解剖と生理', name:'リンパ系の解剖と生理', k:'3', units:U('リンパ系の解剖と生理') },
+      { sec:'循環器系の症候・観察・検査', name:'循環器系の主要症候', k:'4', units:U('チアノーゼ','脈拍異常','頸静脈怒張') },
+      { sec:'循環器系の症候・観察・検査', name:'循環器系のフィジカルアセスメント', k:'5', units:U('心音の聴診') },
+      { sec:'循環器系の症候・観察・検査', name:'循環器系の検査', k:'6', units:U('心電図','胸部エックス線検査','心エコー検査','心臓カテーテル検査','心血管造影検査','心血管内圧の測定') },
+      { sec:'循環器疾患の治療', name:'循環器疾患の侵襲的治療', k:'7', units:U('血栓溶解療法','経皮的冠動脈インターベンション（PCI）','冠動脈バイパス術（CABG）','大動脈内バルーンパンピング（IABP）','心臓手術の術後管理・合併症') },
+      { sec:'循環器疾患', name:'心不全', k:'8', units:U('心不全') },
+      { sec:'循環器疾患', name:'虚血性心疾患', k:'9', units:U('虚血性心疾患総論','狭心症','急性心筋梗塞') },
+      { sec:'循環器疾患', name:'不整脈', k:'10', units:U('不整脈') },
+      { sec:'循環器疾患', name:'先天性心疾患', k:'11', units:U('先天性心疾患総論','心房中隔欠損症（ASD）','心室中隔欠損症（VSD）','アイゼンメンジャー症候群','ファロー四徴症（TOF）','完全大血管転位症（complete TGA）','動脈管開存症（PDA）') },
+      { sec:'循環器疾患', name:'心弁膜症／心内膜炎', k:'12', units:U('心弁膜症／心内膜炎総論','僧帽弁狭窄症（MS）','僧帽弁閉鎖不全症（MR）','大動脈弁狭窄症（AS）','大動脈弁閉鎖不全症（AR）','感染性心内膜炎') },
+      { sec:'循環器疾患', name:'心筋疾患', k:'13', units:U('心筋症') },
+      { sec:'循環器疾患', name:'心膜疾患', k:'14', units:U('心タンポナーデ') },
+      { sec:'循環器疾患', name:'血管疾患', k:'15', units:U('大動脈解離','閉塞性動脈硬化症（ASO）','深部静脈血栓症（DVT）') },
+      { sec:'循環器疾患', name:'血圧異常', k:'16', units:U('高血圧','低血圧') } ] },
+    { id:'adD', name:'D　内分泌・代謝疾患', k:'D', subjects:[
+      { sec:'内分泌器官の解剖と生理', name:'内分泌総論', k:'1', units:U('内分泌総論') },
+      { sec:'内分泌器官の解剖と生理', name:'内分泌器官の解剖と生理', k:'2', units:U('視床下部・下垂体の解剖と生理','甲状腺の解剖と生理','副甲状腺の解剖と生理','副腎皮質の解剖と生理','副腎髄質の解剖と生理','性腺の解剖と生理','ランゲルハンス島の解剖と生理') },
+      { sec:'内分泌系の検査', name:'ホルモンの検査', k:'3', units:U('ホルモンの測定','ホルモン負荷試験','甲状腺シンチグラフィ') },
+      { sec:'内分泌・代謝系疾患', name:'視床下部・下垂体疾患', k:'4', units:U('視床下部・下垂体疾患総論','先端巨大症／巨人症','尿崩症') },
+      { sec:'内分泌・代謝系疾患', name:'甲状腺疾患', k:'5', units:U('甲状腺疾患総論','甲状腺中毒症／甲状腺機能亢進症','バセドウ病（Graves病）','亜急性甲状腺炎','甲状腺機能低下症','慢性甲状腺炎（橋本病）','甲状腺癌') },
+      { sec:'内分泌・代謝系疾患', name:'副甲状腺疾患', k:'6', units:U('原発性副甲状腺機能亢進症','副甲状腺機能低下症') },
+      { sec:'内分泌・代謝系疾患', name:'副腎疾患', k:'7', units:U('クッシング症候群','褐色細胞腫') },
+      { sec:'内分泌・代謝系疾患', name:'糖代謝異常', k:'8', units:U('糖尿病','糖尿病の合併症','糖尿病昏睡','低血糖症') },
+      { sec:'内分泌・代謝系疾患', name:'脂質代謝異常', k:'9', units:U('脂質代謝総論','脂質異常症（高脂血症）') },
+      { sec:'内分泌・代謝系疾患', name:'肥満', k:'10', units:U('肥満','メタボリックシンドローム') },
+      { sec:'内分泌・代謝系疾患', name:'尿酸代謝異常', k:'11', units:U('痛風（高尿酸血症）') },
+      { sec:'内分泌・代謝系疾患', name:'栄養の異常', k:'12', units:U('ナトリウム（Na）代謝異常','カリウム（K）代謝異常','カルシウム（Ca）代謝異常','微量元素の異常','ビタミン欠乏症') } ] },
+    { id:'adE', name:'E　腎・泌尿器疾患', k:'E', subjects:[
+      { sec:'腎・泌尿器の解剖と生理', name:'腎臓の解剖と生理', k:'1', units:U('腎臓','ネフロン','腎臓の生理','尿の成分') },
+      { sec:'腎・泌尿器の解剖と生理', name:'尿路の解剖と生理', k:'2', units:U('尿路','排尿','男性生殖器') },
+      { sec:'腎・泌尿器の主要症候', name:'尿の異常', k:'3', units:U('蛋白尿','血尿') },
+      { sec:'腎・泌尿器の主要症候', name:'排尿の異常', k:'4', units:U('下部尿路症状','乏尿／無尿','尿閉','多尿','頻尿','尿失禁') },
+      { sec:'腎・泌尿器の主要症候', name:'下部尿路機能障害', k:'5', units:U('過活動膀胱','神経因性膀胱','前立腺肥大症（BPH）') },
+      { sec:'腎・泌尿器の観察・検査', name:'腎・泌尿器のフィジカルアセスメント', k:'6', units:U('身体所見') },
+      { sec:'腎・泌尿器の観察・検査', name:'腎・泌尿器の検査', k:'7', units:U('尿検査','腎機能検査','腎・泌尿器のエックス線撮影','膀胱鏡検査','腎生検') },
+      { sec:'腎・泌尿器疾患の治療', name:'侵襲的治療', k:'8', units:U('尿路変向術','透析療法') },
+      { sec:'腎・泌尿器疾患', name:'糸球体疾患', k:'9', units:U('糸球体疾患総論','急性糸球体腎炎','IgA腎症','ネフローゼ症候群','糖尿病腎症') },
+      { sec:'腎・泌尿器疾患', name:'腎不全', k:'10', units:U('急性腎障害（AKI）／急性腎不全（ARF）','慢性腎臓病（CKD）／慢性腎不全（CRF）') },
+      { sec:'腎・泌尿器疾患', name:'尿路の疾患', k:'11', units:U('尿路結石症','水腎症／水尿管症','尿路感染症総論','腎盂腎炎','膀胱炎') },
+      { sec:'腎・泌尿器疾患', name:'尿路・男性生殖器の腫瘍', k:'12', units:U('腎細胞癌','膀胱癌','前立腺癌') },
+      { sec:'腎・泌尿器疾患', name:'男性生殖器の異常', k:'13', units:U('男性不妊') } ] },
+    { id:'adF', name:'F　免疫・アレルギー／膠原病', k:'F', subjects:[
+      { sec:'免疫', name:'免疫総論', k:'1', units:U('免疫の概念','免疫系構成因子') },
+      { sec:'免疫', name:'生体防御機構', k:'2', units:U('自然免疫','獲得免疫','生体防御機構の全体像') },
+      { sec:'アレルギー', name:'アレルギー総論', k:'3', units:U('アレルギー総論','アレルギー反応') },
+      { sec:'膠原病', name:'膠原病総論', k:'4', units:U('膠原病総論') },
+      { sec:'膠原病', name:'膠原病の主要症候', k:'5', units:U('レイノー現象') },
+      { sec:'膠原病', name:'膠原病／膠原病類縁疾患', k:'6', units:U('関節リウマチ（RA）','全身性エリテマトーデス（SLE）','ベーチェット病','若年性特発性関節炎','全身性強皮症（SSc）','多発性筋炎／皮膚筋炎（PM／DM）','混合性結合組織病（MCTD）','シェーグレン症候群（SS）','血管炎症候群') } ] },
+    { id:'adG', name:'G　血液・造血器疾患', k:'G', subjects:[
+      { sec:'血液・造血器総論', name:'血液', k:'1', units:U('血液の成分','血球','血漿','血液型') },
+      { sec:'血液・造血器総論', name:'血液の働き', k:'2', units:U('物質輸送','鉄の代謝','止血機構と線溶') },
+      { sec:'血液・造血器の主要症候・検査・治療', name:'血液・造血器の主要症候', k:'3', units:U('出血傾向','汎血球減少','白血球減少症','白血球増加症','赤血球増加症','脾腫') },
+      { sec:'血液・造血器の主要症候・検査・治療', name:'血液・造血器の検査', k:'4', units:U('血液検査','骨髄穿刺') },
+      { sec:'血液・造血器の主要症候・検査・治療', name:'血液・造血器疾患の治療', k:'5', units:U('造血幹細胞移植','輸血療法') },
+      { sec:'血液・造血器疾患', name:'貧血', k:'6', units:U('貧血総論','鉄欠乏性貧血','巨赤芽球性貧血','再生不良性貧血','溶血性貧血') },
+      { sec:'血液・造血器疾患', name:'造血器腫瘍', k:'7', units:U('造血器腫瘍総論','急性白血病','慢性骨髄性白血病（CML）','悪性リンパ腫','慢性リンパ性白血病（CLL）','成人T細胞白血病（ATL）','多発性骨髄腫') },
+      { sec:'血液・造血器疾患', name:'出血性疾患', k:'8', units:U('出血性疾患総論','血友病','特発性血小板減少性紫斑病（ITP）','血栓性血小板減少性紫斑病（TTP）','IgA血管炎（ヘノッホ・シェーンライン紫斑病）','播種性血管内凝固（DIC）') } ] },
+    { id:'adH', name:'H　感染症', k:'H', subjects:[
+      { sec:'感染症総論', name:'感染症の定義と分類', k:'1', units:U('感染症の定義','感染症の分類') },
+      { sec:'感染症総論', name:'感染症の原因', k:'2', units:U('病原体の種類','感染経路') },
+      { sec:'感染症総論', name:'さまざまな感染症', k:'3', units:U('日和見感染','院内感染','敗血症','性感染症（STI）','食中毒') },
+      { sec:'感染症の検査', name:'病原体の同定', k:'4', units:U('検体の採取') },
+      { sec:'細菌感染症', name:'グラム陽性球菌', k:'5', units:U('グラム陽性球菌総論','ブドウ球菌','メチシリン耐性黄色ブドウ球菌（MRSA）','レンサ球菌','蜂窩織炎') },
+      { sec:'細菌感染症', name:'グラム陽性桿菌', k:'6', units:U('グラム陽性桿菌総論','ボツリヌス菌','破傷風菌','ジフテリア菌') },
+      { sec:'細菌感染症', name:'グラム陰性球菌', k:'7', units:U('淋菌') },
+      { sec:'細菌感染症', name:'グラム陰性桿菌', k:'8', units:U('大腸菌','チフス菌／パラチフス菌','赤痢菌','コレラ菌','緑膿菌','レジオネラ菌') },
+      { sec:'細菌感染症', name:'スピロヘータ感染症', k:'9', units:U('梅毒') },
+      { sec:'細菌感染症', name:'非定型病原体', k:'10', units:U('非定型病原体総論','クラミジア感染症') },
+      { sec:'ウイルス・真菌感染症', name:'ウイルス感染症', k:'11', units:U('ウイルス感染症総論','ノロウイルス感染症','単純ヘルペスウイルス感染症','水痘／帯状疱疹','伝染性単核球症','HIV感染症／後天性免疫不全症候群（エイズ）') },
+      { sec:'ウイルス・真菌感染症', name:'真菌感染症', k:'12', units:U('真菌感染症総論','カンジダ症') } ] },
+    { id:'adI', name:'I　呼吸器疾患', k:'I', subjects:[
+      { sec:'呼吸器系の解剖と生理', name:'呼吸器系の解剖', k:'1', units:U('気道','肺','縦隔／胸郭','呼吸運動') },
+      { sec:'呼吸器系の解剖と生理', name:'呼吸器系の生理', k:'2', units:U('呼吸','ガス交換と運搬','呼吸運動の調節','換気量と死腔') },
+      { sec:'呼吸器系の症候・観察・検査', name:'呼吸器系の主要症候', k:'3', units:U('咳嗽／喀痰','血痰／喀血','呼吸困難（息切れ）','呼吸不全','CO₂ナルコーシス') },
+      { sec:'呼吸器系の症候・観察・検査', name:'呼吸器系のフィジカルアセスメント', k:'4', units:U('呼吸数・深さ・リズムの異常','呼吸音の聴診') },
+      { sec:'呼吸器系の症候・観察・検査', name:'呼吸器系の検査', k:'5', units:U('動脈血ガス分析','換気機能検査','気管支鏡検査','肺生検','胸水検査','喀痰検査') },
+      { sec:'呼吸器疾患の治療', name:'呼吸器疾患の非薬物療法', k:'6', units:U('気道クリーニング','開胸術','胸腔ドレナージ','人工呼吸器','気管切開','非侵襲的陽圧換気（NPPV）') },
+      { sec:'呼吸器疾患', name:'呼吸器感染症', k:'7', units:U('かぜ症候群','インフルエンザ','肺結核（症）','肺炎') },
+      { sec:'呼吸器疾患', name:'免疫・アレルギー性肺疾患', k:'8', units:U('気管支喘息（喘息）') },
+      { sec:'呼吸器疾患', name:'間質性肺疾患', k:'9', units:U('間質性肺炎','じん肺') },
+      { sec:'呼吸器疾患', name:'閉塞性肺疾患', k:'10', units:U('慢性閉塞性肺疾患（COPD）') },
+      { sec:'呼吸器疾患', name:'肺腫瘍', k:'11', units:U('肺癌') },
+      { sec:'呼吸器疾患', name:'肺循環障害', k:'12', units:U('肺塞栓症／肺梗塞','肺水腫','肺高血圧症') },
+      { sec:'呼吸器疾患', name:'換気異常', k:'13', units:U('睡眠時無呼吸症候群（SAS）','過換気症候群') },
+      { sec:'呼吸器疾患', name:'胸膜・縦隔疾患', k:'14', units:U('胸膜炎','気胸') },
+      { sec:'呼吸器疾患', name:'その他の呼吸器疾患', k:'15', units:U('無気肺','気管支拡張症') } ] },
+    { id:'adJ', name:'J　脳・神経疾患', k:'J', subjects:[
+      { sec:'脳・神経系の解剖と生理', name:'脳・神経系概略', k:'1', units:U('中枢神経系と末梢神経系') },
+      { sec:'脳・神経系の解剖と生理', name:'中枢神経系', k:'2', units:U('中枢神経総論','大脳','間脳','小脳','脳幹','脊髄') },
+      { sec:'脳・神経系の解剖と生理', name:'末梢神経系', k:'3', units:U('末梢神経総論','脳神経','脊髄神経','自律神経') },
+      { sec:'脳・神経系の主要症候・観察・検査', name:'脳・神経系の主要症候', k:'4', units:U('意識障害','高次脳機能障害','頭蓋内圧亢進／脳ヘルニア','脳死','けいれん','顔面神経麻痺','運動麻痺') },
+      { sec:'脳・神経系の主要症候・観察・検査', name:'脳・神経系のフィジカルアセスメント', k:'5', units:U('瞳孔の観察','対光反射','バレー徴候','腱反射','バビンスキー徴候','小脳機能の検査') },
+      { sec:'脳・神経系の主要症候・観察・検査', name:'脳・神経系の検査', k:'6', units:U('頭部CT','頭部MRI','脳波検査','脳血管撮影','髄液検査','その他の脳・神経系の検査') },
+      { sec:'脳・神経疾患の治療', name:'侵襲的治療', k:'7', units:U('開頭術','脳室ドレナージ') },
+      { sec:'脳・神経疾患', name:'脳血管障害', k:'8', units:U('脳卒中総論','脳梗塞','脳出血','くも膜下出血') },
+      { sec:'脳・神経疾患', name:'認知症', k:'9', units:U('認知症総論','アルツハイマー型認知症','脳血管性認知症') },
+      { sec:'脳・神経疾患', name:'脱髄性疾患', k:'10', units:U('多発性硬化症（MS）') },
+      { sec:'脳・神経疾患', name:'神経変性疾患', k:'11', units:U('パーキンソン病','筋萎縮性側索硬化症（ALS）') },
+      { sec:'脳・神経疾患', name:'感染性疾患', k:'12', units:U('髄膜炎') },
+      { sec:'脳・神経疾患', name:'筋疾患', k:'13', units:U('重症筋無力症（MG）','筋ジストロフィー症') },
+      { sec:'脳・神経疾患', name:'末梢神経障害', k:'14', units:U('末梢神経障害総論','ギラン・バレー症候群','絞扼・圧迫性ニューロパチー') },
+      { sec:'脳・神経疾患', name:'機能性疾患', k:'15', units:U('てんかん') },
+      { sec:'脳・神経疾患', name:'脳腫瘍', k:'16', units:U('脳腫瘍') },
+      { sec:'脳・神経疾患', name:'頭部外傷', k:'17', units:U('頭部外傷総論','急性硬膜外血腫','急性硬膜下血腫','慢性硬膜下血腫') } ] },
+    { id:'adK', name:'K　運動器疾患', k:'K', subjects:[
+      { sec:'運動器の解剖と生理', name:'骨・関節の解剖と生理', k:'1', units:U('骨格','骨','関節') },
+      { sec:'運動器の解剖と生理', name:'筋の解剖と生理', k:'2', units:U('骨格筋の解剖','骨格筋の収縮') },
+      { sec:'運動器の症候・観察・検査', name:'運動器の主要症候', k:'3', units:U('フォルクマン拘縮') },
+      { sec:'運動器の症候・観察・検査', name:'運動器のフィジカルアセスメント', k:'4', units:U('関節運動と可動域','徒手筋力テスト') },
+      { sec:'運動器の症候・観察・検査', name:'検査', k:'5', units:U('関節鏡検査','ミエログラフィー（脊髄造影）') },
+      { sec:'運動器疾患の治療・リハビリテーション', name:'保存療法', k:'6', units:U('固定法','牽引法') },
+      { sec:'運動器疾患の治療・リハビリテーション', name:'侵襲的治療', k:'7', units:U('四肢切断術') },
+      { sec:'運動器疾患の治療・リハビリテーション', name:'リハビリテーション', k:'8', units:U('関節可動域訓練') },
+      { sec:'運動器疾患', name:'骨折', k:'9', units:U('骨折総論','上腕骨骨折総論','上腕骨顆上骨折','大腿骨骨折総論','大腿骨頸部骨折','大腿骨転子部骨折') },
+      { sec:'運動器疾患', name:'脱臼', k:'10', units:U('脱臼総論','発育性股関節形成不全') },
+      { sec:'運動器疾患', name:'変形性関節症', k:'11', units:U('変形性関節症総論','変形性膝関節症','変形性股関節症') },
+      { sec:'運動器疾患', name:'脊椎・脊髄疾患', k:'12', units:U('脊椎損傷','脊髄損傷','椎間板ヘルニア','頸椎椎間板ヘルニア','腰椎椎間板ヘルニア','腰部脊柱管狭窄症') },
+      { sec:'運動器疾患', name:'その他の運動器疾患', k:'13', units:U('骨粗鬆症') } ] },
+    { id:'adL', name:'L　眼疾患', k:'L', subjects:[
+      { sec:'眼の解剖と役割', name:'眼の構造', k:'1', units:U('眼の解剖と生理') },
+      { sec:'眼の解剖と役割', name:'視機能', k:'2', units:U('視力','順応','視野','色覚') },
+      { sec:'眼の検査・治療', name:'眼の検査', k:'3', units:U('視力検査','眼底検査','眼圧検査') },
+      { sec:'眼の検査・治療', name:'眼疾患の治療', k:'4', units:U('コンタクトレンズ','点眼薬') },
+      { sec:'眼疾患', name:'結膜疾患', k:'5', units:U('結膜疾患総論','アレルギー性結膜炎','ウイルス性結膜炎','細菌性結膜炎') },
+      { sec:'眼疾患', name:'網膜・硝子体疾患', k:'6', units:U('網膜剥離','糖尿病網膜症','加齢黄斑変性') },
+      { sec:'眼疾患', name:'水晶体疾患', k:'7', units:U('白内障') },
+      { sec:'眼疾患', name:'緑内障', k:'8', units:U('緑内障') },
+      { sec:'眼疾患', name:'その他の眼疾患', k:'9', units:U('斜視') } ] },
+    { id:'adM', name:'M　耳鼻咽喉疾患', k:'M', subjects:[
+      { sec:'耳鼻咽喉の解剖と生理', name:'耳の解剖と生理', k:'1', units:U('耳') },
+      { sec:'耳鼻咽喉の解剖と生理', name:'鼻の解剖と生理', k:'2', units:U('鼻') },
+      { sec:'耳鼻咽喉の解剖と生理', name:'咽頭・喉頭の解剖と生理', k:'3', units:U('咽頭／喉頭') },
+      { sec:'耳鼻咽喉の解剖と生理', name:'舌の解剖と生理', k:'4', units:U('舌') },
+      { sec:'耳鼻咽喉の主要症候', name:'耳の主要症候', k:'5', units:U('難聴／聴覚障害','めまい') },
+      { sec:'耳鼻咽喉の主要症候', name:'鼻の主要症候', k:'6', units:U('鼻出血','嗅覚障害') },
+      { sec:'耳鼻咽喉の主要症候', name:'咽頭・喉頭の主要症候', k:'7', units:U('構音障害','嚥下障害') },
+      { sec:'耳鼻咽喉の検査', name:'耳の検査', k:'8', units:U('標準純音聴力検査','音叉による聴力検査') },
+      { sec:'耳鼻咽喉疾患', name:'耳の疾患', k:'9', units:U('メニエール病','突発性難聴','中耳炎') },
+      { sec:'耳鼻咽喉疾患', name:'鼻の疾患', k:'10', units:U('鼻アレルギー（アレルギー性鼻炎）','副鼻腔炎') },
+      { sec:'耳鼻咽喉疾患', name:'咽頭・喉頭・口腔の疾患', k:'11', units:U('扁桃炎','咽頭扁桃肥大（アデノイド増殖症）','咽頭癌','喉頭癌') } ] },
+    { id:'adN', name:'N　歯・口腔疾患', k:'N', subjects:[
+      { sec:'歯・口腔の解剖', name:'歯・口腔の解剖', k:'1', units:U('歯・口腔','口腔顎顔面の筋') },
+      { sec:'歯・口腔疾患の治療・看護', name:'歯・口腔疾患の治療', k:'2', units:U('歯・口腔疾患の治療総論','抜歯','義歯') },
+      { sec:'歯・口腔疾患の治療・看護', name:'歯・口腔疾患の看護', k:'3', units:U('口腔ケア') },
+      { sec:'歯・口腔疾患', name:'歯の疾患', k:'4', units:U('う蝕（虫歯）') },
+      { sec:'歯・口腔疾患', name:'歯周組織の疾患', k:'5', units:U('歯周疾患（歯周病）') } ] },
+    { id:'adO', name:'O　皮膚疾患', k:'O', subjects:[
+      { sec:'皮膚の解剖と生理', name:'皮膚の解剖', k:'1', units:U('表皮・真皮・皮下組織','付属器') },
+      { sec:'皮膚の解剖と生理', name:'皮膚の生理', k:'2', units:U('皮膚の生理') },
+      { sec:'皮膚の症候・検査', name:'皮膚の主要症候', k:'3', units:U('発疹') },
+      { sec:'皮膚の症候・検査', name:'皮膚の検査', k:'4', units:U('理学検査','アレルギー検査') },
+      { sec:'皮膚疾患の治療', name:'薬物療法', k:'5', units:U('外用薬') },
+      { sec:'皮膚疾患', name:'湿疹／皮膚炎', k:'6', units:U('アトピー性皮膚炎','接触皮膚炎') },
+      { sec:'皮膚疾患', name:'蕁麻疹／皮膚瘙痒症', k:'7', units:U('蕁麻疹','老人性皮膚瘙痒症') },
+      { sec:'皮膚疾患', name:'水疱性疾患', k:'8', units:U('水疱性疾患') },
+      { sec:'皮膚疾患', name:'薬剤過敏症（薬疹）', k:'9', units:U('薬剤過敏症（薬疹）') },
+      { sec:'皮膚疾患', name:'皮膚感染症', k:'10', units:U('帯状疱疹','白癬','疥癬') } ] },
+    { id:'adP', name:'P　女性生殖器疾患', k:'P', subjects:[
+      { sec:'女性生殖器の解剖と生理', name:'女性生殖器の解剖', k:'1', units:U('外性器／内性器','乳房') },
+      { sec:'女性生殖器の解剖と生理', name:'女性生殖器の生理', k:'2', units:U('女性ホルモン','月経','閉経','基礎体温') },
+      { sec:'女性生殖器の診察・検査', name:'女性生殖器の診察', k:'3', units:U('内診（腟腹壁双合診）') },
+      { sec:'女性生殖器の診察・検査', name:'女性生殖器の検査', k:'4', units:U('超音波検査','マンモグラフィ') },
+      { sec:'女性生殖器の治療', name:'侵襲的治療', k:'5', units:U('子宮全摘出術','放射線療法') },
+      { sec:'女性生殖器疾患', name:'内分泌の異常', k:'6', units:U('月経異常') },
+      { sec:'女性生殖器疾患', name:'女性のライフサイクルの変化', k:'7', units:U('月経前症候群（PMS）','月経困難症','更年期障害','骨盤臓器脱') },
+      { sec:'女性生殖器疾患', name:'性器の炎症／性感染症', k:'8', units:U('外陰腟炎','性器クラミジア感染症') },
+      { sec:'女性生殖器疾患', name:'子宮疾患', k:'9', units:U('子宮内膜症','子宮筋腫','子宮癌総論','子宮頸癌','子宮体癌（子宮内膜癌）','胞状奇胎','侵入奇胎／絨毛癌') },
+      { sec:'女性生殖器疾患', name:'卵巣疾患', k:'10', units:U('卵巣腫瘍') },
+      { sec:'女性生殖器疾患', name:'乳房疾患', k:'11', units:U('乳癌') },
+      { sec:'女性生殖器疾患', name:'その他の女性生殖器疾患', k:'12', units:U('不妊症') } ] } ] }
 ];
 const allCourses = () => CATALOG.flatMap(g => g.courses);
 const courseById = id => allCourses().find(c => c.id === id);
@@ -1028,7 +1225,9 @@ const CU = () => UNITS[S.uid];
 const LX = id => CU().lessons.find(l=>l.id===id);
 const app = document.getElementById('app'), tabs = document.querySelector('.tabs');
 const go = (v, push=true) => { if (push) S.stack.push(S.view); S.view=v; render(); window.scrollTo(0,0); };
-const back = () => { S.view = S.stack.pop() || 'home'; render(); window.scrollTo(0,0); };
+const back = () => { const p=S.stack.pop(); if(p&&typeof p==='object'){ S.view=p.v; S.course=p.c; } else S.view = p || 'home'; render(); window.scrollTo(0,0); };
+const parentCourse = id => { const p=allCourses().find(c=>c.subjects.some(s=>s.link===id)); return p&&p.id; };
+const navBase = u => { const par=parentCourse(u.course); return par?['home',{v:'course',c:par}]:['home']; };
 const top = t => `<div class="top"><button class="back" data-act="back" aria-label="戻る">‹ 戻る</button><span class="ttl">${t}</span></div>`;
 const greet = () => { const h=new Date().getHours(); return h<10?'おはよう':h<17?'こんにちは':'こんばんは'; };
 const lTag = (uid,id) => { const s=R.lessons[lkey(uid,id)]; if(!s) return '<span class="tag">未学習</span>'; return `<span class="tag ${s.best===s.total?'done':'mid'}">${s.best}/${s.total}</span>`; };
@@ -1055,15 +1254,15 @@ function vHome(){
   return `<div class="stack" style="padding-top:8px"><div class="sky">${heroArt()}<div class="txt"><span class="name">星空時間</span><h1>${greet()}${R.name?'、'+esc(R.name)+'さん':''}</h1><p>今日も5分だけ。<br>小さな輝き。</p></div></div>
   <div class="stats"><div class="stat"><b>${R.days.length}</b><span>学習した日</span></div><div class="stat"><b>${streak()}</b><span>連続した日</span></div><div class="stat"><b>${R.answered}</b><span>解いた問題${R.answered?'（'+acc+'%）':''}</span></div></div>
   <button class="continue" data-act="lesson" data-arg="${n.id}" data-uid="${uid}"><span><small>続きから　${u.subject}・${u.title}（${doneCount(uid)}/${u.lessons.length}）</small><strong>${n.id}　${n.t}</strong></span><span class="go" aria-hidden="true">→</span></button>
-  ${CATALOG.map(g=>`${g.group?`<h2>${g.group}</h2>`:''}<div class="subjects">${g.courses.map(c=>{ const r=readyCount(c);
+  ${CATALOG.filter(g=>!g.hidden).map(g=>`${g.group?`<h2>${g.group}</h2>`:''}<div class="subjects">${g.courses.map(c=>{ const r=readyCount(c);
     return `<button class="subj" data-act="course" data-arg="${c.id}"><span class="k">${c.k}</span><b>${c.name}</b><span class="small muted">${c.note||c.subjects.map(x=>x.name).join('・')}</span><span class="small ${r?'':'muted'}">${r?'公開中 '+r+'章':'準備中'}</span></button>`; }).join('')}</div>`).join('')}
   <button class="item panel" data-act="go" data-arg="install"><span class="body"><b>ホーム画面に追加</b><br><span class="small muted">アプリのようにアイコンから開けます</span></span><span class="chev">›</span></button></div>`;
 }
 function vCourse(){
   const c=courseById(S.course);
-  return `${top(c.name)}<div class="stack"><p class="muted small">${c.subjects.length}項目・${unitCount(c)}章</p><div class="list">
-  ${c.subjects.map((sb,i)=>{ const r=sb.units.filter(u=>u.ready).length, head=sb.sec&&(i===0||c.subjects[i-1].sec!==sb.sec)?`<div class="lsec">${sb.sec}</div>`:'';
-    return `${head}<button class="item" data-act="subject" data-arg="${i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${sb.units.length}章</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
+  return `${top(c.name)}<div class="stack"><p class="muted small">${c.subjects.filter(x=>!x.link).length}項目・${unitCount(c)}章${c.subjects.some(x=>x.link)?'　疾患別はA〜Pを開くと項目が並びます':''}</p><div class="list">
+  ${c.subjects.map((sb,i)=>{ const lc=sb.link&&courseById(sb.link), r=lc?readyCount(lc):sb.units.filter(u=>u.ready).length, head=sb.sec&&(i===0||c.subjects[i-1].sec!==sb.sec)?`<div class="lsec">${sb.sec}</div>`:'';
+    return `${head}<button class="item" data-act="${lc?'course':'subject'}" data-arg="${lc?sb.link:i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${lc?lc.subjects.length+'項目・'+unitCount(lc)+'章':sb.units.length+'章'}</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
 }
 function vSubject(){
   const c=courseById(S.course), sb=c.subjects[S.subj];
@@ -1234,13 +1433,13 @@ document.addEventListener('click', e=>{
   else if(a==='pdf') openPdf(arg);
   else if(a==='pdfTab'){ S.pdf.i=+arg; render(); }
   else if(a==='pdfZoom'){ S.pdf.z=S.pdf.z>1?1:1.8; render(); }
-  else if(a==='course'){ S.course=arg; go('course'); }
+  else if(a==='course'){ if(S.view==='course'){ S.stack.push({v:'course',c:S.course}); S.course=arg; S.view='course'; render(); window.scrollTo(0,0); } else { S.course=arg; go('course'); } }
   else if(a==='subject'){ S.subj=+arg; go('subject'); }
   else if(a==='unit'){ S.uid=arg; go('unit'); }
   else if(a==='setupDone'){ const code=normCode(document.getElementById('su-code').value); if(!CODE_RE.test(code)){ document.getElementById('su-err').hidden=false; return; }
     R.code=code; R.name=document.getElementById('su-name').value.trim(); save(); S.stack=[]; S.view='home'; render(); }
   else if(a==='lesson'){ if(b.dataset.uid) S.uid=b.dataset.uid; S.lid=arg; go('lesson'); }
-  else if(a==='lessonNext'){ const u=CU(); S.lid=arg; S.course=u.course; S.subj=u.subj; S.stack=['home','course','subject','unit']; S.view='lesson'; render(); window.scrollTo(0,0); }
+  else if(a==='lessonNext'){ const u=CU(); S.lid=arg; S.course=u.course; S.subj=u.subj; S.stack=[...navBase(u),'course','subject','unit']; S.view='lesson'; render(); window.scrollTo(0,0); }
   else if(a==='quiz') startQuiz();
   else if(a==='cards'){ S.deck={cur:deckNext()}; S.flipped=false; markDay(); go('cards'); }
   else if(a==='flip'){ S.flipped=!S.flipped; render(); }
@@ -1267,7 +1466,7 @@ document.addEventListener('click', e=>{
   else if(a==='again'){ S.view=S.stack.pop()||'lesson'; startQuiz(); }
   else if(a==='launch'){ launchNova(); render(); window.scrollTo(0,0); }
   else if(a==='toSky'){ S.stack=[]; S.launched=0; S.view='sky'; render(); window.scrollTo(0,0); }
-  else if(a==='tounit'){ const u=CU(); S.course=u.course; S.subj=u.subj; S.stack=['home','course','subject']; S.view='unit'; render(); window.scrollTo(0,0); }
+  else if(a==='tounit'){ const u=CU(); S.course=u.course; S.subj=u.subj; S.stack=[...navBase(u),'course','subject']; S.view='unit'; render(); window.scrollTo(0,0); }
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.viewCard!=null){ S.viewCard=null; render(); } });
 
