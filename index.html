@@ -1653,6 +1653,8 @@ const DIU_LESSONS = [
 ];
 Object.assign(POOL, {
   thr:[
+    ['動脈の血栓','動脈の血栓のでき方として正しいのは？','プラークが破れ、傷に血小板が集まって固まる',['血液の流れがよどみ、フィブリンが赤血球を巻きこむ','白血球が集まって固まる','脂肪だけが集まって固まる'],'血小板が中心の血栓です。予防の中心は抗血小板薬です。'],
+    ['静脈の血栓','静脈の血栓のでき方として正しいのは？','血液の流れがよどみ、凝固因子が働いてフィブリンが赤血球を巻きこむ',['プラークが破れて血小板が集まる','血管がけいれんして固まる','白血球だけが集まる'],'フィブリンが中心の血栓です。予防の中心は抗凝固薬です。'],
     ['血栓とは','血栓ができるしくみとして正しいのは？','血小板が集まったあと、凝固因子が活性化してフィブリンができ、血液が固まる',['赤血球がこわれて固まる','白血球が集まって固まる','脂肪だけが集まって固まる'],'血小板の凝集 → 凝固因子の活性化 → フィブリンの析出、の順で固まります。'],
     ['虚血性心疾患','冠動脈に血栓ができて起こる病気は？','不安定狭心症・急性心筋梗塞',['脳梗塞','肺血栓塞栓症','深部静脈血栓症'],'急性冠症候群（8-1）です。'],
     ['虚血性脳障害','脳の血管が血栓でつまって起こる病気は？','脳梗塞',['心筋梗塞','肺塞栓症','心不全'],'一過性脳虚血発作（TIA）も、脳梗塞の前ぶれとして大切です。'],
@@ -1705,11 +1707,26 @@ const atFig = () => {
   <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="${P}"/></marker></defs>
   </svg>`;
 };
+const clotIcon = (k) => {
+  const walls='<rect x="2" y="4" width="116" height="6" rx="3" fill="#e9a6a6"/><rect x="2" y="50" width="116" height="6" rx="3" fill="#e9a6a6"/>';
+  const flow=(y)=>`<path d="M6 ${y} H34" stroke="#d9473f" stroke-width="3"/><path d="M28 ${y-4} l6 4 -6 4" stroke="#d9473f" stroke-width="3" fill="none"/>`;
+  if(k==='a'){
+    const plt=[[56,40],[64,34],[72,38],[62,44],[70,30],[78,42]].map(p=>`<ellipse cx="${p[0]}" cy="${p[1]}" rx="5" ry="3.5" fill="#e7a43a" stroke="#b97a1a" stroke-width="1"/>`).join('');
+    return `<svg viewBox="0 0 120 60" width="120" height="60" aria-hidden="true" style="display:block;margin:2px 0 4px">${walls}<path d="M44 50 q24 -22 48 0 z" fill="#f2d79b" stroke="#c9a04f"/>${plt}${flow(22)}</svg>`;
+  }
+  const rbc=[[70,34],[82,40],[76,26],[90,30],[64,42],[88,44]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#c43b3b"/>`).join('');
+  const mesh=[0,1,2,3].map(i=>`<path d="M${58+i*10} 22 l14 28" stroke="#b97a1a" stroke-width="1.2"/><path d="M${54+i*10} 50 l16 -28" stroke="#b97a1a" stroke-width="1.2"/>`).join('');
+  return `<svg viewBox="0 0 120 60" width="120" height="60" aria-hidden="true" style="display:block;margin:2px 0 4px">${walls}<path d="M40 10 q14 14 4 22 M40 50 q14 -14 4 -22" stroke="#e9a6a6" stroke-width="3" fill="none"/>${rbc}${mesh}<path d="M100 18 a6 6 0 1 1 -2 -4" stroke="#999" stroke-width="1.5" fill="none"/>${flow(30)}</svg>`;
+};
 const THR_LESSONS = [
   { id:'11-1', t:'血栓による疾患', sub:'虚血性心疾患・脳梗塞・静脈血栓塞栓症・心房細動', plan:['thr','thr','thr','thr','thr'], body:()=>`
     <section class="panel"><h3>血栓とは</h3>
     ${chain(['血小板が集まる','凝固因子が活性化','フィブリンができて固まる'])}
-    <p>血管の中で血液が固まったものを<b>血栓</b>といいます。血管がつまると、その先に血液（酸素）が届かなくなります。</p></section>
+    <p>血管の中で血液が固まったものを<b>血栓</b>といいます。血管がつまると、その先に血液（酸素）が届かなくなります。</p>
+    <h4 style="margin:14px 0 4px">血栓のでき方</h4>
+    <div class="scroll"><table class="tbl"><tr><th>種類</th><th>でき方</th></tr>
+    <tr><td style="white-space:nowrap">${clotIcon('a')}<b>動脈の血栓</b><br><span class="small muted">血小板が中心</span></td><td>動脈硬化の<b>プラークが破れる</b> → 傷に<b>血小板</b>が集まって固まる。<br><span class="small muted">例：心筋梗塞、脳梗塞。予防の中心は抗血小板薬。</span></td></tr>
+    <tr><td style="white-space:nowrap">${clotIcon('v')}<b>静脈の血栓</b><br><span class="small muted">フィブリンが中心</span></td><td>血液の流れが<b>よどむ</b>（静脈弁のまわりなど） → <b>凝固因子</b>が働いてフィブリンができ、赤血球を巻きこんで固まる。<br><span class="small muted">例：深部静脈血栓症、心房細動の血栓。予防の中心は抗凝固薬。</span></td></tr></table></div></section>
     <section class="panel"><h3>虚血性心疾患</h3>
     <p><b>冠動脈</b>に血栓ができて、心筋に血液が届かなくなります。</p>
     <p class="small muted">例：不安定狭心症、急性心筋梗塞（8-1）。</p></section>
