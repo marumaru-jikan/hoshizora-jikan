@@ -427,6 +427,17 @@ const ZODIAC = [
   { src:'cards/z87.jpg', name:'レチクル座', note:'南天の星座　目じるしは3等星' },
   { src:'cards/z88.jpg', name:'ろ座', note:'南天の星座　目じるしは4等星' },
 ];
+// 惑星図鑑。cards フォルダの w01〜w08.jpg（太陽に近い順）。
+const PLANETS = [
+  { src:'cards/w01.jpg', name:'水星', note:'太陽から1番目　いちばん小さな惑星' },
+  { src:'cards/w02.jpg', name:'金星', note:'太陽から2番目　宵の明星・明けの明星' },
+  { src:'cards/w03.jpg', name:'地球', note:'太陽から3番目　わたしたちの星' },
+  { src:'cards/w04.jpg', name:'火星', note:'太陽から4番目　赤い砂と岩の星' },
+  { src:'cards/w05.jpg', name:'木星', note:'太陽から5番目　いちばん大きな惑星' },
+  { src:'cards/w06.jpg', name:'土星', note:'太陽から6番目　大きな環をもつ' },
+  { src:'cards/w07.jpg', name:'天王星', note:'太陽から7番目　横だおしで回る' },
+  { src:'cards/w08.jpg', name:'海王星', note:'太陽から8番目　いちばん遠い惑星' },
+];
 
 // 演習問題PDF。pdf フォルダに入れたファイル名を書きます。空なら「準備中」と表示されます。
 const PDF = {
@@ -1156,8 +1167,8 @@ const CONST = [
   { id:'sco', name:'さそり座', season:'夏', note:'赤いアンタレスが、さそりの心臓。', s:[[150,140,3.6,'#FF9A7A','アンタレス'],[175,110,2],[195,72,2],[208,102,1.8],[212,134,1.8],[140,180,2],[130,220,2],[136,260,2],[160,292,2],[196,302,2],[220,282,2.2],[208,262,1.8]], l:[[0,1],[1,2],[1,3],[1,4],[0,5],[5,6],[6,7],[7,8],[8,9],[9,10],[10,11]], mw:true },
   { id:'cas', name:'カシオペヤ座', season:'秋', note:'W の形。北極星を探す、もう1つの目じるし。', s:[[50,170,2.4],[100,215,2.4],[150,170,2.2],[200,210,2.4],[250,150,2.4]], l:[[0,1],[1,2],[2,3],[3,4]] },
 ];
-const ALLC = [ ...ZODIAC.map(c=>Object.assign({ key:c.src, t:'z', zimg:true },c)), ...OBS.map(c=>Object.assign({ key:c.src, t:'a' },c)), ...STAR_CARDS.map(c=>Object.assign({key:c.src},c)) ];
-const CTYPE = { z:'星座図鑑', a:'天体観測', p:'星空写真', h:'星空作品' };
+const ALLC = [ ...ZODIAC.map(c=>Object.assign({ key:c.src, t:'z', zimg:true },c)), ...PLANETS.map(c=>Object.assign({ key:c.src, t:'w', zimg:true },c)), ...OBS.map(c=>Object.assign({ key:c.src, t:'a' },c)), ...STAR_CARDS.map(c=>Object.assign({key:c.src},c)) ];
+const CTYPE = { z:'星座図鑑', w:'惑星図鑑', a:'天体観測', p:'星空写真', h:'星空作品' };
 const cardNo = i => ALLC.slice(0,i+1).filter(c=>c.t===ALLC[i].t).length;
 const cardLabel = i => `${CTYPE[ALLC[i].t]}　No.${cardNo(i)}`;
 function seeded(n){ let s=n*9301+49297; return () => (s=(s*233280+49297)%2147483647)/2147483647; }
@@ -1266,7 +1277,7 @@ function vCourse(){
 }
 function vSubject(){
   const c=courseById(S.course), sb=c.subjects[S.subj];
-  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑か天体観測のカードが1まいめくれます。</p><div class="list">
+  return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">準備ができた章から順に公開します。この項目の章をぜんぶクリアすると、星座図鑑・惑星図鑑・天体観測のカードが1まいめくれます。</p><div class="list">
   ${sb.units.map((un,i)=>{ const u=un.ready&&UNITS[un.ready];
     if(u){ const d=doneCount(un.ready), n=u.lessons.length;
       return `<button class="item" data-act="unit" data-arg="${un.ready}"><span class="lid">${i+1}</span><span class="body"><b>${un.t}</b><br><span class="small muted">${n}つの星屑　1つ約5分</span></span><span class="tag ${d===n?'done':d?'mid':''}">${d}/${n}</span><span class="chev">›</span></button>`; }
@@ -1332,7 +1343,7 @@ function vRecord(){
   const acc=R.answered?Math.round(R.correct/R.answered*100):0, set=new Set(R.days); let cells='';
   for(let i=27;i>=0;i--){ const d=new Date(); d.setDate(d.getDate()-i); cells+=`<div class="day ${set.has(dkey(d))?'on':''}">${d.getDate()}</div>`; }
   const has=new Set(SHOW_ALL_CARDS ? ALLC.map(c=>c.key) : R.cards);
-  const coll = `<div class="panel stack"><h3>星座図鑑と天体観測　<span class="num">${ALLC.filter(c=>has.has(c.key)).length} / ${ALLC.length}</span></h3>${Object.keys(CTYPE).map(t=>{ const idx=ALLC.map((c,i)=>c.t===t?i:-1).filter(i=>i>=0); if(!idx.length) return ''; const got=idx.filter(i=>has.has(ALLC[i].key)).length;
+  const coll = `<div class="panel stack"><h3>星座図鑑・惑星図鑑と天体観測　<span class="num">${ALLC.filter(c=>has.has(c.key)).length} / ${ALLC.length}</span></h3>${Object.keys(CTYPE).map(t=>{ const idx=ALLC.map((c,i)=>c.t===t?i:-1).filter(i=>i>=0); if(!idx.length) return ''; const got=idx.filter(i=>has.has(ALLC[i].key)).length;
     return `<div class="stack" style="gap:6px"><p class="small"><b>${CTYPE[t]}</b>　<span class="muted num">${got} / ${idx.length}</span></p><div class="coll">${idx.map(i=>has.has(ALLC[i].key)?`<button data-act="viewCard" data-arg="${i}" aria-label="${esc(cardLabel(i)+'　'+ALLC[i].name)}">${cardFace(i,true)}</button>`:`<div class="num">${cardNo(i)}</div>`).join('')}</div></div>`; }).join('')}<p class="small muted">1つの項目の章をぜんぶクリアすると、カードを1まいめくれます。まだ持っていないカードから出てきます。集めたカードはタップで大きく見られます。</p></div>`;
   const vc = S.viewCard!=null && ALLC[S.viewCard] && has.has(ALLC[S.viewCard].key) ? ALLC[S.viewCard] : null;
   const viewer = vc ? `<div class="viewer" data-act="closeCard" role="dialog" aria-label="${esc(vc.name)}"><figure>${vc.id?`<div class="vsvg">${constSVG(vc.id)}</div>`:`<img src="${esc(vc.src)}" alt="${esc(vc.name)}">`}<figcaption><span class="rno">${cardLabel(S.viewCard)}</span><b class="rname">${esc(vc.name)}</b>${vc.note?`<span class="rnote">${esc(vc.note)}</span>`:''}</figcaption></figure><button class="btn ghost" data-act="closeCard">閉じる</button></div>` : '';
