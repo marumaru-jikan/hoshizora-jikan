@@ -1958,6 +1958,17 @@ Object.assign(POOL, {
     ['悪性症候群','抗精神病薬の重い副作用「悪性症候群」で見られるのは？','高熱・筋強剛・意識障害',['低体温・脱力','高血糖だけ','乳汁分泌だけ'],'命にかかわる副作用です。すぐに医師に報告します。'],
   ],
 });
+const epsIcon = (k) => {
+  const st='stroke="var(--ink)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"';
+  const P='#8b5cf6';
+  const m=`stroke="${P}" stroke-width="2" fill="none" stroke-linecap="round"`;
+  let b='';
+  if(k==='pd') b=`<circle cx="34" cy="14" r="7" ${st}/><path d="M32 21 q-4 10 -2 20 M30 41 l-4 14 M30 41 l6 14 M31 27 q8 4 14 10" ${st}/><path d="M48 34 l3 -3 M50 39 l4 -2 M49 44 l4 0" ${m}/><path d="M18 22 q-4 4 0 8" ${m}/>`;
+  else if(k==='aka') b=`<circle cx="40" cy="12" r="7" ${st}/><path d="M40 19 v18 M40 25 l-9 8 M40 25 l9 8 M40 37 l-8 18 M40 37 l10 16" ${st}/><path d="M22 46 q-4 4 0 8 M18 44 q-6 6 0 12 M58 44 q4 4 0 8 M62 42 q6 6 0 12" ${m}/>`;
+  else if(k==='dys') b=`<circle cx="50" cy="14" r="7" ${st}/><path d="M45 19 q-8 6 -12 16 M33 35 l-6 20 M33 35 l8 20 M40 26 l-12 -4 M38 30 l12 6" ${st}/><path d="M58 8 q6 2 6 8" ${m}/><path d="M60 22 l4 4 M62 18 l5 1" ${m}/>`;
+  else b=`<circle cx="40" cy="30" r="22" ${st}/><circle cx="32" cy="24" r="2" fill="var(--ink)"/><circle cx="48" cy="24" r="2" fill="var(--ink)"/><path d="M28 18 l6 2 M52 18 l-6 2" ${st}/><path d="M32 38 q8 -4 16 0" ${st}/><path d="M38 38 q2 9 6 6" stroke="#d9473f" stroke-width="3" fill="#f2a6a6" stroke-linecap="round"/><path d="M14 36 q-4 4 0 8 M66 36 q4 4 0 8" ${m}/>`;
+  return `<svg viewBox="0 0 80 60" width="72" height="54" aria-hidden="true" style="display:block;margin:2px 0 4px">${b}</svg>`;
+};
 const PSY_LESSONS = [
   { id:'14-1', t:'精神疾患', sub:'統合失調症・うつ病・双極性障害', plan:['psy','psy','psy','psy','psy'], body:()=>`
     <section class="panel"><h3>精神疾患とは</h3>
@@ -2002,12 +2013,12 @@ const PSY_LESSONS = [
     <p>抗精神病薬の<b>ドパミン遮断作用</b>で起こる副作用の総称です。</p>
     <h4 style="margin:12px 0 4px">飲みはじめの早い時期</h4>
     <div class="scroll"><table class="tbl"><tr><th>症状</th><th>どんなもの</th></tr>
-    <tr><td style="white-space:nowrap"><b>パーキンソン<br>症候群</b></td><td>安静時振戦（ふるえ）、筋強剛、無動、姿勢保持障害。</td></tr>
-    <tr><td style="white-space:nowrap"><b>アカシジア</b><br><span class="small muted">静座不能</span></td><td>足がむずむずして、じっとしていられず動き回る。精神症状の悪化と見まちがえられやすい。</td></tr>
-    <tr><td style="white-space:nowrap"><b>ジストニア</b></td><td>筋肉が異常に緊張して、首や体がねじれた奇妙な姿勢になる。急に起こる急性と、長期で起こる遅発性がある。</td></tr></table></div>
+    <tr><td style="white-space:nowrap">${epsIcon('pd')}<b>パーキンソン<br>症候群</b></td><td>安静時振戦（ふるえ）、筋強剛、無動、姿勢保持障害。</td></tr>
+    <tr><td style="white-space:nowrap">${epsIcon('aka')}<b>アカシジア</b><br><span class="small muted">静座不能</span></td><td>足がむずむずして、じっとしていられず動き回る。精神症状の悪化と見まちがえられやすい。</td></tr>
+    <tr><td style="white-space:nowrap">${epsIcon('dys')}<b>ジストニア</b></td><td>筋肉が異常に緊張して、首や体がねじれた奇妙な姿勢になる。急に起こる急性と、長期で起こる遅発性がある。</td></tr></table></div>
     <h4 style="margin:12px 0 4px">長く飲んだとき</h4>
     <div class="scroll"><table class="tbl"><tr><th>症状</th><th>どんなもの</th></tr>
-    <tr><td style="white-space:nowrap"><b>遅発性<br>ジスキネジア</b></td><td>口をもぐもぐ動かす（咀嚼様運動）、舌を出す・ねじる、顔をしかめる。</td></tr></table></div>
+    <tr><td style="white-space:nowrap">${epsIcon('td')}<b>遅発性<br>ジスキネジア</b></td><td>口をもぐもぐ動かす（咀嚼様運動）、舌を出す・ねじる、顔をしかめる。</td></tr></table></div>
     ${rule('遅発性ジスキネジアは、薬をやめても治りにくい（不可逆的）<br>→ 予防が最重要')}</section>
     <section class="panel"><h3>悪性症候群</h3>
     <p>筋強剛などの強い<b>錐体外路症状</b>、<b>高熱</b>、<b>自律神経症状</b>（発汗、頻脈、血圧の変動）、意識障害などが出る重い副作用です。</p>
