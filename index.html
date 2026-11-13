@@ -12,7 +12,6 @@
 <link rel="apple-touch-icon" href="icons/polaris-apple-180.png">
 <style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
 </head><body>
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>星空時間</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -750,6 +749,20 @@ Object.assign(POOL, {
     ['妊婦','妊婦の薬で特に注意が必要な時期は？','妊娠初期（器官がつくられる時期）',['妊娠後期だけ','出産のあと','どの時期も同じ'],'妊娠4〜7週ごろは胎児の器官がつくられる時期（絶対過敏期）で、薬による奇形が起こりやすくなります。胎盤を通って胎児へ移る薬に注意します。'],
   ],
 });
+Object.assign(POOL, {
+  route:[
+    ['作用の早さ','作用があらわれるのが最も早い投与経路は？','静脈内注射',['経口投与','皮下注射','経皮投与'],'静脈内注射は薬を直接血液に入れるので吸収がいらず、最も早く効きます。'],
+    ['注射の早さ','注射で、吸収と作用発現が早い順に並べたものは？','静脈内 ＞ 筋肉内 ＞ 皮下',['皮下 ＞ 筋肉内 ＞ 静脈内','筋肉内 ＞ 静脈内 ＞ 皮下','皮下 ＞ 静脈内 ＞ 筋肉内'],'筋肉は皮下より血流が多いので、筋肉内注射のほうが皮下注射より早く吸収されます。'],
+    ['経口投与','最も安全で簡単、費用もかからない投与経路は？','経口投与',['静脈内注射','吸入投与','直腸内投与'],'経口投与は安全で簡単ですが、患者さんが飲めることが必要で、効くまでに時間がかかります。'],
+    ['初回通過効果','肝臓で初回通過効果を受ける投与経路は？','経口投与',['静脈内注射','舌下投与','吸入投与'],'飲み薬は消化管から吸収されたあと、全身に出る前に肝臓を通るので、一部が代謝されます。'],
+    ['舌下投与','ニトログリセリンを舌の下に入れて使う投与経路は？','舌下投与',['経口投与','筋肉内注射','経皮投与'],'舌下投与は口の粘膜から吸収が速く、初回通過効果も一部さけられます。狭心症の発作で使われます。'],
+    ['坐薬','直腸内投与（坐薬）の特徴として正しいのは？','初回通過効果を一部さけられる',['吸収の過程がない','飲み込めない患者さんには使えない','作用が最もゆっくりあらわれる'],'坐薬は吸収が速く、嘔吐や意識障害で飲めない患者さんにも使えます。'],
+    ['経皮投与','経皮投与（貼り薬）の特徴は？','ゆっくり持続的に吸収され、血中濃度が安定しやすい',['作用があらわれるのが最も早い','初回通過効果を強く受ける','大量の薬を短時間で入れられる'],'皮膚からゆっくり吸収され続けるので、血中濃度が安定しやすくなります。'],
+    ['点滴静脈内注射','点滴静脈内注射の特徴として正しいのは？','一定の血中濃度を保ちながら、長時間投与できる',['患者さんの行動を制限しない','感染の危険がない','吸収に時間がかかる'],'大量の薬を長時間入れられる一方、行動が制限され、感染の危険も大きくなります。'],
+    ['吸入投与','吸入投与が特に有効なのは？','呼吸器疾患',['皮膚疾患','眼疾患','骨・関節疾患'],'吸入は気体や揮発性の薬も投与でき、気道や肺に直接届くので呼吸器疾患に有効です。'],
+    ['注射の注意','注射で特に大切なことは？','感染の危険があるので無菌操作を守る',['必ず食後に行う','患者さんの協力はいらない','初回通過効果に注意する'],'針で皮膚を通すので感染の危険があります。注射では無菌操作が重要です。'],
+  ],
+});
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
     <section class="panel"><h3>吸収・分布・代謝・排泄（ADME）</h3>
@@ -766,10 +779,27 @@ const PK_LESSONS = [
     <tr><td style="white-space:nowrap"><b>高齢者</b></td><td>肝臓・腎臓のはたらきが落ち、<b>代謝する力が落ちる</b></td><td>薬が体に残りやすく、作用や副作用が強く・長く出やすい。少ない量から始める</td></tr>
     <tr><td style="white-space:nowrap"><b>小児</b></td><td>肝臓・腎臓のはたらきが<b>まだ未熟</b>（特に新生児）</td><td>薬の量は体重などをもとに決める</td></tr>
     <tr><td style="white-space:nowrap"><b>妊婦</b></td><td>胎盤を通って<b>胎児へ移る薬</b>がある</td><td>特に妊娠初期（器官がつくられる時期）は注意</td></tr></table></div></section>` },
+  { id:'1-2', t:'投与経路', sub:'経口・注射・吸入・坐薬・舌下・経皮', plan:['route','route','route','route','route'], body:()=>`
+    <section class="panel"><h3>投与経路の種類</h3>
+    ${rule('経口投与 ＝ 口から飲む<br>非経口投与 ＝ 注射・吸入・直腸内（坐薬）・舌下・経皮')}
+    <div class="scroll"><table class="tbl"><tr><th>投与経路</th><th>特徴</th></tr>
+    <tr><td style="white-space:nowrap"><b>経口</b></td><td>最も安全で簡単、費用も安い。患者さんが飲めることが必要。消化管で吸収され、肝臓で<b>初回通過効果</b>を受ける。効くまでに<b>時間がかかる</b></td></tr>
+    <tr><td style="white-space:nowrap"><b>吸入</b></td><td>吸収が速い。気体や揮発性の薬も使える。<b>呼吸器疾患</b>に有効</td></tr>
+    <tr><td style="white-space:nowrap"><b>直腸内</b><br><span class="small muted">坐薬</span></td><td>吸収が速い。嘔吐や意識障害で<b>飲めない人</b>にも使える。初回通過効果を一部さけられる</td></tr>
+    <tr><td style="white-space:nowrap"><b>舌下</b></td><td>吸収が速い。<b>ニトログリセリン</b>の投与経路。初回通過効果を一部さけられる</td></tr>
+    <tr><td style="white-space:nowrap"><b>経皮</b><br><span class="small muted">貼り薬</span></td><td>ゆっくり<b>持続的</b>に吸収され、血中濃度が安定しやすい</td></tr></table></div></section>
+    <section class="panel"><h3>注射</h3>
+    ${rule('早く効く順：静脈内 ＞ 筋肉内 ＞ 皮下')}
+    <div class="scroll"><table class="tbl"><tr><th>種類</th><th>特徴</th></tr>
+    <tr><td style="white-space:nowrap"><b>静脈内注射</b></td><td>吸収がいらず、<b>最も早く</b>効く</td></tr>
+    <tr><td style="white-space:nowrap"><b>点滴静脈内<br>注射</b></td><td>大量の薬を長時間、一定の血中濃度を保ちながら入れられる。行動が制限され、感染の危険が大きくなる</td></tr>
+    <tr><td style="white-space:nowrap"><b>筋肉内注射</b></td><td>静脈内注射よりゆっくり効く</td></tr>
+    <tr><td style="white-space:nowrap"><b>皮下注射</b></td><td>筋肉内注射よりさらにゆっくり効く</td></tr></table></div>
+    <p class="small muted">注射はどれも感染の危険があるので、無菌操作が大切です。</p></section>` }
 ];
 /* ===== 用語カード ===== */
 const TERMS = {
-  pk:[['ADME','吸収（A）・分布（D）・代謝（M）・排泄（E）。薬が体に入ってから出ていくまで。'],['吸収','投与した薬が全身をめぐる血液の中に入ること。'],['分布','薬が血液の中から組織へ移ること。作用するのは遊離型。'],['代謝','主に肝臓で薬を分解し、水に溶けやすくして排泄しやすくすること。'],['排泄','薬や代謝物が体の外へ出ること。主に腎臓から尿中へ。'],['初回通過効果','飲み薬が全身に出る前に、肝臓で一部が代謝されること。'],['絶対過敏期','妊娠4〜7週ごろ。胎児の器官がつくられ、薬の影響を受けやすい時期。']],
+  pk:[['舌下投与','舌の下で溶かして口の粘膜から吸収させる。ニトログリセリンなど。'],['経皮投与','貼り薬。ゆっくり持続的に吸収され、血中濃度が安定しやすい。'],['直腸内投与','坐薬。飲めない人にも使え、初回通過効果を一部さけられる。'],['ADME','吸収（A）・分布（D）・代謝（M）・排泄（E）。薬が体に入ってから出ていくまで。'],['吸収','投与した薬が全身をめぐる血液の中に入ること。'],['分布','薬が血液の中から組織へ移ること。作用するのは遊離型。'],['代謝','主に肝臓で薬を分解し、水に溶けやすくして排泄しやすくすること。'],['排泄','薬や代謝物が体の外へ出ること。主に腎臓から尿中へ。'],['初回通過効果','飲み薬が全身に出る前に、肝臓で一部が代謝されること。'],['絶対過敏期','妊娠4〜7週ごろ。胎児の器官がつくられ、薬の影響を受けやすい時期。']],
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
   cv:[['縦隔','左右の肺にはさまれた胸の中央部分。心臓・大血管・食道・気管などがある。'],['心尖','心臓の先端。左下前方を向き、左第5肋間・鎖骨中線あたりで拍動を触れる。'],['房室弁','心房と心室の間の弁。右が三尖弁、左が僧帽弁。'],['半月弁','心室と動脈の間の弁。肺動脈弁と大動脈弁。'],['洞房結節','右心房にある心臓のペースメーカー。'],['冠動脈','心筋を養う動脈。大動脈の根元から出て、主に拡張期に流れる。'],['門脈','腹部の消化管・脾臓の血液を集めて肝臓へ運ぶ血管。']],
@@ -1521,5 +1551,4 @@ if('serviceWorker' in navigator && document.querySelector('link[rel="manifest"]'
 </script>
 
 
-</body></html>
 </body></html>
