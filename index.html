@@ -3291,6 +3291,13 @@ Object.assign(POOL, {
     ['QRS波','QRS波が示すのは？','心室の興奮（脱分極）',['心房の興奮（脱分極）','心室の回復（再分極）','心房の回復'],'ヒス束→脚→プルキンエ線維→心室と伝わる興奮です。'],
     ['T波','T波が示すのは？','心室の興奮からの回復（再分極）',['心房の興奮（脱分極）','心室の興奮（脱分極）','洞結節の興奮'],'U波は回復（再分極）の終了時に生じる波形です。'],
   ],
+  ek3:[
+    ['横軸','心電図の横軸1mm（小さいマス1つ）は何秒？','0.04秒',['0.02秒','0.1秒','0.2秒'],'大きいマス1つ（5mm）が0.2秒、5つで1秒です。'],
+    ['心拍数の求め方','RR間隔が0.75秒のときの心拍数は？','80回/分',['60回/分','75回/分','100回/分'],'心拍数＝60÷RR間隔＝60÷0.75＝80回/分です。'],
+    ['PQ間隔','PQ間隔の基準値は？','0.12〜0.20秒',['0.08〜0.1秒','0.36〜0.44秒','0.10秒未満'],'延長は1度房室ブロックやジギタリス効果、短縮はWPW症候群などです。'],
+    ['テント状T波','テント状T波（T波増高）がみられるのは？','高カリウム血症',['低カリウム血症','高カルシウム血症','甲状腺機能低下症'],'低カリウム血症ではT波の平坦化やST低下、QT延長がみられます。'],
+    ['ST上昇','ST上昇がみられる代表的な疾患は？','急性心筋梗塞',['労作性狭心症','低カリウム血症','心内膜下梗塞'],'冠攣縮性狭心症、急性心膜炎、心筋炎でもST上昇がみられます。'],
+  ],
   jv:[
     ['頸静脈怒張','頸静脈怒張が多く認められるのは？','右心不全',['左心不全のみ','貧血','脱水'],'右心系への還流障害でCVPが上がり、頸静脈が怒張します。'],
     ['CVP','頸静脈怒張で上昇しているのは？','中心静脈圧（CVP）',['肺動脈楔入圧のみ','動脈血酸素分圧','膠質浸透圧'],'右心房圧（CVP）の上昇が上大静脈を介して頸静脈に伝わります。'],
@@ -3815,6 +3822,52 @@ const ekDir = () => {
   return `<svg viewBox="0 0 360 134" width="100%" role="img" aria-label="電極に向かってくる興奮波は上向きの陽性波、遠ざかっていく興奮波は下向きの陰性波として記録される。" style="display:block;max-width:460px;margin:8px auto;font-family:var(--f-body)">
   ${panel(4,true)}${panel(184,false)}</svg>`;
 };
+const ekY=(x,R,k=1)=>{const g=(x,m,s,h)=>h*Math.exp(-0.5*((x-m)/s)**2);let y=g(x,R-38*k,7*k,8);const d=(x-R)/k;
+  if(d>=-6&&d<=8){ if(d<-3)y-=(d+6)/3*5; else if(d<0)y+=-5+(d+3)/3*55; else if(d<4)y+=50-d/4*60; else y+=-10+(d-4)/4*10; }
+  return y+g(x,R+58*k,12*k,15);};
+const ekBeat=(R,BL,k=1,x0,x1,Rs)=>{const pts=[];x0=x0??R-70*k;x1=x1??R+95*k;Rs=Rs||[R];
+  for(let x=x0;x<=x1;x+=0.5){const y=Rs.reduce((a,r)=>a+ekY(x,r,k),0);pts.push(`${x.toFixed(1)},${(BL-y).toFixed(1)}`);} return pts.join(' ');};
+const ekGrid = () => {
+  const T='#2b2f3a', X0=20, Y0=22, W=325, H=150;
+  let grid='';
+  for(let x=X0;x<=X0+W;x+=5) grid+=`<line x1="${x}" y1="${Y0}" x2="${x}" y2="${Y0+H}" stroke="${(x-X0)%25===0?'#e9a3a3':'#f6d6d6'}" stroke-width="${(x-X0)%25===0?1.1:.6}"/>`;
+  for(let y=Y0;y<=Y0+H;y+=5) grid+=`<line x1="${X0}" y1="${y}" x2="${X0+W}" y2="${y}" stroke="${(y-Y0)%25===0?'#e9a3a3':'#f6d6d6'}" stroke-width="${(y-Y0)%25===0?1.1:.6}"/>`;
+  const BL=Y0+110, R1=95, R2=220;
+  const line=ekBeat(R1,BL,1,X0+4,X0+W-4,[R1,R2,R2+125]);
+  const arr=(x1,x2,y,c)=>`<line x1="${x1+3}" y1="${y}" x2="${x2-3}" y2="${y}" stroke="${c}" stroke-width="1.6"/><path d="M${x1} ${y} l6 -4 v8Z M${x2} ${y} l-6 -4 v8Z" fill="${c}"/>`;
+  return `<svg viewBox="0 0 360 250" width="100%" role="img" aria-label="心電図の記録紙。横軸は時間で1mm＝0.04秒、5mm＝0.2秒、25mm＝1秒。縦軸は電圧で1mm＝0.1mV。R波とR波の間隔がRR間隔。" style="display:block;max-width:460px;margin:8px auto;font-family:var(--f-body)">
+  <rect width="360" height="250" rx="12" fill="#fff"/>
+  ${grid}
+  <polyline points="${line}" fill="none" stroke="#2b2f3a" stroke-width="1.8" stroke-linejoin="round"/>
+  <line x1="${R1}" y1="${Y0+4}" x2="${R1}" y2="${BL-55}" stroke="#3a6fb8" stroke-dasharray="3 2"/><line x1="${R2}" y1="${Y0+4}" x2="${R2}" y2="${BL-55}" stroke="#3a6fb8" stroke-dasharray="3 2"/>
+  ${arr(R1,R2,Y0+10,'#3a6fb8')}<rect x="${(R1+R2)/2-24}" y="${Y0+2}" width="48" height="15" rx="4" fill="#fff"/><text x="${(R1+R2)/2}" y="${Y0+14}" font-size="11" font-weight="800" fill="#3a6fb8" text-anchor="middle">RR間隔</text>
+  <text x="${R1-38}" y="${BL-12}" font-size="10" font-weight="700" fill="${T}" text-anchor="middle">P</text><text x="${R1+7}" y="${BL-58}" font-size="10" font-weight="700" fill="${T}">R</text><text x="${R1+58}" y="${BL-20}" font-size="10" font-weight="700" fill="${T}" text-anchor="middle">T</text>
+  <!-- scale annotations -->
+  <rect x="270" y="${Y0+25}" width="5" height="5" fill="none" stroke="#d9473f" stroke-width="1.6"/>
+  <text x="280" y="${Y0+31}" font-size="9.5" fill="#d9473f" font-weight="700">1マス＝1mm</text>
+  <path d="M${X0} ${Y0+H+8} v12 M${X0+5} ${Y0+H+8} v12 M${X0} ${Y0+H+14} h5" stroke="#d9473f" stroke-width="1.6"/><text x="${X0+9}" y="${Y0+H+18}" font-size="10" font-weight="700" fill="#d9473f">0.04秒</text>
+  ${arr(X0+75,X0+100,Y0+H+14,'#d9473f')}<text x="${X0+106}" y="${Y0+H+18}" font-size="10" font-weight="700" fill="#d9473f">0.2秒</text>
+  ${arr(X0+175,X0+300,Y0+H+14,'#d9473f')}<rect x="${X0+226}" y="${Y0+H+7}" width="24" height="14" fill="#fff"/><text x="${X0+238}" y="${Y0+H+18}" font-size="10" font-weight="700" fill="#d9473f" text-anchor="middle">1秒</text>
+  <text x="180" y="${Y0+H+40}" font-size="11" font-weight="800" fill="${T}" text-anchor="middle">横軸＝時間（1mm＝0.04秒）　縦軸＝電圧（1mm＝0.1mV）</text>
+  <line x1="12" y1="${BL-5}" x2="12" y2="${BL}" stroke="#d9473f" stroke-width="2"/><text x="6" y="${BL-10}" font-size="8.5" fill="#d9473f" font-weight="700">0.1mV</text>
+  </svg>`;
+};
+const ekIntervals = () => {
+  const T='#2b2f3a', BL=118, R=150, k=1.6;
+  const pts=ekBeat(R,BL,k);
+  const Ps=R-38*k-16, Qs=R-6*k, Se=R+8*k, Te=R+58*k+26;
+  const arr=(x1,x2,y,c,t,v)=>`<line x1="${x1}" y1="${y-8}" x2="${x1}" y2="${y+8}" stroke="${c}"/><line x1="${x2}" y1="${y-8}" x2="${x2}" y2="${y+8}" stroke="${c}"/><line x1="${x1+3}" y1="${y}" x2="${x2-3}" y2="${y}" stroke="${c}" stroke-width="1.8"/><path d="M${x1} ${y} l6 -4 v8Z M${x2} ${y} l-6 -4 v8Z" fill="${c}"/>`;
+  return `<svg viewBox="0 0 360 230" width="100%" role="img" aria-label="PQ間隔はP波の始まりからQRS波の始まりまで、QRS幅はQRS波の始まりから終わりまで、QT間隔はQRS波の始まりからT波の終わりまで。" style="display:block;max-width:460px;margin:8px auto;font-family:var(--f-body)">
+  <rect width="360" height="230" rx="12" fill="#fff"/>
+  <line x1="20" y1="${BL}" x2="340" y2="${BL}" stroke="#e3e5ea"/>
+  <polyline points="${pts}" fill="none" stroke="#2b2f3a" stroke-width="2" stroke-linejoin="round"/>
+  ${[Ps,Qs,Se,Te].map(x=>`<line x1="${x}" y1="20" x2="${x}" y2="190" stroke="#b9bfcc" stroke-dasharray="3 3"/>`).join('')}
+  <text x="${R-38*k}" y="${BL-16}" font-size="11" font-weight="800" fill="${T}" text-anchor="middle">P</text><text x="${R+6}" y="${BL-80}" font-size="11" font-weight="800" fill="${T}">R</text><text x="${R+58*k}" y="${BL-28}" font-size="11" font-weight="800" fill="${T}" text-anchor="middle">T</text>
+  ${arr(Ps,Qs,148,'#3a6fb8')}<text x="${(Ps+Qs)/2}" y="166" font-size="10.5" font-weight="800" fill="#3a6fb8" text-anchor="middle">PQ間隔</text><text x="${(Ps+Qs)/2}" y="179" font-size="9.5" fill="#3a6fb8" text-anchor="middle">0.12〜0.20秒</text>
+  ${arr(Qs,Se,148,'#d9473f')}<text x="${Se+4}" y="140" font-size="10.5" font-weight="800" fill="#d9473f">QRS幅</text><text x="${Se+4}" y="128" font-size="9.5" fill="#d9473f">0.10秒未満</text>
+  ${arr(Qs,Te,200,'#2b2f3a')}<text x="${(Qs+Te)/2}" y="220" font-size="10.5" font-weight="800" fill="${T}" text-anchor="middle">QT間隔　0.36〜0.44秒</text>
+  </svg>`;
+};
 const EK_LESSONS = [
   { id:'1-1', t:'心電図', sub:'波形が示すもの', plan:['ek','ek','ek','ek','ek'], body:()=>`
     <section class="panel"><h3>心電図とは</h3>
@@ -3831,6 +3884,35 @@ const EK_LESSONS = [
     <tr><td style="white-space:nowrap"><b>T波</b></td><td><b>心室</b>の興奮からの回復時（再分極）に生じる</td></tr>
     <tr><td style="white-space:nowrap"><b>U波</b></td><td>回復（再分極）の終了時に生じる。誘導によってはみられない</td></tr></table></div>
     <p class="small muted">房室結節を伝わる間は、興奮が小さいため波形には出ず、P波とQRS波のあいだは平らになります。洞結節の興奮も小さすぎて心電図には現れません。</p></section>` },
+  { id:'1-3', t:'心電図の読み方', sub:'リズム・心拍数・各部位・波形の異常', plan:['ek3','ek3','ek3','ek3','ek3'], body:()=>`
+    <section class="panel"><h3>心電図の見方</h3>
+    ${rule('横軸＝時間（1mm＝0.04秒）、縦軸＝電圧（1mm＝0.1mV）')}
+    ${ekGrid()}
+    <div class="scroll"><table class="tbl"><tr><th>横軸（時間）</th><th>長さ</th></tr>
+    <tr><td>小さいマス 1つ（1mm）</td><td><b>0.04秒</b></td></tr>
+    <tr><td>大きいマス 1つ（5mm）</td><td><b>0.2秒</b></td></tr>
+    <tr><td>大きいマス 5つ（25mm）</td><td><b>1秒</b></td></tr></table></div></section>
+    <section class="panel"><h3>心電図の読み方</h3>
+    <p><b>① リズム（RR間隔）をみる</b></p>
+    <p>すべての<b>RR間隔</b>がだいたい同じであることを確かめます。RR間隔が一定でない場合は<b>不整脈</b>を疑います。</p>
+    <p><b>② 心拍数をみる</b></p>
+    ${rule('心拍数（回/分）＝ 60（秒）÷ RR間隔（秒）')}
+    <p>正常の心拍数は<b>60〜100回/分</b>です。</p>
+    <p class="small muted">例：RR間隔が大きいマス5つ（1秒）なら 60÷1＝60回/分。大きいマス4つ（0.8秒）なら 60÷0.8＝75回/分。</p>
+    <p><b>③ 各部位の変化をみる</b></p>
+    ${ekIntervals()}
+    <p><b>④ 波形の異常をみる</b></p>
+    <div class="scroll"><table class="tbl"><tr><th>部位</th><th>異常</th></tr>
+    <tr><td><b>P波</b><br><span class="small muted">心房興奮時間<br>基準：0.08〜0.1秒</span></td><td><b>僧帽性P波</b>（左心房負荷）：左心房拡大・肥大<br><b>肺性P波</b>（右心房負荷）：右心房拡大</td></tr>
+    <tr><td><b>PQ間隔</b><br><span class="small muted">房室興奮時間<br>基準：0.12〜0.20秒</span></td><td><b>短縮</b>：WPW症候群など<br><b>延長</b>：1度房室ブロック、ジギタリス効果</td></tr>
+    <tr><td><b>QRS波</b><br><span class="small muted">心室興奮時間<br>基準：0.10秒未満</span></td><td><b>0.10〜0.12秒未満</b>：不完全脚ブロック<br><b>0.12秒以上</b>：完全脚ブロック</td></tr>
+    <tr><td><b>ST</b><br><span class="small muted">左右の心室の脱分極から再分極<br>基準：基線の高さと一致</span></td><td><b>上昇</b>：<b>急性心筋梗塞</b>、冠攣縮性狭心症、急性心膜炎、心筋炎<br><b>低下</b>：<b>労作性狭心症</b>、<b>低カリウム血症</b>、心内膜下梗塞、ジギタリス効果</td></tr>
+    <tr><td><b>QT間隔</b><br><span class="small muted">脱分極開始から再分極終了<br>基準：0.36〜0.44秒</span></td><td><b>短縮</b>：高カルシウム血症、ジギタリス効果<br><b>延長</b>：<b>低カリウム血症</b>、低カルシウム血症、低マグネシウム血症</td></tr>
+    <tr><td><b>T波</b><br><span class="small muted">左右心室の興奮から再分極<br>基準：Ⅰ、Ⅱ、V₃〜V₆で陽性波、aV<sub>R</sub>で陰性波</span></td><td><b>T波増高（テント状T波）</b>：<b>高カリウム血症</b><br><b>T波の平坦化（または逆転）</b>：低カリウム血症、甲状腺機能低下症</td></tr></table></div>
+    <p class="small muted">基線に異常がみられる場合もあります。</p>
+    <div class="scroll"><table class="tbl"><tr><th>基線の異常</th><th>疾患</th></tr>
+    <tr><td><b>粗動波／F波</b><br><span class="small muted">ノコギリの歯状の揺れ</span></td><td>心房粗動</td></tr>
+    <tr><td><b>細動波／f波</b><br><span class="small muted">基線の小刻みな揺れ</span></td><td>心房細動（甲状腺機能亢進症、僧帽弁狭窄症、僧帽弁閉鎖不全症など）</td></tr></table></div></section>` },
 ];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
@@ -3908,7 +3990,7 @@ const TERMS = {
   pk:[['腸肝循環','肝臓から胆汁に出た薬が腸で再吸収され、門脈から肝臓に戻ること。作用が長く続きやすい。'],['舌下投与','舌の下で溶かして口の粘膜から吸収させる。ニトログリセリンなど。'],['経皮投与','貼り薬。ゆっくり持続的に吸収され、血中濃度が安定しやすい。'],['直腸内投与','坐薬。飲めない人にも使え、初回通過効果を一部さけられる。'],['ADME','吸収（A）・分布（D）・代謝（M）・排泄（E）。薬が体に入ってから出ていくまで。'],['吸収','投与した薬が全身をめぐる血液の中に入ること。'],['分布','薬が血液の中から組織へ移ること。作用するのは遊離型。'],['代謝','主に肝臓で薬を分解し、水に溶けやすくして排泄しやすくすること。'],['排泄','薬や代謝物が体の外へ出ること。主に腎臓から尿中へ。'],['初回通過効果','飲み薬が全身に出る前に、肝臓で一部が代謝されること。'],['絶対過敏期','妊娠4〜7週ごろ。胎児の器官がつくられ、薬の影響を受けやすい時期。']],
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
-  ek:[['心電図（ECG）','心臓の活動電位の経時的変化をグラフに記録したもの。'],['陽性波・陰性波','電極に向かう興奮＝上向き（陽性波）、遠ざかる興奮＝下向き（陰性波）。'],['P波','心房の興奮（脱分極）。'],['QRS波','心室の興奮（脱分極）。'],['T波','心室の回復（再分極）。'],['U波','再分極の終了時。誘導によってはみられない。']],
+  ek:[['心電図（ECG）','心臓の活動電位の経時的変化をグラフに記録したもの。'],['陽性波・陰性波','電極に向かう興奮＝上向き（陽性波）、遠ざかる興奮＝下向き（陰性波）。'],['P波','心房の興奮（脱分極）。'],['QRS波','心室の興奮（脱分極）。'],['T波','心室の回復（再分極）。'],['U波','再分極の終了時。誘導によってはみられない。'],['RR間隔','R波とR波の間隔。一定でなければ不整脈を疑う。'],['心拍数','60÷RR間隔（秒）。正常60〜100回/分。'],['PQ間隔','0.12〜0.20秒。延長＝1度房室ブロック。'],['QRS幅','0.10秒未満。0.12秒以上は完全脚ブロック。'],['QT間隔','0.36〜0.44秒。低K・低Ca・低Mgで延長。'],['テント状T波','高カリウム血症。']],
   jv:[['頸静脈怒張','右心系への還流障害でCVPが上昇し、頸静脈が怒張する。右心不全に多い。'],['中心静脈圧（CVP）','右心房付近の静脈圧。上昇すると頸静脈に伝わる。'],['上大静脈症候群','上大静脈の圧迫・閉塞で頸静脈怒張がみられる。']],
   pa:[['大脈・小脈','大脈＝脈圧⬆（大動脈弁閉鎖不全症など）、小脈＝脈圧⬇（大動脈弁狭窄症など）。'],['速脈','急速に強くなり急速に消失。大動脈弁閉鎖不全症。'],['遅脈','ゆっくり大きくなりゆっくり小さくなる。大動脈弁狭窄症。'],['頻脈・徐脈','頻脈＝100回/分以上、徐脈＝60回/分未満。'],['奇脈','吸気時に収縮期血圧が10mmHg以上低下。心タンポナーデなど。']],
   cy:[['チアノーゼ','毛細血管の還元ヘモグロビンが5g/dL以上で、皮膚が青紫調をおびる状態。'],['還元ヘモグロビン','酸素化されていない（＝酸素を運搬できない）ヘモグロビン。'],['中心性チアノーゼ','動脈血の酸素化障害。口腔粘膜にも生じる。'],['末梢性チアノーゼ','局所の循環不全。四肢末端・顔面に出て、口腔粘膜には生じない。']],
@@ -3962,7 +4044,7 @@ const UNITS = {
   cy: { no:'C4-1', title:'チアノーゼ', subject:'循環器系の主要症候', course:'adC', subj:3, lessons:CY_LESSONS, cards:'cy', drill:'cy' },
   pa: { no:'C4-2', title:'脈拍異常', subject:'循環器系の主要症候', course:'adC', subj:3, lessons:PA_LESSONS, cards:'pa', drill:'pa' },
   jv: { no:'C4-3', title:'頸静脈怒張', subject:'循環器系の主要症候', course:'adC', subj:3, lessons:JV_LESSONS, cards:'jv', drill:'jv' },
-  ek: { no:'C6-1', title:'心電図', subject:'循環器系の検査', course:'adC', subj:5, lessons:EK_LESSONS, cards:'ek', drill:'ek' },
+  ek: { no:'C6-1', title:'心電図', subject:'循環器系の検査', course:'adC', subj:5, lessons:EK_LESSONS, soon:[{ id:'1-2', t:'誘導法' }], cards:'ek', drill:'ek' },
   pc: { no:'C2-3', title:'肺循環', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:PC_LESSONS, cards:'pc', drill:'pc' },
   bp: { no:'C2-2', title:'血管系の生理', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:BP_LESSONS, cards:'bp', drill:'bp' },
   art: { no:'C2-1', title:'血管系の解剖', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:ART_LESSONS, cards:'art', drill:'art' },
@@ -4510,20 +4592,22 @@ function vCourse(){
   ${c.subjects.map((sb,i)=>{ const lc=sb.link&&courseById(sb.link), r=lc?readyCount(lc):sb.units.filter(u=>u.ready).length, head=sb.sec&&(i===0||c.subjects[i-1].sec!==sb.sec)?`<div class="lsec">${sb.sec}</div>`:'';
     return `${head}<button class="item" data-act="${lc?'course':'subject'}" data-arg="${lc?sb.link:i}"><span class="lid">${sb.k}</span><span class="body"><b>${sb.name}</b><br><span class="small muted">${lc?lc.subjects.length+'項目・'+unitCount(lc)+'章':sb.units.length+'章'}</span></span><span class="tag ${r?'mid':''}">${r?'公開中 '+r:'準備中'}</span><span class="chev">›</span></button>`; }).join('')}</div></div>`;
 }
+const withSoon=(u)=>[...u.lessons,...(u.soon||[]).map(x=>({...x,_soon:1}))].sort((a,b)=>a.id.localeCompare(b.id,undefined,{numeric:true}));
+const soonItem=(l)=>`<div class="item" style="opacity:.55;cursor:default"><span class="lid">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">準備中</span></span></div>`;
 function vSubject(){
   const c=courseById(S.course), sb=c.subjects[S.subj];
   return `${top(c.name+'　'+sb.name)}<div class="stack"><p class="muted small">1つの星屑は約5分。上から順に進めるのがおすすめです。項目の星屑をぜんぶクリアすると、星座図鑑・惑星図鑑・天体観測のカードが1まいめくれます。</p><div class="list">
   ${sb.units.map((un,i)=>{ const u=un.ready&&UNITS[un.ready];
     if(u){ const uid=un.ready, d=doneCount(uid), n=u.lessons.length, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length;
       return `<div class="lsec" style="display:flex;justify-content:space-between;align-items:center"><span>${i+1}　${un.t}</span><span class="small">${d}/${n}</span></div>`
-        + u.lessons.map(l=>`<button class="item" data-act="lesson" data-arg="${l.id}" data-uid="${uid}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')
+        + withSoon(u).map(l=>l._soon?soonItem(l):`<button class="item" data-act="lesson" data-arg="${l.id}" data-uid="${uid}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')
         + (T.length?`<button class="item" data-act="cards" data-uid="${uid}"><span class="lid">◇</span><span class="body"><b>用語カード</b><br><span class="small muted">用語の確認 ${T.length}枚</span></span><span class="tag ${kn===T.length?'done':kn?'mid':''}">${kn}/${T.length}</span><span class="chev">›</span></button>`:''); }
     return `<div class="lsec" style="display:flex;justify-content:space-between;align-items:center;opacity:.6"><span>${i+1}　${un.t}</span><span class="small">準備中</span></div>`; }).join('') || '<p class="muted small" style="padding:16px">準備中です。</p>'}</div></div>`;
 }
 function vUnit(){
   const u=CU(), uid=S.uid, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length, hasPdf=Object.keys(PDF).some(k=>k.startsWith(u.drill+'-')&&PDF[k].q);
   return `${top(u.no+'　'+u.title)}<div class="stack"><p class="muted small">${u.lessons.length}つの星屑　1つ約5分。上から順に進めるのがおすすめです。1つクリアするごとに星屑が1つ、ぜんぶクリアすると流れ星のメッセージが届きます。</p><div class="list">
-  ${u.lessons.map(l=>`<button class="item" data-act="lesson" data-arg="${l.id}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')}
+  ${withSoon(u).map(l=>l._soon?soonItem(l):`<button class="item" data-act="lesson" data-arg="${l.id}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')}
   ${hasPdf?`<button class="item" data-act="go" data-arg="drill"><span class="lid">▶</span><span class="body"><b>演習問題</b><br><span class="small muted">PDF・Lv1〜Lv5</span></span><span class="chev">›</span></button>`:''}
   </div>${T.length?`<div class="list"><button class="item" data-act="cards"><span class="body"><b>用語カード</b><br><span class="small muted">用語の確認 ${T.length}枚</span></span><span class="tag ${kn===T.length?'done':kn?'mid':''}">${kn}/${T.length}</span><span class="chev">›</span></button></div>`:''}</div>`;
 }
