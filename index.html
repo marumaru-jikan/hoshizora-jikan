@@ -3368,6 +3368,13 @@ Object.assign(POOL, {
     ['PSVT','突然始まり突然止まる、幅の狭いQRS波の規則的な頻拍は？','発作性上室頻拍（PSVT）',['心室頻拍','心室細動','心房細動'],'迷走神経刺激やATP・ベラパミルで止めます。'],
     ['洞不全症候群','洞不全症候群Ⅲ群は？','徐脈頻脈症候群',['洞徐脈','洞停止・洞房ブロック','完全房室ブロック'],'Ⅰ群＝洞徐脈、Ⅱ群＝洞停止・洞房ブロックです。'],
   ],
+  lisch:[
+    ['冠動脈の血流量','冠動脈の血流量は心拍出量の約何%？','5%',['1%','20%','50%'],'左右の冠動脈が大動脈起始部から分かれ、心臓のポンプ運動を支えています。'],
+    ['原因','冠動脈の狭窄・閉塞の原因として最も多いのは？','動脈硬化（粥状硬化）',['冠動脈の攣縮','川崎病','冠動脈塞栓症'],'虚血性心疾患の多くは動脈硬化によるものです。'],
+    ['異型狭心症','夜間〜早朝の安静時に起こり、発作時にST上昇がみられるのは？','異型（冠攣縮性）狭心症',['労作性狭心症','不安定狭心症','急性心筋梗塞'],'冠動脈の攣縮による一過性の狭窄で、硝酸薬が著効します。'],
+    ['急性心筋梗塞','急性心筋梗塞の胸痛の特徴は？','20分以上続き、硝酸薬が無効',['3〜5分で安静により寛解','硝酸薬が著効','労作時のみに起こる'],'血栓による完全閉塞で心筋が壊死し、心筋傷害マーカーが上昇します。'],
+    ['ACS','急性冠症候群（ACS）に含まれるのは？','不安定狭心症と急性心筋梗塞',['労作性狭心症と異型狭心症','安定狭心症と異型狭心症','労作性狭心症のみ'],'労作性狭心症と異型狭心症は慢性冠動脈疾患とよばれます。'],
+  ],
   jv:[
     ['頸静脈怒張','頸静脈怒張が多く認められるのは？','右心不全',['左心不全のみ','貧血','脱水'],'右心系への還流障害でCVPが上がり、頸静脈が怒張します。'],
     ['CVP','頸静脈怒張で上昇しているのは？','中心静脈圧（CVP）',['肺動脈楔入圧のみ','動脈血酸素分圧','膠質浸透圧'],'右心房圧（CVP）の上昇が上大静脈を介して頸静脈に伝わります。'],
@@ -4059,6 +4066,9 @@ const ischWave = (type) => {
   if(type==='q') Object.assign(P,{qd:15,qw:6,r:18});
   if(type==='negU') Object.assign(P,{U:-4.5});
   if(type==='bigU') Object.assign(P,{U:9,Th:5});
+  if(type==='hyperT') Object.assign(P,{Th:20});
+  if(type==='stupQ') Object.assign(P,{st:11,Th:6,qd:12,qw:6,r:20});
+  if(type==='qnegT') Object.assign(P,{qd:15,qw:6,r:18,Th:-10});
   let grid='';for(let x=0;x<=W;x+=10)grid+=`<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#f3d3d3" stroke-width="${x%50?0.5:1}"/>`;for(let y=2;y<=H;y+=10)grid+=`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#f3d3d3" stroke-width="${(y-2)%50?0.5:1}"/>`;
   const c=48, pts=[];
   for(let x=2;x<=W-2;x+=0.5){let y=g(x,24,4.5,4)+g(x,92,9,P.Th)+g(x,120,6,P.U);
@@ -4317,6 +4327,56 @@ const LARR_LESSONS = [
     ${it('QT延長症候群（LQTS）','lqt','<b>QT間隔が長い</b>（T波が遅れて出る）','トルサード・ド・ポアンツ → 心室細動を起こすことがある。先天性と、薬・低K血症などによる後天性がある')}
     ${it('WPW症候群（早期興奮症候群）','wpw','<b>PQ間隔が短く</b>、QRS波の立ち上がりがなだらか（<b>デルタ波</b>）','副伝導路（ケント束）を通って心室が早く興奮する。カテーテルアブレーションで治療')}</section>`; } },
 ];
+const ihdVessel = (type) => {
+  const W=160,H=70;
+  const wall='#f2c9cf', lum='#fbeef0';
+  let mid='', top=`M0 14 H${W}`, bot=`M0 56 H${W}`;
+  if(type==='spasm'){ top=`M0 14 Q${W/2} 34 ${W} 14`; bot=`M0 56 Q${W/2} 36 ${W} 56`; mid=`<path d="M60 6 l4 -4 l4 4 l4 -4 M90 6 l4 -4 l4 4 l4 -4 M60 66 l4 4 l4 -4 l4 4 M90 66 l4 4 l4 -4 l4 4" stroke="#e0a020" stroke-width="1.5" fill="none"/>`; }
+  const plaque=`<path d="M48 56 Q80 30 112 56 Z" fill="#f4d77a" stroke="#d9b54a"/>`;
+  const thr=(full)=>`<path d="${full?'M86 56 Q92 14 104 18 Q114 26 112 56 Z':'M84 47 Q90 28 104 30 Q113 38 111 52 Q96 54 84 47Z'}" fill="#7a2a2a"/>`;
+  let flow=`<path d="M8 35 H${type==='ami'?70:150}" stroke="#c0305a" stroke-width="2.4" stroke-dasharray="${type==='ami'?'0':'6 4'}" fill="none"/>`+(type==='ami'?`<path d="M74 29 l10 12 M84 29 l-10 12" stroke="#2b2f3a" stroke-width="2.4"/>`:`<path d="M150 35 l-8 -5 v10Z" fill="#c0305a"/>`);
+  if(type==='stable'||type==='unstable'||type==='ami') mid+=plaque;
+  if(type==='unstable') mid+=thr(false);
+  if(type==='ami') mid+=thr(true);
+  if(type!=='spasm') flow=flow.replace('M8 35','M8 30').replace(/35 l-8 -5 v10Z/,'30 l-8 -5 v10Z').replace('M150 35','M150 30');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:200px;margin:4px auto" aria-hidden="true">
+  <rect width="${W}" height="${H}" fill="${lum}"/>
+  <path d="${top} V0 H0Z" fill="${wall}"/><path d="${bot} V${H} H0Z" fill="${wall}"/>
+  ${mid}${flow}</svg>`;
+};
+const LISCH_LESSONS = [
+  { id:'3-1', t:'虚血性心疾患', sub:'虚血性心疾患とは・分類', plan:['lisch','lisch','lisch','lisch','lisch'], body:()=>{
+    const card=(name,type,tag,rows)=>`<p style="margin:16px 0 0"><b>${name}</b> <span class="tag" style="font-size:11px">${tag}</span></p>${ihdVessel(type)}<div class="scroll"><table class="tbl">${rows.map(([a,b])=>`<tr><td style="white-space:nowrap"><b>${a}</b></td><td>${b}</td></tr>`).join('')}</table></div>`;
+    return `
+    <section class="panel"><h3>虚血性心疾患とは</h3>
+    ${rule('冠動脈の狭窄・閉塞で、心筋が虚血に陥る病態')}
+    <p>心臓を栄養する血管は<b>冠動脈</b>とよばれ、<b>左冠動脈</b>と<b>右冠動脈</b>があり、大動脈の起始部から分かれます。その血流量は<b>心拍出量の5%</b>を占め、心臓のポンプ運動を支えています。</p>
+    <p>冠動脈が何らかの原因で狭窄・閉塞すると、酸素需要に見合った血液を心筋に送ることができなくなり、心筋が<b>虚血</b>に陥ります。</p>
+    ${chain(['冠動脈の狭窄・閉塞','心筋虚血','胸痛出現'])}
+    <div class="scroll"><table class="tbl"><tr><th>狭窄・閉塞の原因</th></tr>
+    <tr><td>・<b>動脈硬化（粥状硬化）</b>（最多）<br>・冠動脈の攣縮<br>・動脈炎（川崎病など）<br>・冠動脈塞栓症　など</td></tr></table></div></section>
+    <section class="panel"><h3>分類</h3>
+    ${rule('慢性冠動脈疾患（労作性・異型）と<br>急性冠症候群（ACS：不安定狭心症・急性心筋梗塞）')}
+    <p class="small muted">狭窄・閉塞が急速に進むACSに対して、経過が比較的ゆるやかな労作性狭心症と異型狭心症は慢性冠動脈疾患とよばれます。緊急度は 労作性 → 異型 → 不安定 → 急性心筋梗塞 の順に高くなります。</p>
+    ${card('労作性狭心症','stable','慢性',[['機序','動脈硬化（アテローム）による器質的狭窄'],['発作','<b>労作時</b>に起こる前胸部の圧迫感・絞扼感。<b>3〜5分</b>程度（安静で寛解）'],['硝酸薬','<b>著効</b>'],['心筋傷害<br>マーカー','上昇なし'],['ST変化','<b>ST⬇</b>']])}
+    ${card('異型（冠攣縮性）狭心症','spasm','慢性',[['機序','冠動脈の<b>攣縮</b>による一過性の狭窄〜完全閉塞'],['発作','<b>夜間〜早朝</b>、<b>安静時</b>に起こる前胸部痛。数分〜15分程度'],['硝酸薬','<b>著効</b>'],['心筋傷害<br>マーカー','上昇なし'],['ST変化','<b>ST⬆</b>']])}
+    ${card('不安定狭心症','unstable','ACS',[['機序','<b>血栓</b>形成による狭窄'],['発作','最近<b>3週以内</b>に新たに出現、もしくは徐々に増悪。<b>安静時</b>にも出現。数分〜20分程度'],['硝酸薬','有効（高リスクでは無効）'],['心筋傷害<br>マーカー','上昇なし（高リスクでは上昇：心筋トロポニンT⬆）'],['ST変化','ST⬇（非ST上昇型ACS）']])}
+    ${card('急性心筋梗塞（AMI）','ami','ACS',[['機序','<b>血栓</b>形成による<b>完全閉塞</b> → 心筋壊死'],['発作','<b>激烈な胸部痛</b>。<b>20分以上</b>継続（安静で寛解しない）'],['硝酸薬','<b>無効</b>'],['心筋傷害<br>マーカー','<b>上昇</b>（CK⬆、CK-MB⬆、心筋トロポニンT⬆など）'],['ST変化','<b>ST⬆</b>（ST上昇型ACS）']])}
+    <div class="scroll" style="margin-top:14px"><table class="tbl"><tr><th>分け方</th><th>分類</th></tr>
+    <tr><td><b>発作の起こり方</b></td><td>労作性狭心症（労作時に起こる）<br>安静時狭心症（安静時にも起こる）＝異型・不安定</td></tr>
+    <tr><td><b>臨床経過</b></td><td>安定狭心症（発作の起こり方・症状が3週間以上同じ）＝労作性・異型<br>不安定狭心症（発作・症状に変化があるもの）</td></tr></table></div></section>
+    <section class="panel"><h3>虚血性心疾患の心電図</h3>
+    ${rule('狭心症＝発作時だけ変化（ST⬇ or ST⬆）<br>心筋梗塞＝ST⬆ → 異常Q波 → 冠性T波と経時的に変化')}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div><p class="small" style="margin:0"><b>正常</b></p>${ischWave('normal')}</div><div><p class="small" style="margin:0"><b>労作性狭心症：ST⬇</b></p>${ischWave('stdown')}</div><div><p class="small" style="margin:0"><b>異型狭心症：ST⬆</b></p>${ischWave('stup')}</div><div><p class="small" style="margin:0"><b>不安定狭心症：ST⬇</b></p>${ischWave('stdown')}</div></div>
+    <div class="scroll"><table class="tbl"><tr><th style="white-space:nowrap">疾患</th><th>心電図の特徴</th></tr>
+    <tr><td style="white-space:nowrap"><b>労作性狭心症</b></td><td>発作時に<b>ST低下</b>。心内膜側の虚血。発作がおさまると元に戻る。安静時の心電図は正常のことが多いので、<b>運動負荷心電図</b>や<b>ホルター心電図</b>で調べる</td></tr>
+    <tr><td style="white-space:nowrap"><b>異型狭心症</b></td><td>発作時に<b>一過性のST上昇</b>。発作がおさまると元に戻る。夜間〜早朝に起こるので<b>ホルター心電図</b>が有用</td></tr>
+    <tr><td style="white-space:nowrap"><b>不安定狭心症</b></td><td>ST低下やT波の変化（非ST上昇型ACS）。心電図が正常のこともある</td></tr>
+    <tr><td style="white-space:nowrap"><b>急性心筋梗塞</b></td><td><b>ST上昇</b>（ST上昇型ACS）。時間とともに波形が変化する（下の図）</td></tr></table></div>
+    <p style="margin:16px 0 4px"><b>急性心筋梗塞の心電図の経時変化</b></p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><div><p class="small" style="margin:0"><b>① 発症直後：T波増高</b></p>${ischWave('hyperT')}</div><div><p class="small" style="margin:0"><b>② 数時間：ST上昇</b></p>${ischWave('stup')}</div><div><p class="small" style="margin:0"><b>③ 数時間〜：異常Q波</b></p>${ischWave('stupQ')}</div><div><p class="small" style="margin:0"><b>④ 数日〜：冠性T波</b></p>${ischWave('qnegT')}</div></div>
+    <p class="small muted">ST上昇は数日で基線に戻りますが、<b>異常Q波</b>は心筋壊死のあととして長く残ります。梗塞を起こした部位を向いた誘導にST上昇が出るので、どの誘導で変化があるかで梗塞の場所がわかります。</p></section>`; } },
+];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
     <section class="panel"><h3>吸収・分布・代謝・排泄（ADME）</h3>
@@ -4394,6 +4454,7 @@ const TERMS = {
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
   ek:[['心電図（ECG）','心臓の活動電位の経時的変化をグラフに記録したもの。'],['陽性波・陰性波','電極に向かう興奮＝上向き（陽性波）、遠ざかる興奮＝下向き（陰性波）。'],['P波','心房の興奮（脱分極）。'],['QRS波','心室の興奮（脱分極）。'],['T波','心室の回復（再分極）。'],['U波','再分極の終了時。誘導によってはみられない。'],['RR間隔','R波とR波の間隔。一定でなければ不整脈を疑う。'],['心拍数','60÷RR間隔（秒）。正常60〜100回/分。'],['PQ間隔','0.12〜0.20秒。延長＝1度房室ブロック。'],['QRS幅','0.10秒未満。0.12秒以上は完全脚ブロック。'],['QT間隔','0.36〜0.44秒。低K・低Ca・低Mgで延長。'],['テント状T波','高カリウム血症。'],['アーチファクト（ノイズ）','心電図に混入する心電図以外の現象。交流波、シバリング、発汗、電極の浮き・外れ。'],['シバリング','高周波の筋肉運動（ふるえ）によるノイズ。'],['ホルター心電図','24時間連続で記録する携帯型心電計。電極5か所。日常生活の制限なし。'],['運動負荷心電図法','心筋虚血を誘発しST変化を観察。マスター2階段、トレッドミル、エルゴメータ。'],['高カリウム血症の心電図','テント状T波、QT短縮。重度でP波消失・QRS延長→心室細動。'],['低カリウム血症の心電図','ST低下、T波平坦化、U波出現。'],['高カルシウム血症の心電図','QT短縮、ST短縮。'],['低カルシウム血症の心電図','QT延長、ST延長。']],
+  lisch:[['虚血性心疾患','冠動脈の狭窄・閉塞で心筋が虚血に陥る病態。原因の多くは動脈硬化。'],['冠動脈','左冠動脈と右冠動脈。大動脈起始部から分岐。血流量は心拍出量の5%。'],['慢性冠動脈疾患','労作性狭心症、異型（冠攣縮性）狭心症。'],['急性冠症候群（ACS）','不安定狭心症、急性心筋梗塞。'],['労作性狭心症','労作時、3〜5分、硝酸薬著効、ST低下。'],['異型狭心症','夜間〜早朝の安静時、冠攣縮、ST上昇、硝酸薬著効。'],['急性心筋梗塞','20分以上の激烈な胸痛、硝酸薬無効、ST上昇、CK・トロポニン上昇。']],
   larr:[['不整脈','心拍のリズムや回数が正常でない状態。頻脈性＞100回/分、徐脈性＜60回/分。'],['上室性の頻脈性不整脈','洞頻脈、APC、AT、PSVT、AFL、AF。'],['心室性の頻脈性不整脈','VPC、VT、VF。'],['徐脈性不整脈','房室ブロック（1〜3度）、洞不全症候群（Ⅰ〜Ⅲ群）。'],['その他の不整脈','QT延長症候群、早期興奮症候群（WPW・LGL）。'],['QRS幅で見分ける','狭い（0.12秒未満）＝上室性、広い＝心室性。'],['1度房室ブロック','PQ間隔＞0.20秒。QRS脱落なし。'],['WPW症候群','PQ短縮とデルタ波。副伝導路（ケント束）。'],['QT延長症候群','QT延長→トルサード・ド・ポアンツ→心室細動。']],
   lecg:[['正常の心電図','P波0.08〜0.10秒、PQ0.12〜0.20秒、QRS0.10秒未満、QT0.36〜0.44秒。'],['心拍数','60〜100回/分。300÷大マスの数でも求められる。'],['ST上昇','急性心筋梗塞、冠攣縮性狭心症、急性心膜炎、心筋炎。'],['ST下降','労作性狭心症、心内膜下梗塞、低K血症、ジギタリス効果。'],['陰性T波','心筋虚血、心筋梗塞の回復期（冠性T波）、肥大型心筋症。'],['異常Q波','幅0.04秒以上、深さR波の1/4以上。心筋壊死（心筋梗塞）。'],['異常U波','陰性U波＝心筋虚血、U波増高＝低カリウム血症。'],['肺性P波','右心房負荷。Ⅱ・Ⅲ・aVFで高さ2.5mm以上の尖ったP波。'],['僧帽性P波','左心房負荷。Ⅰ・Ⅱで幅0.12秒以上の二峰性P波。'],['右脚ブロック','QRS幅0.12秒以上（完全）。V1でrsR′型（M字型）。'],['左脚ブロック','QRS幅0.12秒以上。V6で幅広い結節性R波。心疾患を伴うことが多い。'],['心房細動','P波消失、f波、RR不規則。脳梗塞・心不全を合併しやすい。'],['心房粗動','ノコギリ状のF波（心房約300回/分）。'],['心室期外収縮','早く出る幅広いQRS。多源性・連発・R on Tは危険。'],['心室細動','心室筋が無秩序に興奮＝心停止。除細動が唯一の救命方法。'],['完全房室ブロック','P波とQRS波が無関係。アダムス・ストークス発作。ペースメーカー。']],
   jv:[['頸静脈怒張','右心系への還流障害でCVPが上昇し、頸静脈が怒張する。右心不全に多い。'],['中心静脈圧（CVP）','右心房付近の静脈圧。上昇すると頸静脈に伝わる。'],['上大静脈症候群','上大静脈の圧迫・閉塞で頸静脈怒張がみられる。']],
@@ -4443,6 +4504,7 @@ const UNITS = {
   ae:  { no:'薬2', title:'薬物の有害事象', subject:'基礎医学', course:'med', subj:6, lessons:AE_LESSONS, cards:'ae', drill:'ae' },
   lecg: { no:'検3-1', title:'波形の基本', subject:'検査室', course:'lab', subj:2, lessons:LECG_LESSONS, cards:'lecg', drill:'lecg' },
   larr: { no:'検3-2', title:'不整脈', subject:'検査室', course:'lab', subj:2, lessons:LARR_LESSONS, cards:'larr', drill:'larr' },
+  lisch: { no:'検3-3', title:'虚血性心疾患', subject:'検査室', course:'lab', subj:2, lessons:LISCH_LESSONS, cards:'lisch', drill:'lisch' },
   cog: { no:'検5-1', title:'認知機能の検査', subject:'検査室', course:'lab', subj:4, lessons:COG_LESSONS, cards:'cog', drill:'cog' },
   phy: { no:'検5-2', title:'身体機能・ADLの評価', subject:'検査室', course:'lab', subj:4, lessons:PHY_LESSONS, cards:'phy', drill:'phy' },
   sc: { no:'C2-4', title:'体循環', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:SC_LESSONS, cards:'sc', drill:'sc' },
@@ -4656,7 +4718,7 @@ const CATALOG = [
     { id:'lab', name:'検査室', k:'検', note:'検査値と検査の読み方', subjects:[
       { name:'血液検査', k:'1', units:U('血球（血算）','肝機能','腎機能','糖代謝','脂質','電解質','凝固・線溶','炎症・免疫') },
       { name:'尿検査', k:'2', units:U('尿定性（たんぱく・糖・潜血）','尿沈渣') },
-      { name:'心電図', k:'3', units:U({ t:'波形の基本', ready:'lecg' },{ t:'不整脈', ready:'larr' },'虚血性心疾患','薬と心電図（QT延長など）') },
+      { name:'心電図', k:'3', units:U({ t:'波形の基本', ready:'lecg' },{ t:'不整脈', ready:'larr' },{ t:'虚血性心疾患', ready:'lisch' },'薬と心電図（QT延長など）') },
       { name:'画像検査', k:'4', units:U('X線・CT','MRI','超音波','核医学') },
       { name:'評価スケール', k:'5', units:U({ t:'認知機能の検査', ready:'cog' },{ t:'身体機能・ADLの評価', ready:'phy' },'意識レベル（JCS・GCS）','栄養・嚥下の評価','こころの評価（うつ・不安）','痛みの評価') },
       { name:'その他', k:'6', units:U('呼吸機能検査','内視鏡','病理・細胞診') } ] },
