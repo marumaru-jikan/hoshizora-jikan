@@ -2523,6 +2523,104 @@ const hrtFig = () => {
   </div>
   <div class="small muted" style="text-align:center;margin-bottom:4px"><span style="color:${B}">━ 静脈血</span>　<span style="color:${R}">━ 動脈血</span>　正面から見た図（図の左が体の右）</div>`;
 };
+const periFig = () => {
+  const L=[['線維性心膜','#e9d8b8',22],['壁側心膜','#c8b6e2',20],['心膜腔（心嚢液）','#dcefff',24],['心外膜（臓側心膜）','#c8b6e2',20],['心筋','#f2b8b0',50],['心内膜','#e8a0a0',20],['心内腔（血液）','#f7dcdc',30]];
+  let y=34, out='';
+  L.forEach(([n,c,h],i)=>{ out+=`<rect x="40" y="${y}" width="120" height="${h}" fill="${c}" stroke="var(--ink)" stroke-width="1"/>`;
+    const cy=y+h/2; out+=`<line x1="160" y1="${cy}" x2="182" y2="${cy}" stroke="var(--muted)"/><text x="188" y="${cy+4}" font-size="12" font-weight="700" fill="var(--ink)">${n}</text>`; y+=h; });
+  out+=`<path d="M40 38 v0" />`;
+  return `<svg viewBox="0 0 340 ${y+34}" width="100%" role="img" aria-label="心臓の壁の層。外側から線維性心膜、壁側心膜、心膜腔（心嚢液）、心外膜（臓側心膜）、心筋、心内膜、心内腔" style="display:block;max-width:420px;margin:6px auto;font-family:var(--f-body)">
+  <text x="100" y="24" font-size="11" text-anchor="middle" fill="var(--muted)">外側（外表側）</text>${out}
+  <text x="100" y="${y+20}" font-size="11" text-anchor="middle" fill="var(--muted)">内側（内腔側）</text>
+  <path d="M24 40 V${y-6}" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#pa)"/>
+  <defs><marker id="pa" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+</svg>`;
+};
+const valsFig = () => {
+  const R='#d9473f', Rl='#f7d6d2';
+  return `<svg viewBox="0 0 412 250" width="100%" role="img" aria-label="大動脈の起始部の図。左心室の上に大動脈弁があり、そのすぐ上の大動脈がふくらんだ部分がヴァルサルヴァ洞。そこから冠動脈が出る。" style="display:block;max-width:400px;margin:6px auto;font-family:var(--f-body)">
+  <path d="M60 236 Q60 160 120 150 H220 Q280 160 280 236 Z" fill="${Rl}" stroke="${R}" stroke-width="3"/>
+  <path d="M132 150 Q104 132 112 104 Q118 86 140 82 V20 H200 V82 Q222 86 228 104 Q236 132 208 150" fill="${Rl}" stroke="${R}" stroke-width="3"/>
+  <path d="M132 150 Q150 128 170 150 Q190 128 208 150" fill="#fff" stroke="${R}" stroke-width="2.5"/>
+  <path d="M114 100 Q90 92 64 98" fill="none" stroke="${R}" stroke-width="6" stroke-linecap="round"/>
+  <path d="M226 100 Q250 92 276 98" fill="none" stroke="${R}" stroke-width="6" stroke-linecap="round"/>
+  <ellipse cx="122" cy="116" rx="12" ry="20" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-dasharray="4 3"/>
+  <ellipse cx="218" cy="116" rx="12" ry="20" fill="none" stroke="#8b5cf6" stroke-width="2.5" stroke-dasharray="4 3"/>
+  <text x="170" y="40" font-size="13" font-weight="700" text-anchor="middle" fill="var(--ink)">大動脈</text>
+  <text x="170" y="210" font-size="13" font-weight="700" text-anchor="middle" fill="var(--ink)">左心室</text>
+  <line x1="150" y1="146" x2="40" y2="170" stroke="var(--muted)"/><text x="8" y="184" font-size="12" font-weight="700" fill="var(--ink)">大動脈弁</text>
+  <line x1="230" y1="122" x2="290" y2="124" stroke="#8b5cf6"/><text x="292" y="120" font-size="12" font-weight="700" fill="#8b5cf6">ヴァルサルヴァ洞</text>
+  <text x="292" y="135" font-size="10" fill="var(--muted)">大動脈起始部の</text><text x="292" y="148" font-size="10" fill="var(--muted)">ふくらみ</text>
+  <text x="62" y="88" font-size="11.5" font-weight="700" fill="${R}">冠動脈</text><text x="236" y="84" font-size="11.5" font-weight="700" fill="${R}">冠動脈</text>
+  </svg>`;
+};
+const coroFig = () => {
+  const R='#d9473f';
+  const lab=(x,y,s,a='start',c='var(--ink)')=>`<text x="${x}" y="${y}" font-size="11.5" font-weight="700" text-anchor="${a}" fill="${c}">${s}</text>`;
+  const ln=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--muted)"/>`;
+  return `<svg viewBox="0 0 360 320" width="100%" role="img" aria-label="心臓を正面から見た冠動脈の図。大動脈の根元から右冠動脈と左冠動脈主幹部が出る。右冠動脈は心臓の右側をまわり、左冠動脈主幹部は前下行枝と回旋枝に分かれる。" style="display:block;max-width:440px;margin:6px auto;font-family:var(--f-body)">
+  <path d="M120 84 Q70 100 70 170 Q74 250 190 300 Q300 250 296 160 Q290 96 236 84 Z" fill="#f7e3df" stroke="#c98f86" stroke-width="2.5"/>
+  <path d="M164 92 V30 Q164 16 180 16 H240 Q256 16 256 30 V60 H238 V38 Q238 34 234 34 H190 Q184 34 184 40 V92 Z" fill="#f2c1bb" stroke="#c98f86" stroke-width="2"/>
+  <path d="M168 96 Q120 100 104 150 Q96 200 130 240 Q160 270 190 282" fill="none" stroke="${R}" stroke-width="5" stroke-linecap="round"/>
+  <path d="M182 96 Q196 104 206 110" fill="none" stroke="${R}" stroke-width="6" stroke-linecap="round"/>
+  <path d="M206 110 Q196 170 196 230 Q196 270 190 290" fill="none" stroke="${R}" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M206 110 Q250 112 276 150 Q290 180 284 214" fill="none" stroke="${R}" stroke-width="4.5" stroke-linecap="round"/>
+  ${lab(210,30,'大動脈','middle')}
+  ${lab(8,140,'右冠動脈','start',R)}${lab(8,154,'（RCA）','start','var(--muted)')}${ln(64,146,102,150)}
+  ${lab(250,70,'左冠動脈主幹部','start',R)}${lab(250,84,'（LMT）','start','var(--muted)')}${ln(256,88,198,104)}
+  ${lab(222,250,'前下行枝','start',R)}${lab(222,264,'（LAD）','start','var(--muted)')}${ln(220,252,198,240)}
+  ${lab(296,160,'回旋枝','start',R)}${lab(296,174,'（LCX）','start','var(--muted)')}${ln(294,164,282,170)}
+  ${lab(150,200,'右心室','middle','var(--muted)')}${lab(244,200,'左心室','middle','var(--muted)')}
+  </svg>`;
+};
+Object.assign(POOL, {
+  hrt2:[
+    ['心筋','心筋の性質として正しいのは？','横紋筋で、不随意筋',['平滑筋で、随意筋','横紋筋で、随意筋','平滑筋で、不随意筋'],'自律神経に支配され、自分の意思では動かせません。'],
+    ['筋肉の種類','横紋筋で随意筋なのは？','骨格筋',['心筋','平滑筋','すべて'],'骨格筋は運動神経に支配され、自分の意思で動かせます。'],
+    ['平滑筋','平滑筋の特徴は？','紡錘形の細胞で、不随意筋',['横紋があり随意筋','円柱形で随意筋','自動性がまったくない横紋筋'],'内臓や血管の壁をつくります。'],
+    ['自動性','刺激伝導系があり、自分でリズムをつくれる（自動性がある）筋肉は？','心筋',['骨格筋','すべての筋肉','どれもない'],'洞結節から電気刺激が出ます。'],
+    ['左心室','全身に動脈血を送り出し、筋層がいちばん発達している部屋は？','左心室',['右心室','左心房','右心房'],'右心室の約3倍の厚さがあります。'],
+    ['心膜の順','心臓の壁を外側から並べた順として正しいのは？','線維性心膜 → 壁側心膜 → 心膜腔 → 心外膜 → 心筋 → 心内膜',['心内膜 → 心筋 → 心外膜 → 心膜腔 → 壁側心膜 → 線維性心膜','心筋 → 心外膜 → 心内膜 → 心膜腔','壁側心膜 → 線維性心膜 → 心筋 → 心膜腔'],'心外膜は臓側心膜ともいいます。'],
+    ['心嚢液','心膜腔の中にあり、壁側心膜と臓側心膜の摩擦をおさえる液体は？','心膜液（心嚢液）',['胸水','腹水','脳脊髄液'],'心膜腔をつくる袋状の構造を心嚢といいます。'],
+    ['ヴァルサルヴァ洞','ヴァルサルヴァ洞とは？','大動脈起始部のふくらみ',['左心房の一部','肺動脈の分かれ目','心室中隔の穴'],'大動脈弁のすぐ上にあり、ここから冠動脈が出ます。'],
+    ['冠動脈の起始','冠動脈が出るのはどこ？','大動脈起始部（ヴァルサルヴァ洞）',['肺動脈','左心房','上大静脈'],'右冠動脈と左冠動脈が出ます。'],
+    ['左冠動脈','左冠動脈主幹部が分かれてできる2本は？','前下行枝・回旋枝',['右冠動脈・前下行枝','回旋枝・右冠動脈','後下行枝・鈍角枝'],'LAD（前下行枝）とLCX（回旋枝）です。'],
+    ['LAD','左前下行枝が主に血液を送るところは？','左心室の前壁・心室中隔の前方・心尖部',['右心室・洞結節','左心室の後壁・左心房','右心房・房室結節'],'つまると広い範囲の心筋梗塞になります。'],
+    ['RCA','右冠動脈が血液を送るところとして正しいのは？','右心室・左心室の下壁・洞結節・房室結節',['左心室の前壁・心尖部','左心房・左心室の側壁','心室中隔の前方'],'右冠動脈の梗塞では、徐脈や房室ブロックが起こりやすくなります。'],
+  ],
+});
+const HRT2_LESSON = { id:'1-2', t:'心臓の解剖②', sub:'心筋・左心室・心膜・ヴァルサルヴァ洞・冠動脈', plan:['hrt2','hrt2','hrt2','hrt2','hrt2'], body:()=>`
+    <section class="panel"><h3>心筋</h3>
+    ${rule('横紋筋・不随意筋')}
+    <p class="small">心臓の壁をつくる筋肉です。<b>自律神経</b>に支配され、自分の意思では動かせません。</p>
+    <h4 style="margin:14px 0 4px">筋肉の種類</h4>
+    <div class="scroll"><table class="tbl" style="font-size:.9rem"><tr><th></th><th>骨格筋</th><th>心筋</th><th>平滑筋</th></tr>
+    <tr><td style="white-space:nowrap"><b>種類</b></td><td>横紋筋</td><td><b>横紋筋</b></td><td>平滑筋</td></tr>
+    <tr><td style="white-space:nowrap"><b>細胞の形</b></td><td>円柱形</td><td>円柱形</td><td>紡錘形</td></tr>
+    <tr><td style="white-space:nowrap"><b>神経支配</b></td><td>運動神経<br>（<b>随意</b>）</td><td>自律神経<br>（<b>不随意</b>）</td><td>自律神経<br>（<b>不随意</b>）</td></tr>
+    <tr><td style="white-space:nowrap"><b>興奮の伝わり方</b></td><td>1本ずつ</td><td><b>全体に広がる</b></td><td>ある方向に広がる</td></tr>
+    <tr><td style="white-space:nowrap"><b>自動性</b></td><td>なし</td><td><b>あり</b>（刺激伝導系）</td><td>一部にあり</td></tr>
+    <tr><td style="white-space:nowrap"><b>疲労</b></td><td>しやすい</td><td>しにくい</td><td>しにくい</td></tr>
+    <tr><td style="white-space:nowrap"><b>ある場所</b></td><td>手足・体幹</td><td>心臓だけ</td><td>内臓・血管の壁</td></tr></table></div></section>
+    <section class="panel"><h3>左心室</h3>
+    ${rule('全身に動脈血を送り出す<br>→ 心筋がいちばん発達している（右心室の約3倍）')}</section>
+    <section class="panel"><h3>心膜</h3>
+    <p>心臓の外側は<b>心膜</b>でおおわれています。外側から次の順に並んでいます。</p>
+    ${periFig()}
+    <p class="small">心膜腔の中には<b>心膜液（心嚢液）</b>があり、壁側心膜と臓側心膜がこすれ合うのをおさえています。心膜腔をつくる袋状の構造を<b>心嚢</b>といいます。</p></section>
+    <section class="panel"><h3>ヴァルサルヴァ洞</h3>
+    ${rule('大動脈起始部のふくらみ')}
+    ${valsFig()}
+    <p class="small muted">大動脈弁のすぐ上にあり、ここから冠動脈が出ます。</p></section>
+    <section class="panel"><h3>冠動脈</h3>
+    <p>心臓そのものに血液を送る血管です。大動脈の起始部から、<b>右冠動脈</b>と<b>左冠動脈</b>が出ます。左冠動脈は<b>主幹部</b>から、<b>前下行枝</b>と<b>回旋枝</b>に分かれます。</p>
+    ${coroFig()}</section>
+    <section class="panel"><h3>冠動脈の灌流域</h3>
+    <div class="scroll"><table class="tbl"><tr><th>冠動脈</th><th>主に血液を送るところ</th></tr>
+    <tr><td style="white-space:nowrap"><b>右冠動脈</b><br><span class="small muted">RCA</span></td><td>右心房、右心室、左心室の<b>下壁</b>、心室中隔の後方、<b>洞結節</b>・<b>房室結節</b></td></tr>
+    <tr><td style="white-space:nowrap"><b>左前下行枝</b><br><span class="small muted">LAD</span></td><td>左心室の<b>前壁</b>、心室中隔の前方、<b>心尖部</b></td></tr>
+    <tr><td style="white-space:nowrap"><b>左回旋枝</b><br><span class="small muted">LCX</span></td><td>左心房、左心室の<b>側壁</b>・<b>後壁</b></td></tr></table></div>
+    <p class="small muted" style="margin-top:10px">右冠動脈は洞結節・房室結節に血液を送るので、つまると徐脈や房室ブロックが起こりやすくなります。灌流域には個人差があります。</p></section>` };
 const HRT_LESSONS = [
   { id:'1-1', t:'心臓の解剖①', sub:'位置と大きさ・心臓のつくり・僧帽弁・三尖弁', plan:['hrt','hrt','hrt','hrt','hrt'], body:()=>`
     <section class="panel"><h3>位置と大きさ</h3>
@@ -2543,6 +2641,7 @@ const HRT_LESSONS = [
     <section class="panel"><h3>覚え方</h3>
     <img src="img/valve.png" alt="心臓の弁（房室弁）の覚え方：うさんくさい、さそい。右＝三尖弁、左＝僧帽弁" style="display:block;width:100%;height:auto;background:#fff;border-radius:12px;padding:6px;box-sizing:border-box;margin:0">
     </section>` },
+  HRT2_LESSON,
 ];
 const G_VALVE_LESSONS = [
   { id:'2-1', t:'うさんくさい、さそい', sub:'心臓の弁（房室弁）', plan:['gvalve','gvalve','gvalve','gvalve','gvalve'], body:()=>`
@@ -2625,7 +2724,7 @@ const TERMS = {
   pk:[['腸肝循環','肝臓から胆汁に出た薬が腸で再吸収され、門脈から肝臓に戻ること。作用が長く続きやすい。'],['舌下投与','舌の下で溶かして口の粘膜から吸収させる。ニトログリセリンなど。'],['経皮投与','貼り薬。ゆっくり持続的に吸収され、血中濃度が安定しやすい。'],['直腸内投与','坐薬。飲めない人にも使え、初回通過効果を一部さけられる。'],['ADME','吸収（A）・分布（D）・代謝（M）・排泄（E）。薬が体に入ってから出ていくまで。'],['吸収','投与した薬が全身をめぐる血液の中に入ること。'],['分布','薬が血液の中から組織へ移ること。作用するのは遊離型。'],['代謝','主に肝臓で薬を分解し、水に溶けやすくして排泄しやすくすること。'],['排泄','薬や代謝物が体の外へ出ること。主に腎臓から尿中へ。'],['初回通過効果','飲み薬が全身に出る前に、肝臓で一部が代謝されること。'],['絶対過敏期','妊娠4〜7週ごろ。胎児の器官がつくられ、薬の影響を受けやすい時期。']],
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
-  hrt:[['心房中隔','左右の心房を分ける壁。'],['心室中隔','左右の心室を分ける壁。'],['僧帽弁','左心房と左心室の間の弁。弁尖2枚。'],['三尖弁','右心房と右心室の間の弁。弁尖3枚。'],['腱索','乳頭筋から伸び、僧帽弁・三尖弁を支えて逆流を防ぐ線維。']],
+  hrt:[['心筋','横紋筋で不随意筋。自律神経が支配。自動性がある。'],['心膜腔','壁側心膜と臓側心膜（心外膜）の間。心嚢液がある。'],['ヴァルサルヴァ洞','大動脈起始部のふくらみ。冠動脈が出る。'],['左前下行枝（LAD）','左心室前壁・心室中隔前方・心尖部に血液を送る。'],['右冠動脈（RCA）','右心室・左心室下壁・洞結節・房室結節に血液を送る。'],['心房中隔','左右の心房を分ける壁。'],['心室中隔','左右の心室を分ける壁。'],['僧帽弁','左心房と左心室の間の弁。弁尖2枚。'],['三尖弁','右心房と右心室の間の弁。弁尖3枚。'],['腱索','乳頭筋から伸び、僧帽弁・三尖弁を支えて逆流を防ぐ線維。']],
   g_valve:[['うさんくさい、さそい','房室弁：右＝三尖弁、左＝僧帽弁。']],
   cv:[['縦隔','左右の肺にはさまれた胸の中央部分。心臓・大血管・食道・気管などがある。'],['心尖','心臓の先端。左下前方を向き、左第5肋間・鎖骨中線あたりで拍動を触れる。'],['房室弁','心房と心室の間の弁。右が三尖弁、左が僧帽弁。'],['半月弁','心室と動脈の間の弁。肺動脈弁と大動脈弁。'],['洞房結節','右心房にある心臓のペースメーカー。'],['冠動脈','心筋を養う動脈。大動脈の根元から出て、主に拡張期に流れる。'],['門脈','腹部の消化管・脾臓の血液を集めて肝臓へ運ぶ血管。']],
   vital:[['稽留熱','日差1℃以内で高熱が続く熱型。'],['弛張熱','日差1℃以上で、37℃以下にはならない熱型。'],['間欠熱','日差1℃以上で、37℃以下になるときがある熱型。'],['脈拍欠損','心拍数より脈拍数が少なくなること。心房細動などでみられる。'],['クスマウル呼吸','深く大きな規則的な呼吸。代謝性アシドーシスでみられる。'],['脈圧','収縮期血圧 − 拡張期血圧。'],['JCS','3-3-9度方式。Ⅰ桁は刺激なしで覚醒、Ⅱ桁は刺激で覚醒、Ⅲ桁は刺激しても覚醒しない。']],
