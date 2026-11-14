@@ -2412,26 +2412,43 @@ Object.assign(POOL, {
   ],
 });
 const goroImg=(src,alt)=>`<img src="img/${src}" alt="${alt}" style="display:block;width:100%;height:auto;background:#fff;border-radius:12px;padding:6px;box-sizing:border-box;margin:0">`;
-const GORO_DRUG_LESSONS = [
-  { id:'1', t:'TDM対象薬物', sub:'フジテレビのタンバリン', plan:['gtdm','gtdm','gtdm','gtdm','gtdm'], body:()=>`
+const G_TDM_LESSONS = [
+  { id:'1-1', t:'フジテレビのタンバリン', sub:'TDM対象薬物', plan:['gtdm','gtdm','gtdm','gtdm','gtdm'], body:()=>`
     <section class="panel"><h3>フジテレビのタンバリン</h3>${goroImg('tdm2.png','TDM対象薬物の覚え方：フジテレビのタンバリン')}
     <p class="small muted" style="margin-top:10px">フ＝フェニトイン、ジ＝ジゴキシン、テ＝テオフィリン、タン＝炭酸リチウム、バ＝バルプロ酸ナトリウム、リン＝リドカイン。<br>くわしくは 基礎医学 › 薬理総論 › 2-2 TDM。</p></section>` },
-  { id:'2', t:'抗不整脈薬', sub:'なべかりっか', plan:['gaad','gaad','gaad','gaad','gaad'], body:()=>`
-    <section class="panel"><h3>なべかりっか</h3>${goroImg('aad.png','抗不整脈薬の覚え方：なべかりっか')}
-    <p class="small muted" style="margin-top:10px">Ⅰ群 Naチャネル遮断、Ⅱ群 β遮断、Ⅲ群 Kチャネル遮断、Ⅳ群 Caチャネル遮断。<br>くわしくは 薬物の作用と副作用 › 7-2 抗不整脈薬。</p></section>` },
 ];
-const GORO_OTH_LESSONS = [
-  { id:'1', t:'DNAウイルス', sub:'パパ、アサヒビールと水から逃走', plan:['gdna','gdna','gdna','gdna','gdna'], body:()=>`
+const G_AAD_LESSONS = [
+  { id:'2-1', t:'なべかりっか', sub:'抗不整脈薬の分類', plan:['aad','aad','aad','aad','aad'], body:()=>`
+    <section class="panel"><h3>分類</h3>
+    ${rule('Ⅰ群：Naチャネル遮断<br>Ⅱ群：β受容体遮断<br>Ⅲ群：Kチャネル遮断<br>Ⅳ群：Caチャネル遮断')}
+    <p class="small muted">表は横にスクロールできます。</p>
+    <div class="scroll"><table class="tbl" style="min-width:660px;font-size:.88rem"><tr><th colspan="2">薬剤</th><th>作用機序</th><th>適応</th><th>副作用</th></tr>
+    <tr><td rowspan="3" style="white-space:nowrap"><b>Ⅰ群</b></td><td style="white-space:nowrap">Ⅰa キニジン</td><td rowspan="3" style="white-space:nowrap"><b>Naチャネル遮断</b></td><td>上室性・心室性の頻脈</td><td rowspan="3">心収縮力⬇、不整脈</td></tr>
+    <tr><td style="white-space:nowrap">Ⅰb リドカイン</td><td>心室性の頻脈</td></tr>
+    <tr><td style="white-space:nowrap">Ⅰc フレカイニド</td><td>上室性・心室性の頻脈</td></tr>
+    <tr><td style="white-space:nowrap"><b>Ⅱ群</b></td><td style="white-space:nowrap">プロプラノロール</td><td style="white-space:nowrap"><b>β受容体遮断</b></td><td>上室性・心室性の頻脈</td><td>心収縮力⬇</td></tr>
+    <tr><td style="white-space:nowrap"><b>Ⅲ群</b></td><td style="white-space:nowrap">アミオダロン</td><td style="white-space:nowrap"><b>Kチャネル遮断</b></td><td>他剤無効の心室性の頻脈、心不全を伴う頻脈</td><td>多形性心室頻拍、<b>間質性肺炎</b>、甲状腺機能異常、肝障害</td></tr>
+    <tr><td style="white-space:nowrap"><b>Ⅳ群</b></td><td style="white-space:nowrap">ベラパミル</td><td style="white-space:nowrap"><b>Caチャネル遮断</b></td><td>上室性の頻脈</td><td>房室ブロック、頭痛、悪心、血圧⬇</td></tr></table></div>
+    <ul class="small" style="margin:12px 0 0;padding-left:1.2em;line-height:1.8">
+    <li>抗不整脈薬で<b>新たな不整脈</b>が起こることもあるので、定期的に<b>心電図</b>をとって観察する。</li>
+    <li><b>徐脈性</b>不整脈には、抗コリン薬（アトロピン）やβ刺激薬（イソプレナリン）を使う。頻脈などの副作用に注意。</li>
+    <li>アミオダロンは重い不整脈に使うが、間質性肺炎など重い副作用も少なくない。</li></ul></section>
+    <section class="panel"><h3>覚え方</h3>
+    <img src="img/aad.png" alt="抗不整脈薬の覚え方：なべかりっか（Ⅰ群Na⁺チャネル、Ⅱ群β遮断、Ⅲ群K⁺チャネル、Ⅳ群Ca²⁺チャネル）" style="display:block;width:100%;height:auto;background:#fff;border-radius:12px;padding:6px;box-sizing:border-box;margin:0">
+    </section>` },
+];
+const G_DNA_LESSONS = [
+  { id:'1-1', t:'パパ、アサヒビールと水から逃走', sub:'DNAウイルス', plan:['gdna','gdna','gdna','gdna','gdna'], body:()=>`
     <section class="panel"><h3>パパ、アサヒビールと水から逃走</h3>${goroImg('dnav.png','DNAウイルスの覚え方：パパ、アサヒビールと水から逃走')}
     <p class="small muted" style="margin-top:10px">パピローマ、パルボ、アデノ、サイトメガロ、B型肝炎、ヘルペス、水痘・帯状疱疹、痘瘡。<br>くわしくは 薬物の作用と副作用 › 3-1 ウイルス。</p></section>` },
 ];
-const GORO_ANAT_LESSONS = [
-  { id:'1', t:'副腎皮質ホルモン', sub:'アコーディオンで休息も', plan:['gadr','gadr','gadr','gadr','gadr'], body:()=>`
+const G_ADR_LESSONS = [
+  { id:'1-1', t:'アコーディオンで休息も', sub:'副腎皮質ホルモン', plan:['gadr','gadr','gadr','gadr','gadr'], body:()=>`
     <section class="panel"><h3>アコーディオンで休息も</h3>${goroImg('adrenal.png','副腎皮質ホルモンの覚え方：アコーディオンで休息も')}
     <p class="small muted" style="margin-top:10px">外から、球状層＝アルドステロン、束状層＝コルチゾール、網状層＝アンドロゲン（テストステロン）。髄質はアドレナリン・ノルアドレナリン。<br>くわしくは 薬物の作用と副作用 › 12-1 副腎皮質ステロイド薬。</p></section>` },
 ];
-const GORO_DIS_LESSONS = [
-  { id:'1', t:'糖尿病の三大合併症', sub:'しめじ', plan:['gdm','gdm','gdm','gdm','gdm'], body:()=>`
+const G_DM_LESSONS = [
+  { id:'1-1', t:'しめじの順に', sub:'糖尿病の三大合併症', plan:['gdm','gdm','gdm','gdm','gdm'], body:()=>`
     <section class="panel"><h3>しめじの順に</h3>
     ${goroImg('shimeji.png','糖尿病の三大合併症の覚え方：しめじの順に')}
     <p class="small muted" style="margin-top:10px">し＝神経障害、め＝網膜症（眼）、じ＝腎症。高血糖で細い血管が傷ついて起こり、この順に現れやすいといわれます。<br>くわしくは 薬物の作用と副作用 › 13-1 糖尿病。</p></section>` },
@@ -2504,10 +2521,11 @@ const TERMS = {
   abx:[['球菌','丸い形の細菌。例：ブドウ球菌、レンサ球菌、肺炎球菌。'],['桿菌','棒状の細菌。例：大腸菌、緑膿菌、インフルエンザ菌。'],['らせん菌','ねじれた形の細菌。例：コレラ菌、ヘリコバクター、梅毒トレポネーマ。'],['抗菌スペクトル','その抗菌薬が、どの微生物に効くかを表したもの。'],['MRSA','メチシリン耐性黄色ブドウ球菌。多くの抗菌薬が効きにくい。バンコマイシンなどを使う。'],['MIC','最小発育阻止濃度。菌の増殖をおさえる最小の濃度。感性か耐性かの判断に使う。'],['偽膜性大腸炎','抗菌薬で腸内細菌のバランスがくずれ、ほかの菌が増えて起こる腸炎。セフェム系などで注意。'],['内耳神経障害','聴力低下やめまい。アミノグリコシド系の副作用。']],
   ddi:[['薬物相互作用','複数の薬（や食べ物）を一緒にとったとき、効果が強くなったり弱くなったりすること。'],['相加作用','併用の効果が、それぞれの効果の和と同じになる。'],['相乗作用','併用の効果が、それぞれの効果の和より大きくなる。'],['拮抗作用','併用によって効果が弱くなる。例：ビタミンK → ワルファリン。'],['薬物動態学的相互作用','吸収・分布・代謝・排泄の段階で起こる相互作用。例：グレープフルーツ → Ca拮抗薬の血中濃度上昇。']],
   ae:[['TDM','血中薬物濃度モニタリング。血中の薬の濃度を測って投与量を調整すること。'],['安全域','効く濃度と中毒になる濃度のあいだの幅。狭い薬ほど有害事象が起こりやすい。'],['過量毒性','薬が多すぎて、効果が強く出すぎて起こる有害事象。例：インスリン過量 → 低血糖昏睡。'],['狭義の副作用','薬の目的以外の作用で起こる有害事象。例：抗ヒスタミン薬 → 眠気。'],['二次的作用','薬の作用の結果、別の新しい病気が起こるもの。例：抗菌薬 → 偽膜性大腸炎。'],['特異体質','過敏な体質によるアレルギー反応。どの薬でも起こりうる。例：アナフィラキシーショック。'],['菌交代症','抗菌薬で腸内細菌のバランスがくずれ、ふだん少ない菌が増えること。']],
-  gdrug:[['フジテレビのタンバリン','TDM対象薬：フェニトイン、ジゴキシン、テオフィリン、炭酸リチウム、バルプロ酸、リドカイン。'],['なべかりっか','抗不整脈薬：Ⅰ群Na、Ⅱ群β、Ⅲ群K、Ⅳ群Ca。']],
-  goth:[['パパ、アサヒビールと水から逃走','DNAウイルス：パピローマ、パルボ、アデノ、サイトメガロ、B型肝炎、ヘルペス、水痘・帯状疱疹、痘瘡。']],
-  ganat:[['アコーディオンで休息も','副腎皮質：球状層＝アルドステロン、束状層＝コルチゾール、網状層＝アンドロゲン。']],
-  gdis:[['しめじ','糖尿病の三大合併症：神経障害、網膜症、腎症。']],
+  g_tdm:[['フジテレビのタンバリン','TDM対象薬：フェニトイン、ジゴキシン、テオフィリン、炭酸リチウム、バルプロ酸、リドカイン。']],
+  g_aad:[['なべかりっか','抗不整脈薬：Ⅰ群Na、Ⅱ群β、Ⅲ群K、Ⅳ群Ca。']],
+  g_dna:[['パパ、アサヒビールと水から逃走','DNAウイルス：パピローマ、パルボ、アデノ、サイトメガロ、B型肝炎、ヘルペス、水痘・帯状疱疹、痘瘡。']],
+  g_adr:[['アコーディオンで休息も','副腎皮質：球状層＝アルドステロン、束状層＝コルチゾール、網状層＝アンドロゲン。']],
+  g_dm:[['しめじの順に','糖尿病の三大合併症：神経障害、網膜症、腎症。']],
   pk:[['腸肝循環','肝臓から胆汁に出た薬が腸で再吸収され、門脈から肝臓に戻ること。作用が長く続きやすい。'],['舌下投与','舌の下で溶かして口の粘膜から吸収させる。ニトログリセリンなど。'],['経皮投与','貼り薬。ゆっくり持続的に吸収され、血中濃度が安定しやすい。'],['直腸内投与','坐薬。飲めない人にも使え、初回通過効果を一部さけられる。'],['ADME','吸収（A）・分布（D）・代謝（M）・排泄（E）。薬が体に入ってから出ていくまで。'],['吸収','投与した薬が全身をめぐる血液の中に入ること。'],['分布','薬が血液の中から組織へ移ること。作用するのは遊離型。'],['代謝','主に肝臓で薬を分解し、水に溶けやすくして排泄しやすくすること。'],['排泄','薬や代謝物が体の外へ出ること。主に腎臓から尿中へ。'],['初回通過効果','飲み薬が全身に出る前に、肝臓で一部が代謝されること。'],['絶対過敏期','妊娠4〜7週ごろ。胎児の器官がつくられ、薬の影響を受けやすい時期。']],
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
@@ -2518,10 +2536,11 @@ const TERMS = {
 
 /* ===== 単元とコース ===== */
 const UNITS = {
-  gdrug: { no:'覚1', title:'薬の語呂合わせ', subject:'覚え方', course:'memo', subj:0, lessons:GORO_DRUG_LESSONS, cards:'gdrug', drill:'gtdm' },
-  ganat: { no:'覚2', title:'解剖の語呂合わせ', subject:'覚え方', course:'memo', subj:0, lessons:GORO_ANAT_LESSONS, cards:'ganat', drill:'gadr' },
-  goth: { no:'覚4', title:'その他', subject:'覚え方', course:'memo', subj:0, lessons:GORO_OTH_LESSONS, cards:'goth', drill:'gdna' },
-  gdis: { no:'覚3', title:'疾患の語呂合わせ', subject:'覚え方', course:'memo', subj:0, lessons:GORO_DIS_LESSONS, cards:'gdis', drill:'gdm' },
+  g_adr: { no:'覚2-1', title:'副腎皮質ホルモン', subject:'解剖の語呂合わせ', course:'memo', subj:1, lessons:G_ADR_LESSONS, cards:'g_adr', drill:'gadr' },
+  g_dm: { no:'覚3-1', title:'糖尿病の三大合併症', subject:'疾患の語呂合わせ', course:'memo', subj:2, lessons:G_DM_LESSONS, cards:'g_dm', drill:'gdm' },
+  g_tdm: { no:'覚4-1', title:'TDM対象薬物', subject:'薬の語呂合わせ', course:'memo', subj:3, lessons:G_TDM_LESSONS, cards:'g_tdm', drill:'gtdm' },
+  g_aad: { no:'覚4-2', title:'抗不整脈薬', subject:'薬の語呂合わせ', course:'memo', subj:3, lessons:G_AAD_LESSONS, cards:'g_aad', drill:'gaad' },
+  g_dna: { no:'覚6-1', title:'DNAウイルス', subject:'その他', course:'memo', subj:5, lessons:G_DNA_LESSONS, cards:'g_dna', drill:'gdna' },
   pk:  { no:'薬1', title:'薬物動態', subject:'基礎医学', course:'med', subj:6, lessons:PK_LESSONS, cards:'pk', drill:'pk' },
   ast: { no:'薬作17', title:'呼吸器系の薬物', subject:'基礎医学', course:'med', subj:7, lessons:AST_LESSONS, cards:'ast', drill:'ast' },
   nsa: { no:'薬作16', title:'非ステロイド性抗炎症薬（NSAIDs）', subject:'基礎医学', course:'med', subj:7, lessons:NSA_LESSONS, cards:'nsa', drill:'nsa' },
@@ -2732,7 +2751,12 @@ const CATALOG = [
     { id:'calc', name:'看護計算', k:'計', note:'単位・濃度・点滴・酸素', subjects:[
       { name:'看護計算', k:'計', units:U({ t:'看護の計算', ready:'calc' }) } ] },
     { id:'memo', name:'覚え方', k:'覚', note:'語呂合わせと暗記のコツ', subjects:[
-      { name:'覚え方', k:'覚', units:U('基準値の語呂合わせ',{ t:'解剖の語呂合わせ', ready:'ganat' },{ t:'疾患の語呂合わせ', ready:'gdis' },{ t:'薬の語呂合わせ', ready:'gdrug' },'法律・制度の語呂合わせ',{ t:'その他', ready:'goth' }) } ] },
+      { name:'基準値の語呂合わせ', k:'1', units:U() },
+      { name:'解剖の語呂合わせ', k:'2', units:U({ t:'副腎皮質ホルモン', ready:'g_adr' }) },
+      { name:'疾患の語呂合わせ', k:'3', units:U({ t:'糖尿病の三大合併症', ready:'g_dm' }) },
+      { name:'薬の語呂合わせ', k:'4', units:U({ t:'TDM対象薬物', ready:'g_tdm' },{ t:'抗不整脈薬', ready:'g_aad' }) },
+      { name:'法律・制度の語呂合わせ', k:'5', units:U() },
+      { name:'その他', k:'6', units:U({ t:'DNAウイルス', ready:'g_dna' }) } ] },
     { id:'lab', name:'検査室', k:'検', note:'検査値と検査の読み方', subjects:[
       { name:'血液検査', k:'1', units:U('血球（血算）','肝機能','腎機能','糖代謝','脂質','電解質','凝固・線溶','炎症・免疫') },
       { name:'尿検査', k:'2', units:U('尿定性（たんぱく・糖・潜血）','尿沈渣') },
@@ -3079,7 +3103,7 @@ function vSubject(){
       return `<div class="lsec" style="display:flex;justify-content:space-between;align-items:center"><span>${i+1}　${un.t}</span><span class="small">${d}/${n}</span></div>`
         + u.lessons.map(l=>`<button class="item" data-act="lesson" data-arg="${l.id}" data-uid="${uid}"><span class="lid ${R.lessons[lkey(uid,l.id)]?'done':''}">${l.id}</span><span class="body"><b>${l.t}</b><br><span class="small muted">${l.sub}</span></span>${lTag(uid,l.id)}<span class="chev">›</span></button>`).join('')
         + (T.length?`<button class="item" data-act="cards" data-uid="${uid}"><span class="lid">◇</span><span class="body"><b>用語カード</b><br><span class="small muted">用語の確認 ${T.length}枚</span></span><span class="tag ${kn===T.length?'done':kn?'mid':''}">${kn}/${T.length}</span><span class="chev">›</span></button>`:''); }
-    return `<div class="lsec" style="display:flex;justify-content:space-between;align-items:center;opacity:.6"><span>${i+1}　${un.t}</span><span class="small">準備中</span></div>`; }).join('')}</div></div>`;
+    return `<div class="lsec" style="display:flex;justify-content:space-between;align-items:center;opacity:.6"><span>${i+1}　${un.t}</span><span class="small">準備中</span></div>`; }).join('') || '<p class="muted small" style="padding:16px">準備中です。</p>'}</div></div>`;
 }
 function vUnit(){
   const u=CU(), uid=S.uid, T=TERMS[u.cards]||[], kn=(R.known[uid]||[]).length, hasPdf=Object.keys(PDF).some(k=>k.startsWith(u.drill+'-')&&PDF[k].q);
