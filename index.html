@@ -3333,6 +3333,20 @@ Object.assign(POOL, {
     ['冠性T波','心筋梗塞の回復期にみられるT波の変化は？','陰性T波（冠性T波）',['テント状T波','T波の消失','T波の増高'],'本来は上向きのT波が下向きになります。'],
     ['U波増高','U波増高がみられるのは？','低カリウム血症',['高カリウム血症','急性心筋梗塞','高カルシウム血症'],'陰性U波は心筋虚血などでみられます。'],
   ],
+  lecg4:[
+    ['肺性P波','肺性P波がみられるのは？','右心房負荷',['左心房負荷','右脚ブロック','高カリウム血症'],'Ⅱ・Ⅲ・aVFで高さ2.5mm以上の尖ったP波です。'],
+    ['僧帽性P波','僧帽性P波の特徴は？','幅広く二峰性',['高く尖っている','P波が消失する','下向きになる'],'左心房負荷で、Ⅰ・Ⅱで幅0.12秒以上の二峰性P波になります。'],
+    ['左心房負荷の原因','左心房負荷（僧帽性P波）の原因として代表的なのは？','僧帽弁狭窄症',['肺高血圧症','COPD','肺塞栓症'],'左心房から左心室への流れが妨げられ、左心房に負荷がかかります。'],
+    ['右心房負荷の原因','右心房負荷（肺性P波）の原因は？','肺高血圧症',['僧帽弁狭窄症','高血圧','大動脈弁狭窄症'],'COPD（肺性心）や肺塞栓症なども原因になります。'],
+    ['P波の高さ','肺性P波の高さの目安は？','2.5mm（0.25mV）以上',['1mm以上','0.5mm以上','10mm以上'],'Ⅱ・Ⅲ・aVF誘導で判断します。'],
+  ],
+  lecg5:[
+    ['完全脚ブロック','完全脚ブロックのQRS幅は？','0.12秒以上',['0.10秒未満','0.04秒以上','0.20秒以上'],'0.10〜0.12秒未満は不完全脚ブロックです。'],
+    ['右脚ブロック','V1でrsR′型（M字型）になるのは？','右脚ブロック',['左脚ブロック','左心房負荷','高カリウム血症'],'Ⅰ・V6では幅の広いS波がみられます。'],
+    ['左脚ブロック','V5・V6で幅広く結節性のR波がみられるのは？','左脚ブロック',['右脚ブロック','右心房負荷','低カリウム血症'],'V1では深く幅の広いS波（QS型）になります。'],
+    ['脚ブロックと心疾患','心臓の病気を伴うことが多いのは？','左脚ブロック',['右脚ブロック','不完全右脚ブロック','洞性不整脈'],'右脚ブロックは健康な人にもみられます。'],
+    ['新規の左脚ブロック','新たに出現した左脚ブロックで疑うのは？','急性心筋梗塞',['低カリウム血症','気管支喘息','貧血'],'左脚ブロックがあるとST変化が読みにくくなるため、症状と合わせて判断します。'],
+  ],
   jv:[
     ['頸静脈怒張','頸静脈怒張が多く認められるのは？','右心不全',['左心不全のみ','貧血','脱水'],'右心系への還流障害でCVPが上がり、頸静脈が怒張します。'],
     ['CVP','頸静脈怒張で上昇しているのは？','中心静脈圧（CVP）',['肺動脈楔入圧のみ','動脈血酸素分圧','膠質浸透圧'],'右心房圧（CVP）の上昇が上大静脈を介して頸静脈に伝わります。'],
@@ -4037,6 +4051,26 @@ const ischWave = (type) => {
   const base=`<line x1="0" y1="${BL}" x2="${W}" y2="${BL}" stroke="#7d8597" stroke-width=".7" stroke-dasharray="3 3"/>`;
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:200px;margin:4px 0 6px;background:#fff;border-radius:6px" aria-hidden="true">${grid}${base}<polyline points="${pts.join(' ')}" fill="none" stroke="#2b2f3a" stroke-width="1.7" stroke-linejoin="round"/></svg>`;
 };
+const miniGrid=(W,H)=>{let s='';for(let x=0;x<=W;x+=10)s+=`<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#f3d3d3" stroke-width="${x%50?0.5:1}"/>`;for(let y=0;y<=H;y+=10)s+=`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#f3d3d3" stroke-width="${y%50?0.5:1}"/>`;return s;};
+const pWave = (type) => {
+  const W=150,H=80,BL=56,g=(x,m,s,h)=>h*Math.exp(-0.5*((x-m)/s)**2),pts=[];
+  for(let x=2;x<=W-2;x+=0.5){let y=0;
+    if(type==='rap') y+=g(x,30,4,15); else if(type==='lap') y+=g(x,22,4,6)+g(x,36,4,6); else y+=g(x,30,5,5);
+    const d=x-62; if(d>=-3&&d<0)y+=(d+3)/3*28; else if(d>=0&&d<3)y+=28-d/3*33; else if(d>=3&&d<5)y+=-5+5*(d-3)/2;
+    y+=g(x,104,9,9); pts.push(`${x},${(BL-y).toFixed(1)}`);}
+  const lab=type==='rap'?'<text x="30" y="13" font-size="9" font-weight="700" fill="#d9473f" text-anchor="middle">高く尖る</text>':type==='lap'?'<text x="34" y="13" font-size="9" font-weight="700" fill="#d9473f" text-anchor="middle">幅広く二峰性</text>':'<text x="30" y="13" font-size="9" font-weight="700" fill="#6b7285" text-anchor="middle">正常</text>';
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:200px;margin:4px 0 6px;background:#fff;border-radius:6px" aria-hidden="true">${miniGrid(W,H)}<polyline points="${pts.join(' ')}" fill="none" stroke="#2b2f3a" stroke-width="1.7" stroke-linejoin="round"/>${lab}</svg>`;
+};
+const bbWave = (type, lead) => {
+  const W=150,H=90,BL=55,g=(x,m,s,h)=>h*Math.exp(-0.5*((x-m)/s)**2);
+  const Q={rV1:[[44,0],[47,7],[50,0],[54,-9],[58,0],[62,24],[67,8],[69,0]],rV6:[[44,0],[46,-2],[50,26],[54,0],[60,-10],[68,-3],[70,0]],
+           lV1:[[44,0],[47,3],[52,-24],[57,-31],[63,-25],[70,0]],lV6:[[44,0],[50,22],[54,17],[59,25],[70,0]],
+           nV1:[[44,0],[47,8],[51,-20],[55,0]],nV6:[[44,0],[45,-2],[49,26],[53,-4],[55,0]]}[type+lead];
+  const Tsign={rV1:-1,rV6:1,lV1:1,lV6:-1,nV1:1,nV6:1}[type+lead];
+  const qrs=x=>{for(let i=0;i<Q.length-1;i++){const[a,ya]=Q[i],[b,yb]=Q[i+1];if(x>=a&&x<=b)return ya+(yb-ya)*(x-a)/(b-a);}return 0;};
+  const pts=[];for(let x=2;x<=W-2;x+=0.5){const y=g(x,24,4.5,4)+qrs(x)+Tsign*g(x,100,9,8);pts.push(`${x},${(BL-y).toFixed(1)}`);}
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:180px;margin:4px 0 2px;background:#fff;border-radius:6px" aria-hidden="true">${miniGrid(W,H)}<polyline points="${pts.join(' ')}" fill="none" stroke="#2b2f3a" stroke-width="1.7" stroke-linejoin="round"/><text x="6" y="12" font-size="10" font-weight="800" fill="#3a6fb8">${lead}</text></svg>`;
+};
 const LECG_LESSONS = [
   { id:'1-1', t:'波形の基本', sub:'心電図の基本は成人看護学で', plan:['ek','ek','ek','ek','ek'], body:()=>`
     <section class="panel"><h3>波形の基本</h3>
@@ -4091,6 +4125,45 @@ const LECG_LESSONS = [
     <div class="scroll"><table class="tbl"><tr><th>種類</th><th>おもな原因</th></tr>
     <tr><td><b>陰性U波</b>${ischWave('negU')}</td><td>心筋虚血（狭心症など）、高血圧・左室肥大</td></tr>
     <tr><td><b>U波増高</b>${ischWave('bigU')}</td><td><b>低カリウム血症</b></td></tr></table></div></section>` },
+  { id:'1-4', t:'心電図異常【心房の負荷】', sub:'肺性P波・僧帽性P波', plan:['lecg4','lecg4','lecg4','lecg4','lecg4'], body:()=>`
+    <section class="panel"><h3>右心房負荷</h3>
+    ${rule('右心房負荷 → 肺性P波（高く尖ったP波）')}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${pWave('n')}${pWave('rap')}</div>
+    <p>Ⅱ・Ⅲ・aV<sub>F</sub>誘導で、<b>高さ2.5mm（0.25mV）以上</b>の先の尖ったP波になります。</p>
+    <div class="scroll"><table class="tbl"><tr><th>おもな原因</th></tr>
+    <tr><td>肺高血圧症、COPD（肺性心）、肺塞栓症、三尖弁疾患、心房中隔欠損症など</td></tr></table></div></section>
+    <section class="panel"><h3>左心房負荷</h3>
+    ${rule('左心房負荷 → 僧帽性P波（幅広く二峰性のP波）')}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${pWave('n')}${pWave('lap')}</div>
+    <p>Ⅰ・Ⅱ誘導で、<b>幅0.12秒以上</b>の、山が2つある（二峰性）P波になります。V<sub>1</sub>誘導ではP波の後半の陰性部分が深く大きくなります。</p>
+    <div class="scroll"><table class="tbl"><tr><th>おもな原因</th></tr>
+    <tr><td><b>僧帽弁狭窄症</b>、僧帽弁閉鎖不全症、高血圧・左心不全など</td></tr></table></div>
+    <p class="small muted">右は「肺」性P波で背が高い、左は「僧帽」性P波で横に広い、とセットで覚えます。</p></section>` },
+  { id:'1-5', t:'心電図異常【心室の負荷】', sub:'右脚ブロック・左脚ブロック', plan:['lecg5','lecg5','lecg5','lecg5','lecg5'], body:()=>`
+    <section class="panel"><h3>右脚ブロック</h3>
+    ${rule('QRS幅が広がり、V₁でM字型（rsR′型）')}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${bbWave('r','V1')}${bbWave('r','V6')}</div>
+    <div class="scroll"><table class="tbl"><tr><th></th><th>特徴</th></tr>
+    <tr><td style="white-space:nowrap"><b>QRS幅</b></td><td><b>0.12秒以上</b>＝完全右脚ブロック<br>0.10〜0.12秒未満＝不完全右脚ブロック</td></tr>
+    <tr><td style="white-space:nowrap"><b>V₁</b></td><td>rsR′型（M字型、ウサギの耳のような形）</td></tr>
+    <tr><td style="white-space:nowrap"><b>Ⅰ・V₆</b></td><td>幅の広いS波</td></tr>
+    <tr><td style="white-space:nowrap"><b>原因</b></td><td>健康な人にもみられる。心房中隔欠損症、肺性心、虚血性心疾患など</td></tr></table></div></section>
+    <section class="panel"><h3>左脚ブロック</h3>
+    ${rule('QRS幅が広がり、V₆で幅広い結節性のR波')}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${bbWave('l','V1')}${bbWave('l','V6')}</div>
+    <div class="scroll"><table class="tbl"><tr><th></th><th>特徴</th></tr>
+    <tr><td style="white-space:nowrap"><b>QRS幅</b></td><td><b>0.12秒以上</b>＝完全左脚ブロック</td></tr>
+    <tr><td style="white-space:nowrap"><b>V₁</b></td><td>深く幅の広いS波（QS型）</td></tr>
+    <tr><td style="white-space:nowrap"><b>Ⅰ・V₅・V₆</b></td><td>幅広く、てっぺんがへこんだ（結節性）R波。Q波は消える</td></tr>
+    <tr><td style="white-space:nowrap"><b>原因</b></td><td>虚血性心疾患、高血圧、心筋症、大動脈弁疾患など、<b>心臓の病気がある</b>ことが多い</td></tr></table></div>
+    <p class="small muted">右脚ブロックは健康な人でもみられますが、左脚ブロックは心臓の病気を伴うことが多いので要注意です。新しく出た左脚ブロックは急性心筋梗塞を疑います。</p></section>` },
+  { id:'1-6', t:'心電図異常【電解質異常】', sub:'電解質異常の波形は成人看護学で', plan:['ely','ely','ely','ely','ely'], body:()=>`
+    <section class="panel"><h3>電解質異常</h3>
+    <p>電解質異常の波形は、成人看護学の星屑にまとめています。</p>
+    <p class="small muted">成人看護学 ▶ C 循環器疾患 ▶ 6 循環器系の検査 ▶ 1 心電図</p>
+    <div class="list">
+    <button class="item" data-act="lesson" data-arg="1-4" data-uid="ek"><span class="lid">1-4</span><span class="body"><b>電解質異常の波形</b><br><span class="small muted">K・Caの異常で変わる心電図</span></span><span class="chev">›</span></button>
+    </div></section>` },
 ];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
@@ -4169,7 +4242,7 @@ const TERMS = {
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
   ek:[['心電図（ECG）','心臓の活動電位の経時的変化をグラフに記録したもの。'],['陽性波・陰性波','電極に向かう興奮＝上向き（陽性波）、遠ざかる興奮＝下向き（陰性波）。'],['P波','心房の興奮（脱分極）。'],['QRS波','心室の興奮（脱分極）。'],['T波','心室の回復（再分極）。'],['U波','再分極の終了時。誘導によってはみられない。'],['RR間隔','R波とR波の間隔。一定でなければ不整脈を疑う。'],['心拍数','60÷RR間隔（秒）。正常60〜100回/分。'],['PQ間隔','0.12〜0.20秒。延長＝1度房室ブロック。'],['QRS幅','0.10秒未満。0.12秒以上は完全脚ブロック。'],['QT間隔','0.36〜0.44秒。低K・低Ca・低Mgで延長。'],['テント状T波','高カリウム血症。'],['アーチファクト（ノイズ）','心電図に混入する心電図以外の現象。交流波、シバリング、発汗、電極の浮き・外れ。'],['シバリング','高周波の筋肉運動（ふるえ）によるノイズ。'],['ホルター心電図','24時間連続で記録する携帯型心電計。電極5か所。日常生活の制限なし。'],['運動負荷心電図法','心筋虚血を誘発しST変化を観察。マスター2階段、トレッドミル、エルゴメータ。'],['高カリウム血症の心電図','テント状T波、QT短縮。重度でP波消失・QRS延長→心室細動。'],['低カリウム血症の心電図','ST低下、T波平坦化、U波出現。'],['高カルシウム血症の心電図','QT短縮、ST短縮。'],['低カルシウム血症の心電図','QT延長、ST延長。']],
-  lecg:[['正常の心電図','P波0.08〜0.10秒、PQ0.12〜0.20秒、QRS0.10秒未満、QT0.36〜0.44秒。'],['心拍数','60〜100回/分。300÷大マスの数でも求められる。'],['ST上昇','急性心筋梗塞、冠攣縮性狭心症、急性心膜炎、心筋炎。'],['ST下降','労作性狭心症、心内膜下梗塞、低K血症、ジギタリス効果。'],['陰性T波','心筋虚血、心筋梗塞の回復期（冠性T波）、肥大型心筋症。'],['異常Q波','幅0.04秒以上、深さR波の1/4以上。心筋壊死（心筋梗塞）。'],['異常U波','陰性U波＝心筋虚血、U波増高＝低カリウム血症。']],
+  lecg:[['正常の心電図','P波0.08〜0.10秒、PQ0.12〜0.20秒、QRS0.10秒未満、QT0.36〜0.44秒。'],['心拍数','60〜100回/分。300÷大マスの数でも求められる。'],['ST上昇','急性心筋梗塞、冠攣縮性狭心症、急性心膜炎、心筋炎。'],['ST下降','労作性狭心症、心内膜下梗塞、低K血症、ジギタリス効果。'],['陰性T波','心筋虚血、心筋梗塞の回復期（冠性T波）、肥大型心筋症。'],['異常Q波','幅0.04秒以上、深さR波の1/4以上。心筋壊死（心筋梗塞）。'],['異常U波','陰性U波＝心筋虚血、U波増高＝低カリウム血症。'],['肺性P波','右心房負荷。Ⅱ・Ⅲ・aVFで高さ2.5mm以上の尖ったP波。'],['僧帽性P波','左心房負荷。Ⅰ・Ⅱで幅0.12秒以上の二峰性P波。'],['右脚ブロック','QRS幅0.12秒以上（完全）。V1でrsR′型（M字型）。'],['左脚ブロック','QRS幅0.12秒以上。V6で幅広い結節性R波。心疾患を伴うことが多い。']],
   jv:[['頸静脈怒張','右心系への還流障害でCVPが上昇し、頸静脈が怒張する。右心不全に多い。'],['中心静脈圧（CVP）','右心房付近の静脈圧。上昇すると頸静脈に伝わる。'],['上大静脈症候群','上大静脈の圧迫・閉塞で頸静脈怒張がみられる。']],
   pa:[['大脈・小脈','大脈＝脈圧⬆（大動脈弁閉鎖不全症など）、小脈＝脈圧⬇（大動脈弁狭窄症など）。'],['速脈','急速に強くなり急速に消失。大動脈弁閉鎖不全症。'],['遅脈','ゆっくり大きくなりゆっくり小さくなる。大動脈弁狭窄症。'],['頻脈・徐脈','頻脈＝100回/分以上、徐脈＝60回/分未満。'],['奇脈','吸気時に収縮期血圧が10mmHg以上低下。心タンポナーデなど。']],
   cy:[['チアノーゼ','毛細血管の還元ヘモグロビンが5g/dL以上で、皮膚が青紫調をおびる状態。'],['還元ヘモグロビン','酸素化されていない（＝酸素を運搬できない）ヘモグロビン。'],['中心性チアノーゼ','動脈血の酸素化障害。口腔粘膜にも生じる。'],['末梢性チアノーゼ','局所の循環不全。四肢末端・顔面に出て、口腔粘膜には生じない。']],
