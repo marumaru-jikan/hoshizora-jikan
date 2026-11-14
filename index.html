@@ -4290,8 +4290,8 @@ const LARR_LESSONS = [
     const it=(name,type,pt,more='')=>`<p style="margin:14px 0 0"><b>${name}</b></p>${arrStrip(type)}<p class="small" style="margin:0">${pt}</p>${more?`<p class="small muted" style="margin:4px 0 0">${more}</p>`:''}`;
     return `
     <section class="panel"><h3>見るポイント</h3>
-    ${rule('① P波はあるか　② QRS幅は狭いか広いか　③ RR間隔は規則的か　④ P波とQRS波の関係')}
-    <p class="small muted">QRS幅が狭い（0.12秒未満）→ 上室性、幅が広い → 心室性 と考えるのが基本です。波形は模式図です。</p>
+    ${rule('① P波はあるか<br>② QRS幅は狭いか広いか<br>③ RR間隔は規則的か<br>④ P波とQRS波の関係')}
+    <p class="small muted">QRS幅が狭い（0.12秒未満）→ 上室性<br>QRS幅が広い → 心室性</p>
     ${it('正常（洞調律）','normal','P波→QRS波→T波が規則正しく続く。60〜100回/分')}</section>
     <section class="panel"><h3>頻脈性不整脈：上室性</h3>
     ${it('洞頻脈','stachy','波形は正常だが、心拍数が<b>100回/分以上</b>','発熱、運動、脱水、貧血、甲状腺機能亢進症など')}
