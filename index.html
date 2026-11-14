@@ -1880,7 +1880,8 @@ const DM_LESSONS = [
     <tr><td style="white-space:nowrap"><b>75gOGTT 2時間値</b></td><td><b>200</b>mg/dL以上</td></tr>
     <tr><td style="white-space:nowrap"><b>随時血糖</b></td><td><b>200</b>mg/dL以上</td></tr>
     <tr><td style="white-space:nowrap"><b>HbA1c</b></td><td><b>6.5</b>％以上<br><span class="small muted">過去1〜2か月の血糖の平均を表す</span></td></tr></table></div>
-    ${rule('三大合併症：神経障害・網膜症・腎症（し・め・じ）')}</section>
+    ${rule('三大合併症：神経障害・網膜症・腎症')}
+    <img src="img/shimeji.png" alt="糖尿病の三大合併症の覚え方：しめじの順に（神経障害、網膜症、腎症）" style="display:block;width:100%;height:auto;background:#fff;border-radius:12px;padding:6px;box-sizing:border-box;margin:10px 0 0"></section>
     <section class="panel"><h3>1型糖尿病</h3>
     <p>自己免疫などで膵臓の<b>β細胞がこわれ</b>、インスリンが<b>ほとんど出なくなります</b>。若い人に多く、急に発症します。</p>
     ${rule('治療：インスリン注射（欠かせない）')}</section>
@@ -2431,9 +2432,9 @@ const GORO_ANAT_LESSONS = [
 ];
 const GORO_DIS_LESSONS = [
   { id:'1', t:'糖尿病の三大合併症', sub:'しめじ', plan:['gdm','gdm','gdm','gdm','gdm'], body:()=>`
-    <section class="panel"><h3>しめじ</h3>
-    ${rule('し＝神経障害　め＝網膜症　じ＝腎症')}
-    <p class="small muted">高血糖で細い血管が傷ついて起こります。この順に現れやすいといわれます。<br>くわしくは 薬物の作用と副作用 › 13-1 糖尿病。</p></section>` },
+    <section class="panel"><h3>しめじの順に</h3>
+    ${goroImg('shimeji.png','糖尿病の三大合併症の覚え方：しめじの順に')}
+    <p class="small muted" style="margin-top:10px">し＝神経障害、め＝網膜症（眼）、じ＝腎症。高血糖で細い血管が傷ついて起こり、この順に現れやすいといわれます。<br>くわしくは 薬物の作用と副作用 › 13-1 糖尿病。</p></section>` },
 ];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
