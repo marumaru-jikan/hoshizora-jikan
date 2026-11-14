@@ -3605,12 +3605,33 @@ const cyFig = () => {
   ${row(186,'cyB','#e0524a','#5b5fa8','末梢性チアノーゼ','心臓を出た時点のSaO₂は正常','末梢で血流が滞り、酸素が使われてしまう')}
   </svg>`;
 };
+const cyBody = (type) => {
+  const c = type==='central';
+  const P='#a98bd6', PL='#cdb9ec', W='#ffffff', O='#8a90a0';
+  const skin=c?PL:W, face=c?PL:PL, hand=c?P:P, foot=c?P:P, mouth=c?'#6b4a9c':'#ec8e9e';
+  const limb=(d)=>`<path d="${d}" stroke="${O}" stroke-width="15" stroke-linecap="round" fill="none"/>`;
+  const limbF=(d,col)=>`<path d="${d}" stroke="${col}" stroke-width="12" stroke-linecap="round" fill="none"/>`;
+  const A1='M52 82 L36 150', A2='M98 82 L114 150', L1='M64 160 L60 228', L2='M86 160 L90 228';
+  return `<svg viewBox="0 0 150 262" width="100%" style="display:block;max-width:150px;margin:4px auto" role="img" aria-label="${c?'中心性チアノーゼ：全身の皮膚・粘膜が紫色。口の中も紫':'末梢性チアノーゼ：手足の先と顔が紫色。口の中はピンク'}">
+  ${limb(A1)}${limb(A2)}${limb(L1)}${limb(L2)}
+  <rect x="50" y="72" width="50" height="94" rx="16" fill="${skin}" stroke="${O}" stroke-width="1.5"/>
+  ${limbF(A1,skin)}${limbF(A2,skin)}${limbF(L1,skin)}${limbF(L2,skin)}
+  <circle cx="34" cy="160" r="8" fill="${hand}" stroke="${O}" stroke-width="1.5"/><circle cx="116" cy="160" r="8" fill="${hand}" stroke="${O}" stroke-width="1.5"/>
+  <ellipse cx="57" cy="238" rx="11" ry="6" fill="${foot}" stroke="${O}" stroke-width="1.5"/><ellipse cx="93" cy="238" rx="11" ry="6" fill="${foot}" stroke="${O}" stroke-width="1.5"/>
+  <rect x="68" y="58" width="14" height="16" fill="${skin}" stroke="${O}" stroke-width="1.5"/>
+  <circle cx="75" cy="38" r="25" fill="${face}" stroke="${O}" stroke-width="1.5"/>
+  <circle cx="66" cy="34" r="2.2" fill="#3a3f4a"/><circle cx="84" cy="34" r="2.2" fill="#3a3f4a"/>
+  <ellipse cx="75" cy="50" rx="7" ry="5" fill="${mouth}" stroke="#5b4f73" stroke-width="1"/>
+  <text x="75" y="258" font-size="11" font-weight="700" fill="#5b4f73" text-anchor="middle">${c?'口の中も紫':'口の中はピンク'}</text>
+  </svg>`;
+};
 const CY_LESSONS = [
   { id:'1-1', t:'チアノーゼ', sub:'還元ヘモグロビンと中心性・末梢性', plan:['cy','cy','cy','cy','cy'], body:()=>`
     <section class="panel"><h3>チアノーゼとは</h3>
     ${rule('毛細血管の還元ヘモグロビンが5g/dL以上 → 皮膚が青紫調をおびる')}
     <p class="small muted">※還元ヘモグロビン：酸素化されていない（＝酸素を運搬できない）ヘモグロビン</p>
-    <img src="img/cyanosis.jpg" alt="チアノーゼの例。口唇が青紫色になっている。" style="display:block;width:100%;max-width:440px;height:auto;border-radius:12px;margin:8px auto 10px;background:#fff">
+    <img src="img/cyanosis.jpg" alt="チアノーゼの例。口唇が青紫色になっている。" style="display:block;width:100%;max-width:440px;height:auto;border-radius:12px;margin:8px auto 2px;background:#fff">
+    <p class="small muted" style="text-align:center;margin:0 0 10px">（AI生成）</p>
     <p>唇や爪、皮膚が青紫色に見える状態です。酸素とくっついていないヘモグロビンが、毛細血管の中に一定量以上たまると見えるようになります。</p></section>
     <section class="panel"><h3>貧血との違い</h3>
     ${rule('チアノーゼは多血症など Hb が多いときに出やすく、貧血では出にくい')}
@@ -3625,7 +3646,7 @@ const CY_LESSONS = [
     ${cyFig()}
     <div class="scroll"><table class="tbl"><tr><th></th><th>中心性チアノーゼ</th><th>末梢性チアノーゼ</th></tr>
     <tr><td style="white-space:nowrap"><b>病態</b></td><td>心臓から大動脈に送り出される時点で還元Hbが多い（<b>SaO₂低下</b>）</td><td>心臓を出た時点のSaO₂は正常。末梢で血流が滞り、酸素が届く前に消費される</td></tr>
-    <tr><td style="white-space:nowrap"><b>出現部位</b></td><td>全身の皮膚・粘膜<br><b>口腔粘膜にも生じる</b></td><td>四肢末端や顔面<br><b>口腔粘膜には生じない</b></td></tr>
+    <tr><td style="white-space:nowrap"><b>出現部位</b></td><td>${cyBody('central')}全身の皮膚・粘膜<br><b>口腔粘膜にも生じる</b></td><td>${cyBody('peri')}四肢末端や顔面<br><b>口腔粘膜には生じない</b></td></tr>
     <tr><td style="white-space:nowrap"><b>原因</b></td><td>・心臓の異常：先天性心疾患（右左シャントで静脈血が動脈血に混じる）<br>・肺の異常：肺胞低換気、換気血流比不均等、肺機能障害（拡散障害など）<br>・メトヘモグロビン血症</td><td>・心臓の異常：心不全などによる心拍出量の低下<br>・動脈閉塞、静脈閉塞による血液のうっ滞（閉塞性動脈硬化症、表在性血栓静脈炎、下肢静脈瘤）<br>・寒冷曝露による末梢血管の収縮（最多）<br>・レイノー症候群</td></tr></table></div>
     <p class="small muted">見分けるポイントは<b>口の中（口腔粘膜）</b>。口の中まで青ければ中心性です。</p></section>` },
 ];
