@@ -2975,23 +2975,21 @@ const BP_LESSONS = [
     <section class="panel"><h3>血圧の調節</h3>
     ${rule('神経系と内分泌系の2つで調節される')}
     <div class="scroll"><table class="tbl"><tr><th></th><th>主なもの</th></tr>
-    <tr><td style="white-space:nowrap"><b>神経系</b></td><td>血管運動神経（交感神経）、血管運動中枢、圧受容器、化学受容器</td></tr>
+    <tr><td style="white-space:nowrap"><b>神経系</b></td><td>血管運動神経（中枢は延髄）、圧受容器、化学受容器</td></tr>
     <tr><td style="white-space:nowrap"><b>内分泌系</b></td><td>カテコールアミン、RAA系、バソプレシン、セロトニン</td></tr></table></div></section>
     <section class="panel"><h3>血管運動神経</h3>
     <p>血管の<b>収縮</b>と<b>拡張</b>をコントロールして、<b>血流・血圧・体温</b>を調節する自律神経です。筋性動脈の平滑筋の緊張を支配して、血管抵抗を調節しています。</p>
+    ${rule('中枢は延髄（血管運動中枢）')}
     <div class="scroll"><table class="tbl"><tr><th></th><th>血管収縮神経</th><th>血管拡張神経</th></tr>
     <tr><td style="white-space:nowrap"><b>主に</b></td><td><b>交感神経</b></td><td><b>副交感神経</b></td></tr>
     <tr><td style="white-space:nowrap"><b>血管</b></td><td>壁の筋肉を緊張させて<b>細く</b>する</td><td>壁の筋肉をゆるめて<b>広げる</b></td></tr>
-    <tr><td style="white-space:nowrap"><b>血圧</b></td><td><b>上昇</b></td><td><b>低下</b></td></tr>
+    <tr><td style="white-space:nowrap"><b>血圧</b></td><td><b>⬆</b></td><td><b>⬇</b></td></tr>
     <tr><td style="white-space:nowrap"><b>体温</b></td><td>寒いとき、皮膚の血流を減らして熱を逃がさない</td><td>暑いとき、皮膚の血流を増やして熱を外へ逃がす</td></tr></table></div></section>
     <section class="panel"><h3>カテコールアミン</h3>
     <p class="small">副腎髄質ホルモンの一部（<b>アドレナリン・ノルアドレナリン・ドパミン</b>）で、交感神経からも放出されます。</p>
     <div class="scroll"><table class="tbl"><tr><th>受容体</th><th>ある場所</th><th>血管</th><th>血圧</th></tr>
     <tr><td style="white-space:nowrap"><b>α受容体</b></td><td>血管平滑筋など</td><td><b>収縮</b></td><td><b>⬆</b></td></tr>
     <tr><td style="white-space:nowrap"><b>β受容体</b></td><td>筋肉に分布する動脈・冠動脈など</td><td><b>拡張</b></td><td><b>⬇</b></td></tr></table></div></section>
-    <section class="panel"><h3>血管運動中枢</h3>
-    ${rule('血管運動神経の中枢 → 延髄')}
-    <p class="small">各部で感知した情報をもとに、交感神経・副交感神経をコントロールします。寒さや痛みの刺激も感知します。</p></section>
     <section class="panel"><h3>圧受容器</h3>
     ${rule('頸動脈洞・大動脈弓で血圧の変化を感知')}
     <div class="scroll"><table class="tbl"><tr><th>血圧</th><th>血管</th></tr>
@@ -3001,7 +2999,7 @@ const BP_LESSONS = [
     <div class="scroll"><table class="tbl"><tr><th>感知するもの</th><th>受容体</th></tr>
     <tr><td style="white-space:nowrap"><b>CO₂の増加</b></td><td>延髄の<b>中枢化学受容体</b></td></tr>
     <tr><td style="white-space:nowrap"><b>O₂の欠乏</b></td><td>頸動脈・大動脈の<b>末梢化学受容体</b>（頸動脈小体・大動脈小体）</td></tr></table></div>
-    ${rule('感知 → 血管運動中枢 → 交感神経⬆<br>→ 血管収縮・心拍数増加')}</section>
+    ${rule('感知 → 血管運動中枢 → 交感神経⬆<br>→ 血管収縮・心拍数⬆')}</section>
     <section class="panel"><h3>RAA系</h3>
     ${chain(['循環血漿量⬇・交感神経刺激・緻密斑でCl⁻⬇','レニン分泌⬆','アンジオテンシンⅡ・アルドステロン','血圧⬆'])}
     <p class="small muted">RAA系＝レニン・アンジオテンシン・アルドステロン系。血液循環に大きくかかわります。</p></section>
