@@ -3421,37 +3421,10 @@ const exFig = () => {
   const O='#e2735f', K='#7d8597', T='#2b2f3a';
   const arrow=(y,dir,c,t)=>{const x1=dir>0?92:268,x2=dir>0?268:92;return `<line x1="${x1}" y1="${y}" x2="${x2-dir*10}" y2="${y}" stroke="${c}" stroke-width="10"/><path d="M${x2} ${y} L${x2-dir*16} ${y-11} L${x2-dir*16} ${y+11}Z" fill="${c}"/><text x="180" y="${y-10}" font-size="11.5" font-weight="700" fill="${T}" text-anchor="middle">${t}</text>`;};
   return `<svg viewBox="0 0 360 262" width="100%" role="img" aria-label="胎児と母体の物質交換。母体から胎児へ酸素と栄養素（糖・アミノ酸・遊離脂肪酸・ビタミン・ミネラル）、胎児から母体へ二酸化炭素と老廃物。" style="display:block;max-width:420px;margin:8px auto;font-family:var(--f-body)">
-  <g transform="translate(96 0) scale(-1 1)">
-  <g stroke="#b9786b" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
-   <path d="M30 118 C14 128 14 156 30 166 C46 176 72 170 80 152 C88 134 80 116 64 112 C52 108 40 110 30 118Z" fill="#f8d8cc"/>
-   <path d="M60 160 C66 150 80 148 84 158 C86 166 76 172 66 170" fill="#f8d8cc"/>
-   <path d="M76 168 C82 172 86 176 82 180 C78 182 72 178 72 174" fill="#f8d8cc"/>
-   <circle cx="46" cy="92" r="27" fill="#f9dfd4"/>
-   <path d="M44 120 C52 128 54 136 48 140 C42 142 38 134 40 128" fill="#f9dfd4"/>
-   <path d="M36 124 C30 132 34 140 40 138" fill="none"/>
-   <path d="M64 92 C70 90 72 98 66 102" fill="#f9dfd4"/>
-   <path d="M30 94 Q35 98 40 94" fill="none"/>
-   <path d="M36 106 Q39 108 42 106" fill="none"/>
-   <path d="M24 82 Q22 90 26 96" fill="none" opacity=".5"/>
-   <path d="M38 66 Q44 62 50 66" fill="none" opacity=".6"/>
-   <path d="M66 146 Q90 150 96 132" fill="none" stroke="#c46a7a" stroke-width="2.6" stroke-dasharray="2 2.5"/>
-  </g>
-  <ellipse cx="34" cy="100" rx="4" ry="2.4" fill="#f4b3a6" opacity=".7"/>
-  </g>
-  <g stroke="#8a6447" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
-   <path d="M282 172 C282 140 296 128 316 128 C336 128 350 140 350 172Z" fill="#c98a9a"/>
-   <path d="M306 116 L306 128 Q316 134 326 128 L326 116" fill="#f6dccb"/>
-   <path d="M286 98 C282 70 296 54 316 54 C338 54 352 70 348 98 C348 112 350 124 344 132 C338 120 336 108 336 100 L298 100 C298 110 294 122 288 132 C282 122 284 108 286 98Z" fill="#7a5038"/>
-   <ellipse cx="317" cy="94" rx="20" ry="24" fill="#f6dccb"/>
-   <path d="M297 86 C300 70 314 64 330 68 C338 72 340 80 338 88 C330 78 316 74 297 86Z" fill="#7a5038"/>
-   <path d="M282 172 C282 140 296 128 316 128" fill="none"/>
-     </g>
-  <circle cx="309" cy="94" r="1.8" fill="#3a2a22"/><circle cx="325" cy="94" r="1.8" fill="#3a2a22"/>
-  <path d="M311 106 Q317 110 323 106" fill="none" stroke="#b05a50" stroke-width="1.4" stroke-linecap="round"/>
-  <ellipse cx="304" cy="102" rx="3.6" ry="2" fill="#f2a9a0" opacity=".6"/><ellipse cx="330" cy="102" rx="3.6" ry="2" fill="#f2a9a0" opacity=".6"/>
-  <path d="M304 132 Q316 142 328 132" fill="none" stroke="#a0606f" stroke-width="1.2" opacity=".7"/>
-  <text x="50" y="198" font-size="12.5" font-weight="800" fill="${T}" text-anchor="middle">胎児</text>
-  <text x="316" y="190" font-size="12.5" font-weight="800" fill="${T}" text-anchor="middle">母体</text>
+  <image href="img/fetus.jpg" x="2" y="62" width="90" height="102" preserveAspectRatio="xMidYMid meet"/>
+  <image href="img/mother.jpg" x="276" y="34" width="80" height="148" preserveAspectRatio="xMidYMid meet"/>
+  <text x="47" y="184" font-size="12.5" font-weight="800" fill="${T}" text-anchor="middle">胎児</text>
+  <text x="316" y="196" font-size="12.5" font-weight="800" fill="${T}" text-anchor="middle">母体</text>
   <rect x="150" y="6" width="60" height="18" rx="9" fill="#fff" stroke="#c0305a"/><text x="180" y="19" font-size="10.5" font-weight="800" fill="#c0305a" text-anchor="middle">胎盤</text>
   <text x="96" y="44" font-size="10" fill="#8a90a0">ガス交換</text>
   ${arrow(64,-1,O,'酸素（O₂）')}
