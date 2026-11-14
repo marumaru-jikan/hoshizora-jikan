@@ -3319,6 +3319,20 @@ Object.assign(POOL, {
     ['低カルシウム血症','QT間隔とST部分が延長するのは？','低カルシウム血症',['高カルシウム血症','高カリウム血症','低マグネシウム血症のみ'],'副甲状腺機能低下症、ビタミンD欠乏などで起こります。'],
     ['重度の高K血症','重度の高カリウム血症でみられるのは？','P波消失とQRS間隔延長',['U波の出現','ST上昇のみ','PQ間隔の短縮'],'心拍不整・徐脈から心室細動・心停止に至ります。'],
   ],
+  lecg2:[
+    ['PQ間隔の基準値','PQ間隔の基準値は？','0.12〜0.20秒',['0.08〜0.10秒','0.36〜0.44秒','0.20〜0.30秒'],'房室興奮時間で、延長は1度房室ブロックなどです。'],
+    ['QRS幅の基準値','QRS幅の基準値は？','0.10秒未満',['0.12秒以上','0.20秒未満','0.04秒未満'],'0.12秒以上は完全脚ブロックです。'],
+    ['QT間隔の基準値','QT間隔の基準値は？','0.36〜0.44秒',['0.12〜0.20秒','0.08〜0.10秒','0.50〜0.60秒'],'脱分極開始から再分極終了までの時間です。'],
+    ['心拍数の基準値','心拍数の基準値は？','60〜100回/分',['40〜60回/分','100〜120回/分','50〜150回/分'],'60回/分未満は徐脈、100回/分以上は頻脈です。'],
+    ['300の法則','RR間隔が大きいマス4つのときの心拍数は？','75回/分',['60回/分','100回/分','120回/分'],'300÷4＝75回/分。60÷0.8秒でも同じです。'],
+  ],
+  lecg3:[
+    ['ST上昇','ST上昇がみられる代表的な疾患は？','急性心筋梗塞',['労作性狭心症','心内膜下梗塞','低カリウム血症'],'心筋の全層（貫壁性）の虚血・障害を表します。'],
+    ['ST下降','ST下降がみられる代表的な疾患は？','労作性狭心症',['急性心筋梗塞','急性心膜炎','冠攣縮性狭心症'],'心筋の内膜側の虚血を表します。'],
+    ['異常Q波','異常Q波が表すのは？','心筋の壊死',['一時的な虚血','電解質異常','房室ブロック'],'幅0.04秒以上、深さがR波の1/4以上。多くは消えずに残ります。'],
+    ['冠性T波','心筋梗塞の回復期にみられるT波の変化は？','陰性T波（冠性T波）',['テント状T波','T波の消失','T波の増高'],'本来は上向きのT波が下向きになります。'],
+    ['U波増高','U波増高がみられるのは？','低カリウム血症',['高カリウム血症','急性心筋梗塞','高カルシウム血症'],'陰性U波は心筋虚血などでみられます。'],
+  ],
   jv:[
     ['頸静脈怒張','頸静脈怒張が多く認められるのは？','右心不全',['左心不全のみ','貧血','脱水'],'右心系への還流障害でCVPが上がり、頸静脈が怒張します。'],
     ['CVP','頸静脈怒張で上昇しているのは？','中心静脈圧（CVP）',['肺動脈楔入圧のみ','動脈血酸素分圧','膠質浸透圧'],'右心房圧（CVP）の上昇が上大静脈を介して頸静脈に伝わります。'],
@@ -4000,6 +4014,84 @@ const EK_LESSONS = [
     <tr><td style="white-space:nowrap"><b>エルゴメータ</b></td><td>ペダルに一定の抵抗を加えた自転車を、座位または臥位でこぐ</td></tr></table></div>
     ${rule('禁忌：不安定狭心症、急性心筋梗塞、バイタルサインが不安定な不整脈、非代償性の心不全')}</section>` },
 ];
+const ischWave = (type) => {
+  const W=150,H=80,BL=52;
+  const g=(x,m,s,h)=>h*Math.exp(-0.5*((x-m)/s)**2);
+  const P={qd:3,qw:3,r:30,st:0,Th:9,U:0,stShape:'flat'};
+  if(type==='stup') Object.assign(P,{st:11,Th:6});
+  if(type==='stdown') Object.assign(P,{st:-7,Th:4});
+  if(type==='negT') Object.assign(P,{Th:-10});
+  if(type==='q') Object.assign(P,{qd:15,qw:6,r:18});
+  if(type==='negU') Object.assign(P,{U:-4.5});
+  if(type==='bigU') Object.assign(P,{U:9,Th:5});
+  let grid='';for(let x=0;x<=W;x+=10)grid+=`<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#f3d3d3" stroke-width="${x%50?0.5:1}"/>`;for(let y=2;y<=H;y+=10)grid+=`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#f3d3d3" stroke-width="${(y-2)%50?0.5:1}"/>`;
+  const c=48, pts=[];
+  for(let x=2;x<=W-2;x+=0.5){let y=g(x,24,4.5,4)+g(x,92,9,P.Th)+g(x,120,6,P.U);
+    const d=x-c;
+    if(d>=-P.qw-3&&d<-3) y+=-P.qd*Math.sin(Math.PI*(d+P.qw+3)/P.qw);
+    else if(d>=-3&&d<0) y+=(d+3)/3*P.r;
+    else if(d>=0&&d<3) y+=P.r-(d/3)*(P.r+5-P.st);
+    else if(d>=3&&d<5) y+=-5+P.st+5*(d-3)/2;
+    if(P.st&&d>=5&&x<106) y+=P.st*Math.min(1,(106-x)/18);
+    pts.push(`${x},${(BL-y).toFixed(1)}`);}
+  const base=`<line x1="0" y1="${BL}" x2="${W}" y2="${BL}" stroke="#7d8597" stroke-width=".7" stroke-dasharray="3 3"/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:200px;margin:4px 0 6px;background:#fff;border-radius:6px" aria-hidden="true">${grid}${base}<polyline points="${pts.join(' ')}" fill="none" stroke="#2b2f3a" stroke-width="1.7" stroke-linejoin="round"/></svg>`;
+};
+const LECG_LESSONS = [
+  { id:'1-1', t:'波形の基本', sub:'心電図の基本は成人看護学で', plan:['ek','ek','ek','ek','ek'], body:()=>`
+    <section class="panel"><h3>波形の基本</h3>
+    <p>心電図の基本（波形の意味・読み方）は、成人看護学の星屑にまとめています。</p>
+    <p class="small muted">成人看護学 ▶ C 循環器疾患 ▶ 6 循環器系の検査 ▶ 1 心電図</p>
+    <div class="list">
+    <button class="item" data-act="lesson" data-arg="1-1" data-uid="ek"><span class="lid">1-1</span><span class="body"><b>心電図</b><br><span class="small muted">心電図とは・波形が示すもの</span></span><span class="chev">›</span></button>
+    <button class="item" data-act="lesson" data-arg="1-3" data-uid="ek"><span class="lid">1-3</span><span class="body"><b>心電図の読み方</b><br><span class="small muted">リズム・心拍数・各部位・波形の異常</span></span><span class="chev">›</span></button>
+    </div></section>` },
+  { id:'1-2', t:'正常の心電図', sub:'波形・各波の間隔・心拍数の基準値', plan:['lecg2','lecg2','lecg2','lecg2','lecg2'], body:()=>`
+    <section class="panel"><h3>波形</h3>
+    ${ekWave()}</section>
+    <section class="panel"><h3>各波の間隔</h3>
+    ${ekIntervals()}
+    <div class="scroll"><table class="tbl"><tr><th>部位</th><th>基準値</th></tr>
+    <tr><td><b>P波</b>（幅）</td><td><b>0.08〜0.10秒</b></td></tr>
+    <tr><td><b>PQ間隔</b></td><td><b>0.12〜0.20秒</b></td></tr>
+    <tr><td><b>QRS幅</b></td><td><b>0.10秒未満</b></td></tr>
+    <tr><td><b>QT間隔</b></td><td><b>0.36〜0.44秒</b></td></tr>
+    <tr><td><b>ST部分</b></td><td>基線の高さと一致</td></tr></table></div>
+    <p class="small muted">小さいマス1つ＝0.04秒。PQ間隔は小さいマス3〜5つ、QRS幅は2.5マス未満が目安です。</p></section>
+    <section class="panel"><h3>心拍数</h3>
+    ${rule('基準値：60〜100回/分')}
+    <div class="scroll"><table class="tbl"><tr><th></th><th>心拍数</th></tr>
+    <tr><td><b>徐脈</b></td><td>60回/分未満</td></tr>
+    <tr><td><b>正常</b></td><td>60〜100回/分</td></tr>
+    <tr><td><b>頻脈</b></td><td>100回/分以上</td></tr></table></div>
+    <p>心拍数（回/分）＝ 60 ÷ RR間隔（秒）</p>
+    <p class="small muted">早く数えるコツ：300 ÷ RR間隔の大きいマスの数。大マス3つ＝100回/分、4つ＝75回/分、5つ＝60回/分。</p></section>` },
+  { id:'1-3', t:'心電図異常【虚血性変化】', sub:'ST上昇・ST下降・陰性T波・異常Q波・異常U波', plan:['lecg3','lecg3','lecg3','lecg3','lecg3'], body:()=>`
+    <section class="panel"><h3>ST上昇</h3>
+    ${ischWave('stup')}
+    <p>ST部分が基線より<b>上</b>にもち上がる。心筋の<b>全層</b>（貫壁性）に虚血・障害が及んでいるサイン。</p>
+    <div class="scroll"><table class="tbl"><tr><th>おもな疾患</th></tr>
+    <tr><td><b>急性心筋梗塞</b>、冠攣縮性狭心症（発作時）、急性心膜炎、心筋炎</td></tr></table></div></section>
+    <section class="panel"><h3>ST下降</h3>
+    ${ischWave('stdown')}
+    <p>ST部分が基線より<b>下</b>にさがる。心筋の<b>内膜側</b>の虚血を表す。</p>
+    <div class="scroll"><table class="tbl"><tr><th>おもな疾患</th></tr>
+    <tr><td><b>労作性狭心症</b>（発作時・運動負荷時）、心内膜下梗塞、低カリウム血症、ジギタリス効果</td></tr></table></div></section>
+    <section class="panel"><h3>陰性T波</h3>
+    ${ischWave('negT')}
+    <p>本来は上向きのT波が<b>下向き</b>になる。</p>
+    <div class="scroll"><table class="tbl"><tr><th>おもな疾患</th></tr>
+    <tr><td>心筋虚血、心筋梗塞の回復期（<b>冠性T波</b>）、肥大型心筋症、左室肥大</td></tr></table></div></section>
+    <section class="panel"><h3>異常Q波</h3>
+    ${ischWave('q')}
+    <p>幅が広く深いQ波（幅<b>0.04秒以上</b>、深さが<b>R波の1/4以上</b>）。心筋が<b>壊死</b>したことを表し、多くは消えずに残る。</p>
+    <div class="scroll"><table class="tbl"><tr><th>おもな疾患</th></tr>
+    <tr><td><b>心筋梗塞</b>（発症から数時間後に出現し、その後も残る）</td></tr></table></div></section>
+    <section class="panel"><h3>異常U波</h3>
+    <div class="scroll"><table class="tbl"><tr><th>種類</th><th>おもな原因</th></tr>
+    <tr><td><b>陰性U波</b>${ischWave('negU')}</td><td>心筋虚血（狭心症など）、高血圧・左室肥大</td></tr>
+    <tr><td><b>U波増高</b>${ischWave('bigU')}</td><td><b>低カリウム血症</b></td></tr></table></div></section>` },
+];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
     <section class="panel"><h3>吸収・分布・代謝・排泄（ADME）</h3>
@@ -4077,6 +4169,7 @@ const TERMS = {
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
   ek:[['心電図（ECG）','心臓の活動電位の経時的変化をグラフに記録したもの。'],['陽性波・陰性波','電極に向かう興奮＝上向き（陽性波）、遠ざかる興奮＝下向き（陰性波）。'],['P波','心房の興奮（脱分極）。'],['QRS波','心室の興奮（脱分極）。'],['T波','心室の回復（再分極）。'],['U波','再分極の終了時。誘導によってはみられない。'],['RR間隔','R波とR波の間隔。一定でなければ不整脈を疑う。'],['心拍数','60÷RR間隔（秒）。正常60〜100回/分。'],['PQ間隔','0.12〜0.20秒。延長＝1度房室ブロック。'],['QRS幅','0.10秒未満。0.12秒以上は完全脚ブロック。'],['QT間隔','0.36〜0.44秒。低K・低Ca・低Mgで延長。'],['テント状T波','高カリウム血症。'],['アーチファクト（ノイズ）','心電図に混入する心電図以外の現象。交流波、シバリング、発汗、電極の浮き・外れ。'],['シバリング','高周波の筋肉運動（ふるえ）によるノイズ。'],['ホルター心電図','24時間連続で記録する携帯型心電計。電極5か所。日常生活の制限なし。'],['運動負荷心電図法','心筋虚血を誘発しST変化を観察。マスター2階段、トレッドミル、エルゴメータ。'],['高カリウム血症の心電図','テント状T波、QT短縮。重度でP波消失・QRS延長→心室細動。'],['低カリウム血症の心電図','ST低下、T波平坦化、U波出現。'],['高カルシウム血症の心電図','QT短縮、ST短縮。'],['低カルシウム血症の心電図','QT延長、ST延長。']],
+  lecg:[['正常の心電図','P波0.08〜0.10秒、PQ0.12〜0.20秒、QRS0.10秒未満、QT0.36〜0.44秒。'],['心拍数','60〜100回/分。300÷大マスの数でも求められる。'],['ST上昇','急性心筋梗塞、冠攣縮性狭心症、急性心膜炎、心筋炎。'],['ST下降','労作性狭心症、心内膜下梗塞、低K血症、ジギタリス効果。'],['陰性T波','心筋虚血、心筋梗塞の回復期（冠性T波）、肥大型心筋症。'],['異常Q波','幅0.04秒以上、深さR波の1/4以上。心筋壊死（心筋梗塞）。'],['異常U波','陰性U波＝心筋虚血、U波増高＝低カリウム血症。']],
   jv:[['頸静脈怒張','右心系への還流障害でCVPが上昇し、頸静脈が怒張する。右心不全に多い。'],['中心静脈圧（CVP）','右心房付近の静脈圧。上昇すると頸静脈に伝わる。'],['上大静脈症候群','上大静脈の圧迫・閉塞で頸静脈怒張がみられる。']],
   pa:[['大脈・小脈','大脈＝脈圧⬆（大動脈弁閉鎖不全症など）、小脈＝脈圧⬇（大動脈弁狭窄症など）。'],['速脈','急速に強くなり急速に消失。大動脈弁閉鎖不全症。'],['遅脈','ゆっくり大きくなりゆっくり小さくなる。大動脈弁狭窄症。'],['頻脈・徐脈','頻脈＝100回/分以上、徐脈＝60回/分未満。'],['奇脈','吸気時に収縮期血圧が10mmHg以上低下。心タンポナーデなど。']],
   cy:[['チアノーゼ','毛細血管の還元ヘモグロビンが5g/dL以上で、皮膚が青紫調をおびる状態。'],['還元ヘモグロビン','酸素化されていない（＝酸素を運搬できない）ヘモグロビン。'],['中心性チアノーゼ','動脈血の酸素化障害。口腔粘膜にも生じる。'],['末梢性チアノーゼ','局所の循環不全。四肢末端・顔面に出て、口腔粘膜には生じない。']],
@@ -4122,6 +4215,7 @@ const UNITS = {
   abx: { no:'薬作1', title:'抗菌薬', subject:'基礎医学', course:'med', subj:7, lessons:ABX_LESSONS, cards:'abx', drill:'abx' },
   ddi: { no:'薬3', title:'薬物相互作用', subject:'基礎医学', course:'med', subj:6, lessons:DDI_LESSONS, cards:'ddi', drill:'ddi' },
   ae:  { no:'薬2', title:'薬物の有害事象', subject:'基礎医学', course:'med', subj:6, lessons:AE_LESSONS, cards:'ae', drill:'ae' },
+  lecg: { no:'検3-1', title:'波形の基本', subject:'検査室', course:'lab', subj:2, lessons:LECG_LESSONS, cards:'lecg', drill:'lecg' },
   cog: { no:'検5-1', title:'認知機能の検査', subject:'検査室', course:'lab', subj:4, lessons:COG_LESSONS, cards:'cog', drill:'cog' },
   phy: { no:'検5-2', title:'身体機能・ADLの評価', subject:'検査室', course:'lab', subj:4, lessons:PHY_LESSONS, cards:'phy', drill:'phy' },
   sc: { no:'C2-4', title:'体循環', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:SC_LESSONS, cards:'sc', drill:'sc' },
@@ -4335,7 +4429,7 @@ const CATALOG = [
     { id:'lab', name:'検査室', k:'検', note:'検査値と検査の読み方', subjects:[
       { name:'血液検査', k:'1', units:U('血球（血算）','肝機能','腎機能','糖代謝','脂質','電解質','凝固・線溶','炎症・免疫') },
       { name:'尿検査', k:'2', units:U('尿定性（たんぱく・糖・潜血）','尿沈渣') },
-      { name:'心電図', k:'3', units:U('波形の基本','不整脈','虚血性心疾患','薬と心電図（QT延長など）') },
+      { name:'心電図', k:'3', units:U({ t:'波形の基本', ready:'lecg' },'不整脈','虚血性心疾患','薬と心電図（QT延長など）') },
       { name:'画像検査', k:'4', units:U('X線・CT','MRI','超音波','核医学') },
       { name:'評価スケール', k:'5', units:U({ t:'認知機能の検査', ready:'cog' },{ t:'身体機能・ADLの評価', ready:'phy' },'意識レベル（JCS・GCS）','栄養・嚥下の評価','こころの評価（うつ・不安）','痛みの評価') },
       { name:'その他', k:'6', units:U('呼吸機能検査','内視鏡','病理・細胞診') } ] },
