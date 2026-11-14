@@ -3065,19 +3065,15 @@ Object.assign(POOL, {
 const circFig = (focus) => {
   const B='#3a7fc4', R='#d9473f';
   const op=k=>(!focus||focus===k)?1:.22;
-  const pipe=(d,c,k)=>`<g opacity="${op(k)}"><path d="${d}" fill="none" stroke="${c}" stroke-width="16" stroke-linejoin="round" stroke-linecap="round" opacity=".28"/><path d="${d}" fill="none" stroke="${c}" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="10 8" marker-mid="url(#cm${c===B?'b':'r'})"/></g>`;
+  const pipe=(d,c,k,arr)=>`<g opacity="${op(k)}"><path d="${d}" fill="none" stroke="${c}" stroke-width="16" stroke-linejoin="round" stroke-linecap="round" opacity=".25"/><path d="${d}" fill="none" stroke="${c}" stroke-width="3" stroke-linejoin="round"/>${arr.map(([x,y,r])=>`<path d="M-8 -9 L9 0 L-8 9 Z" fill="${c}" stroke="#fff" stroke-width="1.5" stroke-linejoin="round" transform="translate(${x} ${y}) rotate(${r})"/>`).join('')}</g>`;
   const lab=(x,y,t,c,k,a='middle')=>`<g opacity="${op(k)}"><rect x="${a==='middle'?x-36:a==='start'?x:x-72}" y="${y-13}" width="72" height="20" rx="10" fill="#fff" stroke="${c}" stroke-width="1.5"/><text x="${a==='middle'?x:a==='start'?x+36:x-36}" y="${y+2}" font-size="11.5" font-weight="700" text-anchor="middle" fill="${c}">${t}</text></g>`;
   const pul='M150 168 V150 H70 V54 H140', pv='M220 54 H290 V150 H208 V168';
   const ao='M214 218 V236 H300 V340 H222', vc='M138 340 H60 V236 H146 V218';
   return `<svg viewBox="0 0 360 380" width="100%" role="img" aria-label="血液循環の図。肺循環：右心室から肺動脈で肺へ、肺静脈で左心房へ。体循環：左心室から大動脈で全身へ、大静脈で右心房へ。" style="display:block;max-width:420px;margin:8px auto;font-family:var(--f-body)">
-  <defs>
-   <marker id="cmb" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="${B}"/></marker>
-   <marker id="cmr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="${R}"/></marker>
-  </defs>
-  ${pipe('M150 168 V150 H70 V100 V54 H110 H140',B,'pul')}
-  ${pipe('M220 54 H250 H290 V100 V150 H208 V168',R,'pul')}
-  ${pipe('M214 218 V236 H300 V290 V340 H260 H222',R,'sys')}
-  ${pipe('M138 340 H100 H60 V290 V236 H146 V218',B,'sys')}
+  ${pipe('M150 168 V150 H70 V54 H140',B,'pul',[[110,150,180],[70,102,-90],[105,54,0]])}
+  ${pipe('M220 54 H290 V150 H208 V168',R,'pul',[[255,54,0],[290,102,90],[249,150,180]])}
+  ${pipe('M214 218 V236 H300 V340 H222',R,'sys',[[257,236,0],[300,288,90],[261,340,180]])}
+  ${pipe('M138 340 H60 V236 H146 V218',B,'sys',[[99,340,180],[60,288,-90],[103,236,0]])}
   <g opacity="${op('pul')}"><path d="M180 20 V44" stroke="#c98f86" stroke-width="4"/><path d="M176 44 Q146 30 136 58 Q128 92 160 96 Q176 94 176 70 Z" fill="#f2b8b8" stroke="#c98f86" stroke-width="1.5"/><path d="M184 44 Q214 30 224 58 Q232 92 200 96 Q184 94 184 70 Z" fill="#f2b8b8" stroke="#c98f86" stroke-width="1.5"/>
   <text x="180" y="116" font-size="12" font-weight="700" text-anchor="middle" fill="var(--ink)">肺</text></g>
   <path d="M180 168 H128 Q122 168 122 176 Q124 214 180 236 Z" fill="#cfe0f3" stroke="${B}" stroke-width="2"/>
