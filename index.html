@@ -3715,6 +3715,38 @@ const PA_LESSONS = [
     <p><b>奇脈がみられる疾患</b></p>
     <p>① <b>心タンポナーデ</b>　② <b>収縮性心膜炎</b>　③ <b>緊張性気胸</b>　④ <b>気管支喘息</b></p></section>` },
 ];
+const jvFig = () => {
+  const B='#3a6fb8', R='#d9473f', T='#2b2f3a', M='#6b7285';
+  const step=(y,n,t1,t2,hl)=>`<rect x="168" y="${y}" width="182" height="46" rx="10" fill="${hl?'#fdecea':'#eef3fb'}" stroke="${hl?R:B}" stroke-width="1.4"/>
+  <circle cx="186" cy="${y+23}" r="10" fill="${hl?R:B}"/><text x="186" y="${y+27}" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">${n}</text>
+  <text x="202" y="${y+20}" font-size="11.5" font-weight="800" fill="${T}">${t1}</text><text x="202" y="${y+36}" font-size="10" fill="${M}">${t2}</text>`;
+  const down=(y)=>`<path d="M259 ${y} v10" stroke="${M}" stroke-width="2"/><path d="M253 ${y+8} L259 ${y+16} L265 ${y+8}Z" fill="${M}"/>`;
+  return `<svg viewBox="0 0 360 300" width="100%" role="img" aria-label="頸静脈怒張のしくみ。右心房に血液がたまり右心房圧が上がると、その圧が上大静脈を介して頸静脈に伝わり、頸静脈が怒張する。" style="display:block;max-width:440px;margin:8px auto;font-family:var(--f-body)">
+  <rect width="360" height="300" rx="12" fill="#fff"/>
+  <!-- neck silhouette -->
+  <path d="M40 20 Q36 70 30 120 L130 120 Q122 70 118 20Z" fill="#f6e3d8" stroke="#d6b6a4" stroke-width="1.2"/>
+  <text x="79" y="16" font-size="10" fill="${M}" text-anchor="middle">首</text>
+  <!-- veins -->
+  <path d="M66 26 C60 50 74 66 64 90 C58 104 70 114 80 130" fill="none" stroke="${B}" stroke-width="13" stroke-linecap="round" opacity=".9"/>
+  <path d="M100 120 Q90 128 80 132" fill="none" stroke="${B}" stroke-width="9" stroke-linecap="round"/>
+  <path d="M80 130 V214" stroke="${B}" stroke-width="15" stroke-linecap="round"/>
+  <rect x="50" y="214" width="62" height="48" rx="14" fill="#cfdcf2" stroke="${B}" stroke-width="1.6"/>
+  <text x="81" y="242" font-size="11.5" font-weight="800" fill="${B}" text-anchor="middle">右心房</text>
+  <text x="81" y="278" font-size="10" fill="${R}" font-weight="800" text-anchor="middle">圧が上がる</text>
+  <!-- pressure arrows -->
+  <path d="M100 206 V146" stroke="${R}" stroke-width="2.5" stroke-dasharray="5 4"/><path d="M93 152 L100 138 L107 152Z" fill="${R}"/>
+  <text x="104" y="180" font-size="9.5" fill="${R}" font-weight="700">圧が</text><text x="104" y="192" font-size="9.5" fill="${R}" font-weight="700">伝わる</text>
+  <text x="44" y="176" font-size="10" fill="${B}" font-weight="700" text-anchor="end">上大</text><text x="44" y="188" font-size="10" fill="${B}" font-weight="700" text-anchor="end">静脈</text>
+  <path d="M46 182 H72" stroke="${M}" stroke-width=".8"/>
+  <text x="138" y="62" font-size="10" fill="${B}" font-weight="700">頸静脈</text><path d="M136 58 H74" stroke="${M}" stroke-width=".8"/>
+  <text x="138" y="76" font-size="9.5" fill="${R}" font-weight="700">ふくらむ</text>
+  <!-- steps -->
+  ${step(16,1,'右心系へ戻りにくい','右心不全・心タンポナーデなど',0)}${down(64)}
+  ${step(82,2,'右心房に血液がたまる','右心房圧（CVP）⬆',0)}${down(130)}
+  ${step(148,3,'上大静脈を介して伝わる','頸静脈は右心房と直結',0)}${down(196)}
+  ${step(214,4,'頸静脈が怒張','首の静脈が浮き出て見える',1)}
+  </svg>`;
+};
 const JV_LESSONS = [
   { id:'3-1', t:'頸静脈怒張', sub:'CVP上昇と右心不全', plan:['jv','jv','jv','jv','jv'], body:()=>`
     <section class="panel"><h3>頸静脈怒張</h3>
@@ -3724,9 +3756,7 @@ const JV_LESSONS = [
     <p class="small muted" style="text-align:center;margin:0 0 10px">（AI生成）</p>
     <p class="small muted"><b>座位</b>で頸静脈怒張がみられるときは、右心不全や右心への還流障害を表します。</p></section>
     <section class="panel"><h3>病態生理</h3>
-    <img src="img/jvd1.jpg" alt="頸静脈怒張の原理の図。左心不全による肺うっ血で肺動脈圧が上昇し、右心室に負担がかかって右心房圧（CVP）が上昇する。その圧が上大静脈を介して内頸静脈まで伝わり、頸静脈が怒張して見える。" style="display:block;width:100%;max-width:560px;height:auto;border-radius:12px;margin:8px auto 2px;background:#fff">
-    <p class="small muted" style="text-align:center;margin:0 0 10px">（AI生成）</p>
-    ${chain(['右心房に血液がたまる','右心房圧（CVP）⬆','上大静脈を介して伝わる','頸静脈が怒張'])}
+    ${jvFig()}
     <p>頸静脈は<b>上大静脈</b>を介して<b>右心房</b>に直接つながっています。そのため右心房圧が上がると、その圧がそのまま頸静脈まで伝わります。</p>
     <p class="small muted">例：左心不全 → 肺うっ血 → 肺動脈圧⬆ → 右心室に負担 → 右心房に血液がたまる → CVP⬆</p></section>
     <section class="panel"><h3>頸静脈怒張がみられる疾患</h3>
