@@ -4334,7 +4334,7 @@ const ihdVessel = (type) => {
   if(type==='spasm'){ top=`M0 14 Q${W/2} 34 ${W} 14`; bot=`M0 56 Q${W/2} 36 ${W} 56`; mid=`<path d="M60 6 l4 -4 l4 4 l4 -4 M90 6 l4 -4 l4 4 l4 -4 M60 66 l4 4 l4 -4 l4 4 M90 66 l4 4 l4 -4 l4 4" stroke="#e0a020" stroke-width="1.5" fill="none"/>`; }
   const plaque=`<path d="M48 56 Q80 30 112 56 Z" fill="#f4d77a" stroke="#d9b54a"/>`;
   const thr=(full)=>`<path d="${full?'M86 56 Q92 14 104 18 Q114 26 112 56 Z':'M84 47 Q90 28 104 30 Q113 38 111 52 Q96 54 84 47Z'}" fill="#7a2a2a"/>`;
-  let flow=`<path d="M8 35 H${type==='ami'?70:150}" stroke="#c0305a" stroke-width="2.4" stroke-dasharray="${type==='ami'?'0':'6 4'}" fill="none"/>`+(type==='ami'?`<path d="M74 29 l10 12 M84 29 l-10 12" stroke="#2b2f3a" stroke-width="2.4"/>`:`<path d="M150 35 l-8 -5 v10Z" fill="#c0305a"/>`);
+  let flow=`<path d="M8 35 H${type==='ami'?63:150}" stroke="#c0305a" stroke-width="2.4" stroke-dasharray="${type==='ami'?'0':'6 4'}" fill="none"/>`+(type==='ami'?`<path d="M70 30 l-8 -5 v10Z" fill="#c0305a"/><path d="M74 24 l10 12 M84 24 l-10 12" stroke="#2b2f3a" stroke-width="2.4"/>`:`<path d="M150 35 l-8 -5 v10Z" fill="#c0305a"/>`);
   if(type==='stable'||type==='unstable'||type==='ami') mid+=plaque;
   if(type==='unstable') mid+=thr(false);
   if(type==='ami') mid+=thr(true);
