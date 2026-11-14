@@ -2624,22 +2624,22 @@ const HRT2_LESSON = { id:'1-2', t:'心臓の解剖②', sub:'心筋・左心室�
 const posFig = () => {
   const ribY=i=>64+i*17;
   let ribs='';
-  for(let i=1;i<=9;i++){ const y=ribY(i), w=62+i*7;
+  for(let i=1;i<=9;i++){ const y=ribY(i), w=44+i*7;
     const c=(i===2||i===6)?'#c9962b':'#e8d39a', sw=(i===2||i===6)?5:4;
     ribs+=`<path d="M162 ${y} C130 ${y-10} ${170-w} ${y-4} ${170-w-4} ${y+26}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round"/>`;
     ribs+=`<path d="M178 ${y} C210 ${y-10} ${170+w} ${y-4} ${170+w+4} ${y+26}" fill="none" stroke="${c}" stroke-width="${sw}" stroke-linecap="round"/>`; }
   const t=(x,y,s,a='start',c='var(--ink)')=>`<text x="${x}" y="${y}" font-size="11.5" font-weight="700" text-anchor="${a}" fill="${c}">${s}</text>`;
   const ln=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--muted)" stroke-width="1"/>`;
   return `<svg viewBox="0 0 340 300" width="100%" role="img" aria-label="胸を正面から見た図。心臓は胸骨と第2〜第6肋骨のうしろにあり、やや左寄りで、心尖は左下を向く。" style="display:block;max-width:420px;margin:6px auto;font-family:var(--f-body)">
-  <path d="M130 14 Q132 40 110 46 Q60 54 46 90 Q40 200 56 296 H284 Q300 200 294 90 Q280 54 230 46 Q208 40 210 14 Z" fill="#f6e3d3" stroke="#c9a88a" stroke-width="1.5"/>
+  <defs><clipPath id="torsoClip"><path d="M130 14 Q132 40 110 46 Q60 54 46 90 Q40 200 56 296 H284 Q300 200 294 90 Q280 54 230 46 Q208 40 210 14 Z"/></clipPath></defs><path d="M130 14 Q132 40 110 46 Q60 54 46 90 Q40 200 56 296 H284 Q300 200 294 90 Q280 54 230 46 Q208 40 210 14 Z" fill="#f6e3d3" stroke="#c9a88a" stroke-width="1.5"/><g clip-path="url(#torsoClip)">
   <path d="M168 58 Q130 48 82 52 M172 58 Q210 48 258 52" fill="none" stroke="#e8d39a" stroke-width="6" stroke-linecap="round"/>
-  ${ribs}
+  ${ribs}</g>
   <path d="M182 92 V70 M200 98 Q204 82 214 80 H226" fill="none" stroke="#d9473f" stroke-width="7" stroke-linecap="round" opacity=".85"/>
   <path d="M160 98 V74" fill="none" stroke="#3a7fc4" stroke-width="7" stroke-linecap="round" opacity=".85"/>
   <path d="M152 104 Q172 92 204 100 Q246 112 238 160 Q234 190 226 204 Q196 202 166 186 Q140 166 142 134 Q144 112 152 104 Z" fill="#e8746a" opacity=".85" stroke="#b9473f" stroke-width="2"/>
   <rect x="163" y="62" width="14" height="150" rx="6" fill="#f3e5b8" stroke="#c9962b" stroke-width="1.5" opacity=".9"/>
-  ${ln(24,ribY(2)+14,92,ribY(2)+14)}${t(4,ribY(2)+10,'第2肋骨')}
-  ${ln(24,ribY(6)+20,70,ribY(6)+20)}${t(4,ribY(6)+16,'第6肋骨')}
+  ${ln(52,ribY(2)+14,104,ribY(2)+14)}${t(4,ribY(2)+10,'第2肋骨')}
+  ${ln(52,ribY(6)+20,84,ribY(6)+20)}${t(4,ribY(6)+16,'第6肋骨')}
   ${ln(178,72,276,40)}${t(278,40,'胸骨')}
   ${ln(228,204,272,232)}${t(274,236,'心尖')}
   ${t(190,150,'心臓','middle','#fff')}
