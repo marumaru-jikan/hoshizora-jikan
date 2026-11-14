@@ -3354,6 +3354,20 @@ Object.assign(POOL, {
     ['ウェンケバッハ型','PQ間隔がだんだん延びてQRS波が抜けるのは？','2度房室ブロック（ウェンケバッハ型）',['2度房室ブロック（モビッツⅡ型）','完全房室ブロック','洞不全症候群'],'モビッツⅡ型はPQ一定のまま突然QRSが抜けます。'],
     ['危険なPVC','心室細動に移りやすい危険な心室期外収縮は？','R on T',['単発のもの','1日に数回のもの','運動で消えるもの'],'多源性や連発も危険です。'],
   ],
+  larr:[
+    ['頻脈性不整脈','頻脈性不整脈の心拍数は？','100回/分より多い',['60回/分より少ない','60〜100回/分','40回/分より少ない'],'徐脈性不整脈は60回/分より少ないものです。'],
+    ['心室性','心室性の頻脈性不整脈はどれ？','心室細動（VF）',['心房細動（AF）','発作性上室頻拍（PSVT）','洞頻脈'],'心室期外収縮（VPC）、心室頻拍（VT）も心室性です。'],
+    ['上室性','上室性（心房性）の頻脈性不整脈はどれ？','心房粗動（AFL）',['心室頻拍（VT）','洞不全症候群','3度房室ブロック'],'洞頻脈、APC、AT、PSVT、AFL、AFが上室性です。'],
+    ['徐脈性不整脈','徐脈性不整脈に分類されるのは？','洞不全症候群（SSS）',['心房細動（頻脈性）','心室頻拍','WPW症候群'],'房室ブロックも徐脈性不整脈です。'],
+    ['早期興奮症候群','早期興奮症候群に含まれるのは？','WPW症候群',['QT延長症候群','洞不全症候群','房室ブロック'],'LGL症候群も早期興奮症候群です。'],
+  ],
+  larr2:[
+    ['QRS幅','幅の広いQRS波が速く連続するのは？','心室頻拍（VT）',['発作性上室頻拍（PSVT）','洞頻脈','心房粗動（AFL）'],'QRS幅が広い＝心室性と考えます。'],
+    ['1度房室ブロック','1度房室ブロックの心電図の特徴は？','PQ間隔が0.20秒より長い',['QRS波が抜ける','P波とQRS波が無関係','P波がない'],'QRS波の脱落はありません。'],
+    ['WPW症候群','デルタ波がみられるのは？','WPW症候群',['QT延長症候群','洞不全症候群','心房細動'],'副伝導路（ケント束）による早期興奮で、PQ間隔が短くなります。'],
+    ['PSVT','突然始まり突然止まる、幅の狭いQRS波の規則的な頻拍は？','発作性上室頻拍（PSVT）',['心室頻拍','心室細動','心房細動'],'迷走神経刺激やATP・ベラパミルで止めます。'],
+    ['洞不全症候群','洞不全症候群Ⅲ群は？','徐脈頻脈症候群',['洞徐脈','洞停止・洞房ブロック','完全房室ブロック'],'Ⅰ群＝洞徐脈、Ⅱ群＝洞停止・洞房ブロックです。'],
+  ],
   jv:[
     ['頸静脈怒張','頸静脈怒張が多く認められるのは？','右心不全',['左心不全のみ','貧血','脱水'],'右心系への還流障害でCVPが上がり、頸静脈が怒張します。'],
     ['CVP','頸静脈怒張で上昇しているのは？','中心静脈圧（CVP）',['肺動脈楔入圧のみ','動脈血酸素分圧','膠質浸透圧'],'右心房圧（CVP）の上昇が上大静脈を介して頸静脈に伝わります。'],
@@ -4086,6 +4100,14 @@ const arrStrip = (type) => {
   let ev=[],f=null,lab=[];
   const add=(t,x)=>ev.push([t,x]);
   if(type==='normal'){for(let k=0;k<5;k++){add('P',14+60*k);add('N',34+60*k);}}
+  if(type==='stachy'){for(let x=22;x<W;x+=36){add('P',x-14);add('N',x);}}
+  if(type==='sbrady'){[40,140,240].forEach(x=>{add('P',x-20);add('N',x);});}
+  if(type==='apc'){[34,94].forEach(x=>{add('P',x-20);add('N',x);});add('Pa',122);add('N',136);[234,294].forEach(x=>{add('P',x-20);add('N',x);});lab=[[129,'早いP']];}
+  if(type==='psvt'){for(let x=12;x<W;x+=24)add('N',x);}
+  if(type==='av1'){[50,150,250].forEach(x=>{add('P',x-40);add('N',x);});}
+  if(type==='arrest'){[34,94].forEach(x=>{add('P',x-20);add('N',x);});[254,314].forEach(x=>{add('P',x-20);if(x<W-4)add('N',x);});lab=[[164,'洞停止']];}
+  if(type==='wpw'){[40,120,200,280].forEach(x=>{add('P',x-18);add('D',x);});lab=[[30,'Δ波']];}
+  if(type==='lqt'){[34,154,274].forEach(x=>{add('P',x-20);add('L',x);});}
   if(type==='af'){[18,58,114,146,204,252,296].forEach(x=>add('N',x));f=x=>1.3*Math.sin(x*1.1)+0.9*Math.sin(x*1.9+1)+0.6*Math.sin(x*3.1);}
   if(type==='afl'){[30,78,126,174,222,270].forEach(x=>add('N',x));f=x=>{const p=((x+6)%12)/12;return 4-8*p;};}
   if(type==='pvc'){[34,94].forEach(x=>{add('P',x-20);add('N',x);});add('W',126);[214,274].forEach(x=>{add('P',x-20);add('N',x);});}
@@ -4097,10 +4119,10 @@ const arrStrip = (type) => {
   for(let x=2;x<=W-2;x+=0.5){let y=0;
     if(type==='vf') y=9*Math.sin(x/5.2)+5*Math.sin(x/2.9+1)+3*Math.sin(x/1.7+2)*Math.sin(x/37);
     else if(type==='tdp') y=(6+15*Math.abs(Math.sin(x/46)))*Math.sin(x/4.6);
-    else { for(const[t,c]of ev){ if(t==='P')y+=P(x,c); else if(t==='N')y+=N(x,c); else y+=Wd(x,c);} if(f)y+=f(x); }
+    else { for(const[t,c]of ev){ if(t==='P')y+=P(x,c); else if(t==='Pa')y-=P(x,c)*.9; else if(t==='N')y+=N(x,c); else if(t==='L')y+=N(x,c)-g(x,c+22,5,6)+g(x,c+52,9,6.5); else if(t==='D'){const d=x-c;if(d>=-12&&d<-3)y+=(d+12)/9*7;else if(d>=-3&&d<0)y+=7+(d+3)/3*19;else y+=d>=0?N(x,c):0;} else y+=Wd(x,c);} if(f)y+=f(x); }
     pts.push(`${x},${(BL-y).toFixed(1)}`);}
   let grid='';for(let x=0;x<=W;x+=10)grid+=`<line x1="${x}" y1="0" x2="${x}" y2="${H}" stroke="#f3d3d3" stroke-width="${x%50?0.5:1}"/>`;for(let y=4;y<=H;y+=10)grid+=`<line x1="0" y1="${y}" x2="${W}" y2="${y}" stroke="#f3d3d3" stroke-width="${(y-4)%50?0.5:1}"/>`;
-  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:460px;margin:6px auto;background:#fff;border-radius:8px" aria-hidden="true">${grid}<polyline points="${pts.join(' ')}" fill="none" stroke="#c0302a" stroke-width="1.6" stroke-linejoin="round"/>${lab.map(([x,t])=>`<text x="${x}" y="${BL-10}" font-size="9" font-weight="800" fill="#3a6fb8" text-anchor="middle">P</text><text x="${x+22}" y="14" font-size="9.5" font-weight="800" fill="#3a6fb8" text-anchor="middle">${t}</text>`).join('')}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block;max-width:460px;margin:6px auto;background:#fff;border-radius:8px" aria-hidden="true">${grid}<polyline points="${pts.join(' ')}" fill="none" stroke="#c0302a" stroke-width="1.6" stroke-linejoin="round"/>${lab.map(([x,t])=>t==='QRS脱落'?`<text x="${x}" y="${BL-10}" font-size="9" font-weight="800" fill="#3a6fb8" text-anchor="middle">P</text><text x="${x+22}" y="14" font-size="9.5" font-weight="800" fill="#3a6fb8" text-anchor="middle">${t}</text>`:`<text x="${x}" y="14" font-size="9.5" font-weight="800" fill="#3a6fb8" text-anchor="middle">${t}</text>`).join('')}</svg>`;
 };
 const LECG_LESSONS = [
   { id:'1-1', t:'波形の基本', sub:'心電図の基本は成人看護学で', plan:['ek','ek','ek','ek','ek'], body:()=>`
@@ -4239,6 +4261,62 @@ const LECG_LESSONS = [
     ${rule('心房と心室の間に電気的な連絡がなく、P波とQRS波が無関係に出る')}
     <p><b>徐脈</b>により、失神（<b>アダムス・ストークス発作</b>）などが起こります。治療は<b>ペースメーカー</b>です。</p></section>` },
 ];
+const LARR_LESSONS = [
+  { id:'2-1', t:'不整脈', sub:'不整脈とは・不整脈の種類', plan:['larr','larr','larr','larr','larr'], body:()=>`
+    <section class="panel"><h3>不整脈とは</h3>
+    ${rule('心臓の拍動のリズムや回数が正常でない状態')}
+    <p>心臓は、洞結節から出た電気の刺激が刺激伝導系を通って伝わることで、規則正しく拍動しています。この刺激の<b>発生</b>や<b>伝わり方</b>に異常が起こると、脈が速くなったり、遅くなったり、乱れたりします。</p>
+    <div class="scroll"><table class="tbl"><tr><th></th><th>心拍数</th></tr>
+    <tr><td><b>頻脈性不整脈</b></td><td><b>100回/分より多い</b></td></tr>
+    <tr><td><b>徐脈性不整脈</b></td><td><b>60回/分より少ない</b></td></tr></table></div></section>
+    <section class="panel"><h3>不整脈の種類</h3>
+    ${rule('頻脈性（上室性・心室性）、徐脈性、その他に分けて覚える')}
+    <p><b>頻脈性不整脈</b>（＞100回/分）</p>
+    ${arrStrip('af')}
+    <div class="scroll"><table class="tbl"><tr><th>上室性（心房性）</th><th>心室性</th></tr>
+    <tr><td>・洞頻脈<br>・心房期外収縮（APC）<br>・心房頻拍（AT）<br>・発作性上室頻拍（PSVT）<br>・心房粗動（AFL）<br>・心房細動（AF）＊</td><td>・心室期外収縮（VPC）<br>・心室頻拍（VT）<br>・<b>心室細動（VF）</b></td></tr></table></div>
+    <p class="small muted">＊心房細動には徐脈性のものもある。</p>
+    <p><b>徐脈性不整脈</b>（＜60回/分）</p>
+    ${arrStrip('av3')}
+    <div class="scroll"><table class="tbl"><tr><th>種類</th><th>分類</th></tr>
+    <tr><td><b>房室ブロック</b></td><td>・1度房室ブロック<br>・2度房室ブロック（ウェンケバッハ型、モビッツⅡ型）<br>・3度房室ブロック</td></tr>
+    <tr><td><b>洞不全症候群</b><br>（SSS）</td><td>・Ⅰ群：洞徐脈<br>・Ⅱ群：洞房ブロック or 洞停止<br>・Ⅲ群：徐脈頻脈症候群</td></tr></table></div>
+    <p><b>その他</b></p>
+    <div class="scroll"><table class="tbl"><tr><th>種類</th><th>内容</th></tr>
+    <tr><td><b>QT延長症候群</b><br>（LQTS）</td><td>先天性・後天性</td></tr>
+    <tr><td><b>早期興奮症候群</b></td><td>・WPW症候群<br>・LGL症候群</td></tr></table></div>
+    <p class="small muted">それぞれの波形は 1-7 国試に出る心電図異常 で確認できます。</p></section>` },
+  { id:'2-2', t:'不整脈の心電図', sub:'頻脈性・徐脈性・その他の波形', plan:['larr2','larr2','larr2','larr2','larr2'], body:()=>{
+    const it=(name,type,pt,more='')=>`<p style="margin:14px 0 0"><b>${name}</b></p>${arrStrip(type)}<p class="small" style="margin:0">${pt}</p>${more?`<p class="small muted" style="margin:4px 0 0">${more}</p>`:''}`;
+    return `
+    <section class="panel"><h3>見るポイント</h3>
+    ${rule('① P波はあるか　② QRS幅は狭いか広いか　③ RR間隔は規則的か　④ P波とQRS波の関係')}
+    <p class="small muted">QRS幅が狭い（0.12秒未満）→ 上室性、幅が広い → 心室性 と考えるのが基本です。波形は模式図です。</p>
+    ${it('正常（洞調律）','normal','P波→QRS波→T波が規則正しく続く。60〜100回/分')}</section>
+    <section class="panel"><h3>頻脈性不整脈：上室性</h3>
+    ${it('洞頻脈','stachy','波形は正常だが、心拍数が<b>100回/分以上</b>','発熱、運動、脱水、貧血、甲状腺機能亢進症など')}
+    ${it('心房期外収縮（APC）','apc','予定より<b>早く</b>、形の違うP波が出て、<b>幅の狭いQRS波</b>が続く')}
+    ${it('発作性上室頻拍（PSVT）','psvt','<b>幅の狭いQRS波</b>が規則正しく速く続く（150〜250回/分）。突然始まり突然止まる','迷走神経刺激（息こらえなど）、ATP・ベラパミルで止める')}
+    ${it('心房粗動（AFL）','afl','ノコギリの歯のような<b>F波</b>')}
+    ${it('心房細動（AF）','af','<b>P波がなく</b>、基線が細かく揺れる（<b>f波</b>）。RR間隔がまったく不規則','脳梗塞（心原性脳塞栓症）予防に抗凝固薬')}</section>
+    <section class="panel"><h3>頻脈性不整脈：心室性</h3>
+    ${it('心室期外収縮（VPC）','pvc','予定より早く、<b>幅の広い変な形のQRS波</b>。前にP波がない','多源性・連発・R on T は危険')}
+    ${it('心室頻拍（VT）','vt','<b>幅の広いQRS波</b>が速く連続する','脈がふれなければ除細動')}
+    ${it('心室細動（VF）','vf','形の定まらない波が<b>無秩序</b>に続く＝心停止','すぐに心肺蘇生と<b>除細動（AED）</b>')}</section>
+    <section class="panel"><h3>徐脈性不整脈：房室ブロック</h3>
+    ${it('1度房室ブロック','av1','<b>PQ間隔が0.20秒より長い</b>。QRS波の脱落はない')}
+    ${it('2度房室ブロック（ウェンケバッハ型）','av2w','PQ間隔がだんだん延びて、<b>QRS波が1つ抜ける</b>')}
+    ${it('2度房室ブロック（モビッツⅡ型）','av2m','PQ間隔は一定のまま、<b>突然QRS波が抜ける</b>','完全房室ブロックに進みやすい → ペースメーカー')}
+    ${it('3度（完全）房室ブロック','av3','<b>P波とQRS波が無関係</b>に出る','アダムス・ストークス発作 → ペースメーカー')}</section>
+    <section class="panel"><h3>徐脈性不整脈：洞不全症候群（SSS）</h3>
+    ${it('Ⅰ群：洞徐脈','sbrady','波形は正常だが、心拍数が<b>50回/分未満</b>の持続する徐脈')}
+    ${it('Ⅱ群：洞停止・洞房ブロック','arrest','突然<b>P波もQRS波も出ない</b>時間がある')}
+    <p style="margin:14px 0 0"><b>Ⅲ群：徐脈頻脈症候群</b></p><p class="small" style="margin:4px 0 0">心房細動などの<b>頻脈</b>が止まったあとに、長い洞停止（<b>徐脈</b>）が起こる</p>
+    <p class="small muted">めまいや失神があればペースメーカーの適応です。</p></section>
+    <section class="panel"><h3>その他</h3>
+    ${it('QT延長症候群（LQTS）','lqt','<b>QT間隔が長い</b>（T波が遅れて出る）','トルサード・ド・ポアンツ → 心室細動を起こすことがある。先天性と、薬・低K血症などによる後天性がある')}
+    ${it('WPW症候群（早期興奮症候群）','wpw','<b>PQ間隔が短く</b>、QRS波の立ち上がりがなだらか（<b>デルタ波</b>）','副伝導路（ケント束）を通って心室が早く興奮する。カテーテルアブレーションで治療')}</section>`; } },
+];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
     <section class="panel"><h3>吸収・分布・代謝・排泄（ADME）</h3>
@@ -4316,6 +4394,7 @@ const TERMS = {
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
   ek:[['心電図（ECG）','心臓の活動電位の経時的変化をグラフに記録したもの。'],['陽性波・陰性波','電極に向かう興奮＝上向き（陽性波）、遠ざかる興奮＝下向き（陰性波）。'],['P波','心房の興奮（脱分極）。'],['QRS波','心室の興奮（脱分極）。'],['T波','心室の回復（再分極）。'],['U波','再分極の終了時。誘導によってはみられない。'],['RR間隔','R波とR波の間隔。一定でなければ不整脈を疑う。'],['心拍数','60÷RR間隔（秒）。正常60〜100回/分。'],['PQ間隔','0.12〜0.20秒。延長＝1度房室ブロック。'],['QRS幅','0.10秒未満。0.12秒以上は完全脚ブロック。'],['QT間隔','0.36〜0.44秒。低K・低Ca・低Mgで延長。'],['テント状T波','高カリウム血症。'],['アーチファクト（ノイズ）','心電図に混入する心電図以外の現象。交流波、シバリング、発汗、電極の浮き・外れ。'],['シバリング','高周波の筋肉運動（ふるえ）によるノイズ。'],['ホルター心電図','24時間連続で記録する携帯型心電計。電極5か所。日常生活の制限なし。'],['運動負荷心電図法','心筋虚血を誘発しST変化を観察。マスター2階段、トレッドミル、エルゴメータ。'],['高カリウム血症の心電図','テント状T波、QT短縮。重度でP波消失・QRS延長→心室細動。'],['低カリウム血症の心電図','ST低下、T波平坦化、U波出現。'],['高カルシウム血症の心電図','QT短縮、ST短縮。'],['低カルシウム血症の心電図','QT延長、ST延長。']],
+  larr:[['不整脈','心拍のリズムや回数が正常でない状態。頻脈性＞100回/分、徐脈性＜60回/分。'],['上室性の頻脈性不整脈','洞頻脈、APC、AT、PSVT、AFL、AF。'],['心室性の頻脈性不整脈','VPC、VT、VF。'],['徐脈性不整脈','房室ブロック（1〜3度）、洞不全症候群（Ⅰ〜Ⅲ群）。'],['その他の不整脈','QT延長症候群、早期興奮症候群（WPW・LGL）。'],['QRS幅で見分ける','狭い（0.12秒未満）＝上室性、広い＝心室性。'],['1度房室ブロック','PQ間隔＞0.20秒。QRS脱落なし。'],['WPW症候群','PQ短縮とデルタ波。副伝導路（ケント束）。'],['QT延長症候群','QT延長→トルサード・ド・ポアンツ→心室細動。']],
   lecg:[['正常の心電図','P波0.08〜0.10秒、PQ0.12〜0.20秒、QRS0.10秒未満、QT0.36〜0.44秒。'],['心拍数','60〜100回/分。300÷大マスの数でも求められる。'],['ST上昇','急性心筋梗塞、冠攣縮性狭心症、急性心膜炎、心筋炎。'],['ST下降','労作性狭心症、心内膜下梗塞、低K血症、ジギタリス効果。'],['陰性T波','心筋虚血、心筋梗塞の回復期（冠性T波）、肥大型心筋症。'],['異常Q波','幅0.04秒以上、深さR波の1/4以上。心筋壊死（心筋梗塞）。'],['異常U波','陰性U波＝心筋虚血、U波増高＝低カリウム血症。'],['肺性P波','右心房負荷。Ⅱ・Ⅲ・aVFで高さ2.5mm以上の尖ったP波。'],['僧帽性P波','左心房負荷。Ⅰ・Ⅱで幅0.12秒以上の二峰性P波。'],['右脚ブロック','QRS幅0.12秒以上（完全）。V1でrsR′型（M字型）。'],['左脚ブロック','QRS幅0.12秒以上。V6で幅広い結節性R波。心疾患を伴うことが多い。'],['心房細動','P波消失、f波、RR不規則。脳梗塞・心不全を合併しやすい。'],['心房粗動','ノコギリ状のF波（心房約300回/分）。'],['心室期外収縮','早く出る幅広いQRS。多源性・連発・R on Tは危険。'],['心室細動','心室筋が無秩序に興奮＝心停止。除細動が唯一の救命方法。'],['完全房室ブロック','P波とQRS波が無関係。アダムス・ストークス発作。ペースメーカー。']],
   jv:[['頸静脈怒張','右心系への還流障害でCVPが上昇し、頸静脈が怒張する。右心不全に多い。'],['中心静脈圧（CVP）','右心房付近の静脈圧。上昇すると頸静脈に伝わる。'],['上大静脈症候群','上大静脈の圧迫・閉塞で頸静脈怒張がみられる。']],
   pa:[['大脈・小脈','大脈＝脈圧⬆（大動脈弁閉鎖不全症など）、小脈＝脈圧⬇（大動脈弁狭窄症など）。'],['速脈','急速に強くなり急速に消失。大動脈弁閉鎖不全症。'],['遅脈','ゆっくり大きくなりゆっくり小さくなる。大動脈弁狭窄症。'],['頻脈・徐脈','頻脈＝100回/分以上、徐脈＝60回/分未満。'],['奇脈','吸気時に収縮期血圧が10mmHg以上低下。心タンポナーデなど。']],
@@ -4363,6 +4442,7 @@ const UNITS = {
   ddi: { no:'薬3', title:'薬物相互作用', subject:'基礎医学', course:'med', subj:6, lessons:DDI_LESSONS, cards:'ddi', drill:'ddi' },
   ae:  { no:'薬2', title:'薬物の有害事象', subject:'基礎医学', course:'med', subj:6, lessons:AE_LESSONS, cards:'ae', drill:'ae' },
   lecg: { no:'検3-1', title:'波形の基本', subject:'検査室', course:'lab', subj:2, lessons:LECG_LESSONS, cards:'lecg', drill:'lecg' },
+  larr: { no:'検3-2', title:'不整脈', subject:'検査室', course:'lab', subj:2, lessons:LARR_LESSONS, cards:'larr', drill:'larr' },
   cog: { no:'検5-1', title:'認知機能の検査', subject:'検査室', course:'lab', subj:4, lessons:COG_LESSONS, cards:'cog', drill:'cog' },
   phy: { no:'検5-2', title:'身体機能・ADLの評価', subject:'検査室', course:'lab', subj:4, lessons:PHY_LESSONS, cards:'phy', drill:'phy' },
   sc: { no:'C2-4', title:'体循環', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:SC_LESSONS, cards:'sc', drill:'sc' },
@@ -4576,7 +4656,7 @@ const CATALOG = [
     { id:'lab', name:'検査室', k:'検', note:'検査値と検査の読み方', subjects:[
       { name:'血液検査', k:'1', units:U('血球（血算）','肝機能','腎機能','糖代謝','脂質','電解質','凝固・線溶','炎症・免疫') },
       { name:'尿検査', k:'2', units:U('尿定性（たんぱく・糖・潜血）','尿沈渣') },
-      { name:'心電図', k:'3', units:U({ t:'波形の基本', ready:'lecg' },'不整脈','虚血性心疾患','薬と心電図（QT延長など）') },
+      { name:'心電図', k:'3', units:U({ t:'波形の基本', ready:'lecg' },{ t:'不整脈', ready:'larr' },'虚血性心疾患','薬と心電図（QT延長など）') },
       { name:'画像検査', k:'4', units:U('X線・CT','MRI','超音波','核医学') },
       { name:'評価スケール', k:'5', units:U({ t:'認知機能の検査', ready:'cog' },{ t:'身体機能・ADLの評価', ready:'phy' },'意識レベル（JCS・GCS）','栄養・嚥下の評価','こころの評価（うつ・不安）','痛みの評価') },
       { name:'その他', k:'6', units:U('呼吸機能検査','内視鏡','病理・細胞診') } ] },
