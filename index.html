@@ -2955,6 +2955,26 @@ const starFig = () => {
   ${t(170,190,'組織（細胞のまわり）','var(--muted)','middle',10)}
   </svg>`;
 };
+const raaFig = () => {
+  const box=(cx,y,w,h,txt,fill,stroke,fs=12.5)=>{const x=cx-w/2;return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="10" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/>`+txt.split('|').map((t,i,a)=>`<text x="${cx}" y="${y+h/2+4.5+(i-(a.length-1)/2)*15}" font-size="${i?10.5:fs}" font-weight="700" text-anchor="middle" fill="var(--ink)">${t}</text>`).join('');};
+  const ar=(x1,y1,x2,y2)=>`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="var(--muted)" stroke-width="2" marker-end="url(#raa)"/>`;
+  const side=(x,y,t1,t2)=>`<text x="${x}" y="${y}" font-size="11.5" font-weight="700" fill="#c0507e">${t1}</text><text x="${x}" y="${y+14}" font-size="10" fill="var(--muted)">${t2}</text>`;
+  const A='#d7e6f6',As='#3a7fc4',H='#fbf0c9',Hs='#c9a12b',V='#f1e4fb',Vs='#8b5cf6',R='#f6c9c3',Rs='#d9473f';
+  return `<svg viewBox="0 0 360 380" width="100%" role="img" aria-label="RAA系の流れ。アンジオテンシノーゲンは、腎臓の傍糸球体細胞から出るレニンでアンジオテンシンⅠになり、肺の毛細血管にあるアンジオテンシン変換酵素でアンジオテンシンⅡになる。アンジオテンシンⅡは末梢血管を収縮させ、バソプレシン（水の再吸収）とアルドステロン（Naの再吸収）を出させ、血圧が上がる。" style="display:block;max-width:420px;margin:8px auto;font-family:var(--f-body)">
+  <defs><marker id="raa" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)"/></marker></defs>
+  ${box(150,10,190,34,'アンジオテンシノーゲン',A,As)}
+  ${ar(150,44,150,82)}${side(160,60,'レニン','腎臓・傍糸球体細胞')}
+  ${box(150,86,190,34,'アンジオテンシンⅠ',A,As)}
+  ${ar(150,120,150,158)}${side(160,136,'アンジオテンシン変換酵素（ACE）','肺の毛細血管')}
+  ${box(150,162,190,34,'アンジオテンシンⅡ',A,As,13.5)}
+  ${ar(120,196,60,246)}${ar(170,196,182,246)}${ar(220,196,294,246)}
+  ${box(60,250,104,42,'末梢血管|収縮',V,Vs,12)}
+  ${box(182,250,104,42,'バソプレシン|水の再吸収',H,Hs,12)}
+  ${box(298,250,104,42,'アルドステロン|Naの再吸収',H,Hs,12)}
+  ${ar(60,292,150,328)}${ar(182,292,182,326)}${ar(298,292,214,328)}
+  ${box(182,330,150,40,'血圧上昇',R,Rs,16)}
+  </svg>`;
+};
 const BP_LESSONS = [
   { id:'2-1', t:'血圧', sub:'循環血液量・血圧とは・脈圧', plan:['bp','bp','bp','bp','bp'], body:()=>`
     <section class="panel"><h3>循環血液量</h3>
@@ -3001,7 +3021,8 @@ const BP_LESSONS = [
     <tr><td style="white-space:nowrap"><b>O₂の欠乏</b></td><td>頸動脈・大動脈の<b>末梢化学受容体</b>（頸動脈小体・大動脈小体）</td></tr></table></div>
     ${rule('感知 → 血管運動中枢 → 交感神経⬆<br>→ 血管収縮・心拍数⬆')}</section>
     <section class="panel"><h3>RAA系</h3>
-    ${chain(['循環血漿量⬇・交感神経刺激・緻密斑でCl⁻⬇','レニン分泌⬆','アンジオテンシンⅡ・アルドステロン','血圧⬆'])}
+    ${rule('循環血漿量⬇・交感神経刺激・緻密斑でCl⁻⬇<br>→ レニン分泌⬆ → 血圧⬆')}
+    ${raaFig()}
     <p class="small muted">RAA系＝レニン・アンジオテンシン・アルドステロン系。血液循環に大きくかかわります。</p></section>
     <section class="panel"><h3>バソプレシン</h3>
     ${rule('腎臓で水の再吸収をうながす<br>→ 循環血液量⬆ → 血圧⬆')}
