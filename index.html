@@ -2453,6 +2453,102 @@ const G_DM_LESSONS = [
     ${goroImg('shimeji.png','糖尿病の三大合併症の覚え方：しめじの順に')}
     <p class="small muted" style="margin-top:10px">し＝神経障害、め＝網膜症（眼）、じ＝腎症。高血糖で細い血管が傷ついて起こり、この順に現れやすいといわれます。<br>くわしくは 薬物の作用と副作用 › 13-1 糖尿病。</p></section>` },
 ];
+Object.assign(POOL, {
+  hrt:[
+    ['位置','心臓がある位置は？','胸骨と第2〜第6肋骨の背面',['胸骨と第7〜第10肋骨の背面','左の肺の中','横隔膜の下'],'胸の中央よりやや左、縦隔にあります。'],
+    ['大きさ','成人の心臓の重さは？','約250〜300g',['約50〜100g','約500〜600g','約1kg'],'大きさは握りこぶしくらいです。'],
+    ['4つの部屋','心房を左右に分けているのは？','心房中隔',['心室中隔','腱索','乳頭筋'],'心室は心室中隔で左右に分かれます。'],
+    ['右心系の流れ','右心系の血液の流れとして正しいのは？','大静脈 → 右心房 → 三尖弁 → 右心室 → 肺動脈弁 → 肺動脈',['大静脈 → 右心房 → 僧帽弁 → 右心室 → 大動脈','肺静脈 → 右心房 → 三尖弁 → 右心室 → 肺動脈','大静脈 → 右心室 → 三尖弁 → 右心房 → 肺動脈'],'静脈血を肺へ送ります。'],
+    ['左心系の流れ','左心系の血液の流れとして正しいのは？','肺静脈 → 左心房 → 僧帽弁 → 左心室 → 大動脈弁 → 大動脈',['肺動脈 → 左心房 → 僧帽弁 → 左心室 → 大動脈','肺静脈 → 左心房 → 三尖弁 → 左心室 → 大動脈','大静脈 → 左心房 → 僧帽弁 → 左心室 → 大動脈'],'動脈血を全身へ送ります。'],
+    ['左心室','全身に動脈血を送り出し、いちばん壁が厚い部屋は？','左心室',['右心室','左心房','右心房'],'右心室の約3倍の厚さがあります。'],
+    ['僧帽弁','僧帽弁があるのはどこ？','左心房と左心室の間',['右心房と右心室の間','右心室と肺動脈の間','左心室と大動脈の間'],'弁尖は2枚です。'],
+    ['三尖弁','三尖弁があるのはどこ？','右心房と右心室の間',['左心房と左心室の間','左心室と大動脈の間','右心室と肺動脈の間'],'弁尖は3枚です。'],
+    ['弁尖の数','弁尖が2枚の弁は？','僧帽弁',['三尖弁','肺動脈弁','大動脈弁'],'僧帽弁だけが2枚で、ほかは3枚です。'],
+    ['腱索','僧帽弁と三尖弁を支え、心房への逆流を防いでいるのは？','乳頭筋から伸びる腱索',['心膜','冠動脈','心房中隔'],'心室が縮むときに弁が心房側へめくれないようにしています。'],
+    ['覚え方','「うさんくさい、さそい」の「うさん」は？','右＝三尖弁',['右＝僧帽弁','左＝三尖弁','上＝大動脈弁'],'「さそい」は左＝僧帽弁です。'],
+  ],
+});
+Object.assign(POOL, {
+  gvalve:[
+    ['うさん','「うさんくさい、さそい」の「う」「さん」は？','右・三尖弁',['右・僧帽弁','上・三尖弁','右・大動脈弁'],'右心房と右心室の間の弁です。'],
+    ['さそい','「さそい」の「さ」「そい」は？','左・僧帽弁',['左・三尖弁','左・大動脈弁','右・僧帽弁'],'左心房と左心室の間の弁です。'],
+    ['三尖弁の場所','三尖弁があるのは？','右心房と右心室の間',['左心房と左心室の間','右心室と肺動脈の間','左心室と大動脈の間'],'「うさん」＝右・三尖弁。'],
+    ['僧帽弁の場所','僧帽弁があるのは？','左心房と左心室の間',['右心房と右心室の間','左心室と大動脈の間','右心室と肺動脈の間'],'「さそい」＝左・僧帽弁。'],
+    ['房室弁','三尖弁と僧帽弁をまとめて何という？','房室弁',['半月弁','静脈弁','心膜'],'心房と心室の間にある弁です。'],
+  ],
+});
+const hrtFig = () => {
+  const B='#3a7fc4', Bl='#d7e6f6', R='#d9473f', Rl='#f7d6d2', ink='var(--ink)', M='var(--muted)';
+  const t=(x,y,s,a='middle',c=ink,fs=11.5)=>`<text x="${x}" y="${y}" font-size="${fs}" text-anchor="${a}" fill="${c}" font-weight="700">${s}</text>`;
+  const ar=(d,c)=>`<path d="${d}" fill="none" stroke="${c}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#hm${c===B?'b':'r'})"/>`;
+  const v=(x,y,w,c)=>`<path d="M${x} ${y} L${x+w/2} ${y+8} L${x+w} ${y}" fill="#fff" stroke="${c}" stroke-width="2.4" stroke-linejoin="round"/>`;
+  const num=(x,y,n,c)=>`<circle cx="${x}" cy="${y}" r="8" fill="${c}"/><text x="${x}" y="${y+4}" font-size="11" font-weight="700" text-anchor="middle" fill="#fff">${n}</text>`;
+  return `<svg viewBox="0 0 360 372" width="100%" role="img" aria-label="心臓の断面を正面から見た模式図。図の左側が右心房・右心室、右側が左心房・左心室。1三尖弁、2肺動脈弁、3僧帽弁、4大動脈弁。" style="display:block;max-width:460px;margin:6px auto 4px;font-family:var(--f-body)">
+  <defs>
+   <marker id="hmb" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="${B}"/></marker>
+   <marker id="hmr" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0L10 5L0 10z" fill="${R}"/></marker>
+  </defs>
+  <!-- 大動脈（後ろ側） -->
+  <path d="M176 204 V52 Q176 26 202 26 H296 Q322 26 322 52 V100 H302 V56 Q302 46 292 46 H206 Q196 46 196 56 V204 Z" fill="${Rl}" stroke="${R}" stroke-width="2"/>
+  <!-- 上大静脈・下大静脈 -->
+  <rect x="92" y="30" width="26" height="94" fill="${Bl}" stroke="${B}" stroke-width="2"/>
+  <path d="M40 336 V176 H72 V198 H62 V336 Z" fill="${Bl}" stroke="${B}" stroke-width="2"/>
+  <!-- 肺動脈 -->
+  <path d="M150 204 V84 H24 V64 H170 V204 Z" fill="${Bl}" stroke="${B}" stroke-width="2"/>
+  <!-- 肺静脈 -->
+  <rect x="288" y="130" width="40" height="14" fill="${Rl}" stroke="${R}" stroke-width="2"/>
+  <rect x="288" y="164" width="40" height="14" fill="${Rl}" stroke="${R}" stroke-width="2"/>
+  <!-- 心房 -->
+  <rect x="70" y="120" width="76" height="72" rx="10" fill="${Bl}" stroke="${B}" stroke-width="2.6"/>
+  <rect x="210" y="120" width="80" height="72" rx="10" fill="${Rl}" stroke="${R}" stroke-width="2.6"/>
+  <!-- 心室 -->
+  <path d="M70 202 H170 V226 Q170 296 128 322 Q78 300 70 246 Z" fill="${Bl}" stroke="${B}" stroke-width="2.6"/>
+  <path d="M176 202 H300 V226 Q300 312 232 346 Q180 312 176 252 Z" fill="${Rl}" stroke="${R}" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M170 210 L176 210 L176 290 L170 290 Z" fill="${M}" opacity=".5"/>
+  <!-- 弁 -->
+  ${v(84,194,48,B)}${v(152,198,16,B)}${v(226,194,50,R)}${v(178,198,16,R)}
+  <!-- 血流 -->
+  ${ar('M105 40 V112',B)}${ar('M51 326 V186 H80',B)}${ar('M108 160 V246',B)}${ar('M98 290 Q130 300 160 250 V214',B)}${ar('M160 180 V74 H34',B)}
+  ${ar('M324 137 H256 V160',R)}${ar('M250 172 V262',R)}${ar('M220 316 Q190 290 186 240 V214',R)}${ar('M186 180 V44 Q186 36 196 36 H300 Q312 36 312 48 V94',R)}
+  <!-- 番号 -->
+  ${num(62,206,'1',B)}${num(140,214,'2',B)}${num(286,206,'3',R)}${num(208,214,'4',R)}
+  <!-- 名前 -->
+  ${t(108,146,'右心房')}${t(250,146,'左心房')}${t(118,272,'右心室')}${t(244,290,'左心室')}
+  ${t(124,22,'上大静脈','start')}${t(36,354,'下大静脈','start')}
+  ${t(24,54,'肺動脈（肺へ）','start',B)}${t(324,116,'大動脈','end',R)}
+  ${t(352,158,'肺静脈','end',R)}${t(352,198,'（肺から）','end',R,10.5)}
+  </svg>
+  <div class="small" style="display:flex;flex-wrap:wrap;gap:4px 14px;justify-content:center;margin:2px 0 6px">
+   <span><b style="color:${B}">①</b> 三尖弁</span><span><b style="color:${B}">②</b> 肺動脈弁</span><span><b style="color:${R}">③</b> 僧帽弁</span><span><b style="color:${R}">④</b> 大動脈弁</span>
+  </div>
+  <div class="small muted" style="text-align:center;margin-bottom:4px"><span style="color:${B}">━ 静脈血</span>　<span style="color:${R}">━ 動脈血</span>　正面から見た図（図の左が体の右）</div>`;
+};
+const HRT_LESSONS = [
+  { id:'1-1', t:'心臓の解剖①', sub:'位置と大きさ・心臓のつくり・僧帽弁・三尖弁', plan:['hrt','hrt','hrt','hrt','hrt'], body:()=>`
+    <section class="panel"><h3>位置と大きさ</h3>
+    ${rule('胸骨と第2〜第6肋骨の背面<br>握りこぶし大・約250〜300g')}</section>
+    <section class="panel"><h3>心臓のつくり</h3>
+    <p>左右の<b>心房</b>と<b>心室</b>の、4つの部屋に分かれています。心房は<b>心房中隔</b>、心室は<b>心室中隔</b>で左右に区切られています。心房と心室の間、心室と動脈の間には<b>弁</b>があり、血液の逆流を防いでいます。</p>
+    ${hrtFig()}
+    <div class="scroll"><table class="tbl"><tr><th></th><th>血液の流れ</th></tr>
+    <tr><td style="white-space:nowrap"><b style="color:#3a7fc4">右心系</b><br><span class="small muted">静脈血を肺へ</span></td><td>上・下大静脈 → 右心房 → <b>三尖弁</b> → 右心室 → <b>肺動脈弁</b> → 肺動脈</td></tr>
+    <tr><td style="white-space:nowrap"><b style="color:#d9473f">左心系</b><br><span class="small muted">動脈血を全身へ</span></td><td>肺静脈 → 左心房 → <b>僧帽弁</b> → 左心室 → <b>大動脈弁</b> → 大動脈</td></tr></table></div>
+    <p class="small muted" style="margin-top:10px">全身に動脈血を送り出す<b>左心室</b>は、いちばん筋層が発達していて、右心室の約3倍の厚さがあります。</p></section>
+    <section class="panel"><h3>僧帽弁</h3>
+    ${rule('左心房と左心室の間・弁尖は2枚')}
+    <p class="small">弁尖が<b>2枚</b>なのは僧帽弁だけです（ほかの弁は3枚）。乳頭筋から伸びる<b>腱索</b>に支えられ、左心室から左心房への逆流を防いでいます。</p></section>
+    <section class="panel"><h3>三尖弁</h3>
+    ${rule('右心房と右心室の間・弁尖は3枚')}
+    <p class="small">僧帽弁と同じく、乳頭筋から伸びる<b>腱索</b>に支えられ、右心室から右心房への逆流を防いでいます。</p></section>
+    <section class="panel"><h3>覚え方</h3>
+    <img src="img/valve.png" alt="心臓の弁（房室弁）の覚え方：うさんくさい、さそい。右＝三尖弁、左＝僧帽弁" style="display:block;width:100%;height:auto;background:#fff;border-radius:12px;padding:6px;box-sizing:border-box;margin:0">
+    </section>` },
+];
+const G_VALVE_LESSONS = [
+  { id:'2-1', t:'うさんくさい、さそい', sub:'心臓の弁（房室弁）', plan:['gvalve','gvalve','gvalve','gvalve','gvalve'], body:()=>`
+    <section class="panel"><h3>うさんくさい、さそい</h3>${goroImg('valve.png','心臓の弁（房室弁）の覚え方：うさんくさい、さそい')}
+    <p class="small muted" style="margin-top:10px">う（右）さん（三尖弁）、さ（左）そい（僧帽弁）。<br>くわしくは 成人看護学 › C 循環器疾患 › 心臓の解剖 › 1-1。</p></section>` },
+];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
     <section class="panel"><h3>吸収・分布・代謝・排泄（ADME）</h3>
@@ -2529,6 +2625,8 @@ const TERMS = {
   pk:[['腸肝循環','肝臓から胆汁に出た薬が腸で再吸収され、門脈から肝臓に戻ること。作用が長く続きやすい。'],['舌下投与','舌の下で溶かして口の粘膜から吸収させる。ニトログリセリンなど。'],['経皮投与','貼り薬。ゆっくり持続的に吸収され、血中濃度が安定しやすい。'],['直腸内投与','坐薬。飲めない人にも使え、初回通過効果を一部さけられる。'],['ADME','吸収（A）・分布（D）・代謝（M）・排泄（E）。薬が体に入ってから出ていくまで。'],['吸収','投与した薬が全身をめぐる血液の中に入ること。'],['分布','薬が血液の中から組織へ移ること。作用するのは遊離型。'],['代謝','主に肝臓で薬を分解し、水に溶けやすくして排泄しやすくすること。'],['排泄','薬や代謝物が体の外へ出ること。主に腎臓から尿中へ。'],['初回通過効果','飲み薬が全身に出る前に、肝臓で一部が代謝されること。'],['絶対過敏期','妊娠4〜7週ごろ。胎児の器官がつくられ、薬の影響を受けやすい時期。']],
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
+  hrt:[['心房中隔','左右の心房を分ける壁。'],['心室中隔','左右の心室を分ける壁。'],['僧帽弁','左心房と左心室の間の弁。弁尖2枚。'],['三尖弁','右心房と右心室の間の弁。弁尖3枚。'],['腱索','乳頭筋から伸び、僧帽弁・三尖弁を支えて逆流を防ぐ線維。']],
+  g_valve:[['うさんくさい、さそい','房室弁：右＝三尖弁、左＝僧帽弁。']],
   cv:[['縦隔','左右の肺にはさまれた胸の中央部分。心臓・大血管・食道・気管などがある。'],['心尖','心臓の先端。左下前方を向き、左第5肋間・鎖骨中線あたりで拍動を触れる。'],['房室弁','心房と心室の間の弁。右が三尖弁、左が僧帽弁。'],['半月弁','心室と動脈の間の弁。肺動脈弁と大動脈弁。'],['洞房結節','右心房にある心臓のペースメーカー。'],['冠動脈','心筋を養う動脈。大動脈の根元から出て、主に拡張期に流れる。'],['門脈','腹部の消化管・脾臓の血液を集めて肝臓へ運ぶ血管。']],
   vital:[['稽留熱','日差1℃以内で高熱が続く熱型。'],['弛張熱','日差1℃以上で、37℃以下にはならない熱型。'],['間欠熱','日差1℃以上で、37℃以下になるときがある熱型。'],['脈拍欠損','心拍数より脈拍数が少なくなること。心房細動などでみられる。'],['クスマウル呼吸','深く大きな規則的な呼吸。代謝性アシドーシスでみられる。'],['脈圧','収縮期血圧 − 拡張期血圧。'],['JCS','3-3-9度方式。Ⅰ桁は刺激なしで覚醒、Ⅱ桁は刺激で覚醒、Ⅲ桁は刺激しても覚醒しない。']],
   calc:[['μg','マイクログラム。1 mg の 1,000分の1。'],['1%','100 mL に 1 g。1 mL に 10 mg。'],['流量','総量（mL）÷ 時間（時）＝ mL/時。'],['滴下数','総量 × 1 mL の滴数 ÷（時間 × 60）。'],['成人用輸液セット','1 mL ≒ 20滴。'],['小児用輸液セット','1 mL ≒ 60滴。滴/分 ＝ mL/時。'],['酸素ボンベ残量','500 L ボンベ：500 × 圧力（MPa）÷ 14.7。']],
@@ -2563,6 +2661,8 @@ const UNITS = {
   ae:  { no:'薬2', title:'薬物の有害事象', subject:'基礎医学', course:'med', subj:6, lessons:AE_LESSONS, cards:'ae', drill:'ae' },
   cog: { no:'検5-1', title:'認知機能の検査', subject:'検査室', course:'lab', subj:4, lessons:COG_LESSONS, cards:'cog', drill:'cog' },
   phy: { no:'検5-2', title:'身体機能・ADLの評価', subject:'検査室', course:'lab', subj:4, lessons:PHY_LESSONS, cards:'phy', drill:'phy' },
+  hrt: { no:'C1-1', title:'心臓の解剖', subject:'心臓の解剖と生理', course:'adC', subj:0, lessons:HRT_LESSONS, cards:'hrt', drill:'hrt' },
+  g_valve: { no:'覚2-2', title:'心臓の弁（房室弁）', subject:'解剖の語呂合わせ', course:'memo', subj:1, lessons:G_VALVE_LESSONS, cards:'g_valve', drill:'gvalve' },
   cv:   { no:'C1', title:'循環器の解剖生理', subject:'循環器疾患', course:'adC', subj:0, lessons:CV_LESSONS, cards:'cv', drill:'cv' },
   vital:{ no:'基観1', title:'バイタルサインの基本', subject:'基礎看護学', course:'base', subj:8, lessons:VITAL_LESSONS, cards:'vital', drill:'vital' },
   calc: { no:'計1', title:'看護の計算', subject:'看護計算', course:'calc', subj:0, lessons:CALC_LESSONS, cards:'calc', drill:'calc' },
@@ -2752,7 +2852,7 @@ const CATALOG = [
       { name:'看護計算', k:'計', units:U({ t:'看護の計算', ready:'calc' }) } ] },
     { id:'memo', name:'覚え方', k:'覚', note:'語呂合わせと暗記のコツ', subjects:[
       { name:'基準値の語呂合わせ', k:'1', units:U() },
-      { name:'解剖の語呂合わせ', k:'2', units:U({ t:'副腎皮質ホルモン', ready:'g_adr' }) },
+      { name:'解剖の語呂合わせ', k:'2', units:U({ t:'副腎皮質ホルモン', ready:'g_adr' },{ t:'心臓の弁（房室弁）', ready:'g_valve' }) },
       { name:'疾患の語呂合わせ', k:'3', units:U({ t:'糖尿病の三大合併症', ready:'g_dm' }) },
       { name:'薬の語呂合わせ', k:'4', units:U({ t:'TDM対象薬物', ready:'g_tdm' },{ t:'抗不整脈薬', ready:'g_aad' }) },
       { name:'法律・制度の語呂合わせ', k:'5', units:U() },
@@ -2797,7 +2897,7 @@ const CATALOG = [
       { sec:'肝・胆・膵疾患', name:'胆道疾患', k:'8', units:U('胆石症','胆嚢炎／胆管炎') },
       { sec:'肝・胆・膵疾患', name:'膵疾患', k:'9', units:U('急性膵炎','慢性膵炎','膵癌') } ] },
     { id:'adC', name:'C　循環器疾患', k:'C', subjects:[
-      { sec:'循環器系の解剖と生理', name:'心臓の解剖と生理', k:'1', units:U({ t:'循環器の解剖生理', ready:'cv' },'心臓の解剖','心臓の生理') },
+      { sec:'循環器系の解剖と生理', name:'心臓の解剖と生理', k:'1', units:U({ t:'心臓の解剖', ready:'hrt' },'心臓の生理') },
       { sec:'循環器系の解剖と生理', name:'血管系の解剖と生理', k:'2', units:U('血管系の解剖','血管系の生理','肺循環','体循環','胎児・新生児の血液循環') },
       { sec:'循環器系の解剖と生理', name:'リンパ系の解剖と生理', k:'3', units:U('リンパ系の解剖と生理') },
       { sec:'循環器系の症候・観察・検査', name:'循環器系の主要症候', k:'4', units:U('チアノーゼ','脈拍異常','頸静脈怒張') },
