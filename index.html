@@ -3265,6 +3265,13 @@ Object.assign(POOL, {
     ['左精巣静脈','左精巣（卵巣）静脈が流れ込むのは？','左腎静脈',['下大静脈に直接','左総腸骨静脈','門脈'],'右は下大静脈へ直接入ります。'],
     ['静脈還流','静脈還流を増加させるのは？','四肢の骨格筋の収縮',['長時間の安静','静脈弁の破壊','立ちっぱなしで動かないこと'],'筋肉が静脈を押して血液を心臓へ送ります（筋ポンプ）。'],
   ],
+  fc:[
+    ['臍帯の血管','臍動脈と臍静脈の本数の組み合わせは？','臍動脈2本・臍静脈1本',['臍動脈1本・臍静脈2本','臍動脈1本・臍静脈1本','臍動脈2本・臍静脈2本'],'臍帯には2本の臍動脈と1本の臍静脈があります。'],
+    ['臍静脈の血液','臍静脈を流れる血液は？','動脈血（O₂が多い）',['静脈血（CO₂が多い）','リンパ液','母体の血液そのもの'],'胎盤で酸素を受け取り、胎児に入ってくる血液です。'],
+    ['卵円孔','卵円孔がつないでいるのは？','右心房と左心房',['右心室と左心室','肺動脈と大動脈','臍静脈と下大静脈'],'肺を通らずに右心房から左心房へ血液が流れます。'],
+    ['動脈管','動脈管（ボタロー管）がつないでいるのは？','肺動脈と大動脈',['臍静脈と下大静脈','右心房と左心房','大動脈と臍動脈'],'右心室から出た血液が肺を通らずに大動脈へ流れます。'],
+    ['静脈管','静脈管（アランチウス管）について正しいのは？','臍静脈の血液が肝臓を通らずに下大静脈へ入る',['右心房と左心房をつなぐ','肺動脈と大動脈をつなぐ','臍動脈の血液を胎盤へ送る'],'臍静脈の血液の多くが、肝臓を素通りして下大静脈へ入ります。'],
+  ],
 });
 const SC_LESSONS = [
   { id:'4-1', t:'体循環', sub:'体循環とは', plan:['sc','sc','sc','sc','sc'], body:()=>`
@@ -3331,6 +3338,108 @@ const SC_LESSONS = [
     <p>静脈は壁がうすく、血圧も低いので、心臓のポンプだけでは血液を戻しきれません。手足の<b>骨格筋</b>が縮むと、筋肉の間を通る静脈が押されて、血液が心臓のほうへ押し出されます（<b>筋ポンプ</b>）。</p>
     ${chain(['骨格筋が収縮','静脈が押される','静脈弁で逆流を防ぐ','心臓へ戻る'])}
     <p class="small muted">静脈の中にある<b>静脈弁</b>が逆流を防ぐので、血液は心臓の方向にだけ進みます。歩いたり足首を動かしたりすると静脈還流が増え、長く動かないと足がむくんだり、血栓（深部静脈血栓症）ができやすくなったりします。</p></section>` },
+];
+const fcFig = () => {
+  const R='#d9473f', B='#3a6fb8', M='#9254b8', G='#4f9a2e', T='#2b2f3a';
+  const v=(d,w,c,dash='')=>`<path d="${d}" fill="none" stroke="#fff" stroke-width="${w+5}" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" ${dash?`stroke-dasharray="${dash}"`:''}/>`;
+  const ar=(x,y,r,c)=>`<path d="M-7 -7.5 L8 0 L-7 7.5 Z" fill="${c}" stroke="#fff" stroke-width="1.2" stroke-linejoin="round" transform="translate(${x} ${y}) rotate(${r})"/>`;
+  const box=(x,y,w,h,t,f,s)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="9" fill="${f}" stroke="${s}" stroke-width="1.6"/><text x="${x+w/2}" y="${y+h/2+4}" font-size="11.5" font-weight="800" text-anchor="middle" fill="${T}">${t}</text>`;
+  const sh=(x,y,t,sub,a='middle')=>`<text x="${x}" y="${y}" font-size="11.5" font-weight="800" fill="${G}" text-anchor="${a}">${t}</text><text x="${x}" y="${y+13}" font-size="9.5" fill="${G}" text-anchor="${a}">${sub}</text>`;
+  const lab=(x,y,t,c=T,a='middle',s=10.5)=>`<text x="${x}" y="${y}" font-size="${s}" font-weight="700" fill="${c}" text-anchor="${a}">${t}</text>`;
+  return `<svg viewBox="0 0 360 520" width="100%" role="img" aria-label="胎児循環の模式図。胎盤から臍静脈、静脈管を通って下大静脈、右心房へ。卵円孔から左心房、左心室、大動脈へ。右心室から肺動脈、動脈管を通って大動脈へ。大動脈から臍動脈2本で胎盤へ戻る。" style="display:block;max-width:420px;margin:8px auto;font-family:var(--f-body)">
+  <!-- lungs -->
+  <g opacity=".5"><ellipse cx="158" cy="62" rx="24" ry="30" fill="#f2b8b8" stroke="#c98f86"/><ellipse cx="214" cy="62" rx="24" ry="30" fill="#f2b8b8" stroke="#c98f86"/></g>
+  ${lab(186,24,'肺（ほとんど流れない）','#8a90a0')}
+  <!-- liver -->
+  <path d="M176 352 Q222 338 266 350 L264 384 Q222 404 178 386Z" fill="#c9a08e" opacity=".8"/>${lab(222,375,'肝臓','#5a3a2e')}
+  <!-- placenta -->
+  <ellipse cx="96" cy="488" rx="44" ry="20" fill="#f3c6cf" stroke="#c0305a" stroke-width="1.6"/>${lab(96,492,'胎盤','#8a1f3d','middle',12)}
+  <!-- heart chambers -->
+  <rect x="96" y="168" width="74" height="54" rx="10" fill="#e7dcf1" stroke="${M}" stroke-width="1.5"/>
+  <rect x="170" y="168" width="74" height="54" rx="10" fill="#f6dbe4" stroke="#c0305a" stroke-width="1.5"/>
+  <rect x="96" y="228" width="70" height="56" rx="10" fill="#e7dcf1" stroke="${M}" stroke-width="1.5"/>
+  <rect x="174" y="228" width="70" height="56" rx="10" fill="#f6dbe4" stroke="#c0305a" stroke-width="1.5"/>
+  ${lab(124,192,'右心房')}${lab(220,192,'左心房')}${lab(131,262,'右心室')}${lab(209,262,'左心室')}
+  <!-- IVC & venous inflow -->
+  ${v('M40 470 V400',6,B)}
+  ${v('M40 400 V200 H96',7,M)}
+  <path d="M130 420 L40 356" fill="none" stroke="${G}" stroke-width="16" stroke-linecap="round" opacity=".3"/>
+  ${v('M130 468 V420 L40 356',6,R)}
+  ${v('M130 420 Q150 392 182 380',3,R)}
+  ${v('M126 112 V168',6,B)}
+  <!-- foramen ovale -->
+  <circle cx="170" cy="196" r="11" fill="#fff" stroke="${G}" stroke-width="2" stroke-dasharray="3 2.5"/>${ar(171,196,0,M)}
+  <!-- pulmonary artery & ductus -->
+  ${v('M96 262 H72 V134 H190',6,M)}
+  ${v('M186 134 V96',2.5,M,'4 3')}
+  <path d="M206 134 H300" stroke="${G}" stroke-width="16" stroke-linecap="round" opacity=".25"/>
+  <!-- aorta -->
+  ${v('M244 262 H270 V118 Q270 100 288 100 Q306 100 306 118 V440',7,M)}
+  ${v('M288 100 V70',3.5,M)}
+  ${v('M190 134 H306',6,M)}
+  <!-- umbilical arteries -->
+  ${v('M306 440 V496 H140',4,B)}${v('M296 440 V484 H140',4,B)}
+  <!-- arrows -->
+  ${ar(131,225,90,M)}${ar(209,225,90,'#c0305a')}
+  ${ar(130,448,-90,R)}${ar(92,394,-145,R)}${ar(40,290,-90,M)}${ar(40,440,-90,B)}${ar(84,200,0,M)}${ar(126,145,90,B)}
+  ${ar(72,180,-90,M)}${ar(240,134,0,M)}${ar(270,190,-90,M)}${ar(306,300,90,M)}${ar(220,496,180,B)}${ar(220,484,180,B)}
+  <!-- labels -->
+  ${lab(126,106,'上大静脈',B)}
+  ${lab(48,452,'下大静脈',B,'start')}
+  ${lab(140,446,'臍静脈（1本）',R,'start')}
+  ${lab(318,470,'臍動脈',B,'start')}${lab(318,484,'（2本）',B,'start')}
+  ${lab(318,300,'大動脈',M,'start')}${lab(318,314,'→ 全身へ',M,'start',9.5)}
+  ${lab(288,64,'頭・腕へ',M,'middle',9.5)}
+  ${lab(30,150,'肺動脈',M,'middle')}
+  ${sh(234,108,'動脈管','（ボタロー管）')}
+  ${sh(214,322,'卵円孔','（右心房→左心房）')}
+  <line x1="190" y1="308" x2="172" y2="207" stroke="${G}" stroke-width="1"/>
+  ${sh(50,316,'静脈管','（アランチウス管）','start')}
+  <line x1="70" y1="333" x2="66" y2="372" stroke="${G}" stroke-width="1"/>
+  </svg>`;
+};
+const exFig = () => {
+  const O='#e2735f', K='#7d8597', T='#2b2f3a';
+  const arrow=(y,dir,c,t)=>{const x1=dir>0?92:268,x2=dir>0?268:92;return `<line x1="${x1}" y1="${y}" x2="${x2-dir*10}" y2="${y}" stroke="${c}" stroke-width="10"/><path d="M${x2} ${y} L${x2-dir*16} ${y-11} L${x2-dir*16} ${y+11}Z" fill="${c}"/><text x="180" y="${y-10}" font-size="11.5" font-weight="700" fill="${T}" text-anchor="middle">${t}</text>`;};
+  return `<svg viewBox="0 0 360 262" width="100%" role="img" aria-label="胎児と母体の物質交換。母体から胎児へ酸素と栄養素（糖・アミノ酸・遊離脂肪酸・ビタミン・ミネラル）、胎児から母体へ二酸化炭素と老廃物。" style="display:block;max-width:420px;margin:8px auto;font-family:var(--f-body)">
+  <circle cx="44" cy="96" r="24" fill="#f6dbe4" stroke="#c0305a" stroke-width="1.5"/><circle cx="44" cy="138" r="20" fill="#f6dbe4" stroke="#c0305a" stroke-width="1.5"/>
+  <text x="44" y="180" font-size="12.5" font-weight="800" fill="${T}" text-anchor="middle">胎児</text>
+  <circle cx="316" cy="92" r="22" fill="#f1e1cf" stroke="#9a6a3e" stroke-width="1.5"/><path d="M290 160 V132 Q290 116 316 116 Q342 116 342 132 V160Z" fill="#f1e1cf" stroke="#9a6a3e" stroke-width="1.5"/>
+  <text x="316" y="180" font-size="12.5" font-weight="800" fill="${T}" text-anchor="middle">母体</text>
+  <rect x="150" y="6" width="60" height="18" rx="9" fill="#fff" stroke="#c0305a"/><text x="180" y="19" font-size="10.5" font-weight="800" fill="#c0305a" text-anchor="middle">胎盤</text>
+  <text x="96" y="44" font-size="10" fill="#8a90a0">ガス交換</text>
+  ${arrow(64,-1,O,'酸素（O₂）')}
+  ${arrow(102,1,K,'二酸化炭素（CO₂）')}
+  <text x="96" y="132" font-size="10" fill="#8a90a0">栄養素・不要物の受け渡し</text>
+  ${arrow(160,-1,O,'栄養素')}<text x="180" y="184" font-size="9.5" fill="#6b7285" text-anchor="middle">糖・アミノ酸・遊離脂肪酸・ビタミン・ミネラル</text>
+  ${arrow(214,1,K,'老廃物 など')}
+  <text x="180" y="254" font-size="10" fill="#6b7285" text-anchor="middle">胎児 ⬅ 母体：<tspan fill="${O}" font-weight="700">O₂・栄養</tspan>　／　胎児 ➡ 母体：<tspan fill="${K}" font-weight="700">CO₂・老廃物</tspan></text>
+  </svg>`;
+};
+const FC_LESSONS = [
+  { id:'5-1', t:'胎児循環', sub:'胎盤での物質交換と胎児循環', plan:['fc','fc','fc','fc','fc'], body:()=>`
+    <section class="panel"><h3>胎児・母体間の物質交換・輸送</h3>
+    ${rule('胎児は、母体から胎盤を介して酸素などを受け取る')}
+    ${exFig()}
+    <p class="small muted">胎児はまだ肺で呼吸できないので、ガス交換も栄養の受け取りも、すべて<b>胎盤</b>で行います。母体と胎児の血液は直接混ざらず、胎盤で物質だけを受け渡します。</p></section>
+    <section class="panel"><h3>胎児循環</h3>
+    ${rule('臍動脈は2本、臍静脈は1本')}
+    ${fcFig()}
+    <p><b>① 卵円孔ルート</b>（肺を通らずに左心へ）</p>
+    ${chain(['胎盤','臍静脈','静脈管','下大静脈','右心房','卵円孔','左心房','左心室','大動脈','全身','臍動脈','胎盤'])}
+    <p><b>② 動脈管ルート</b>（肺を通らずに大動脈へ）</p>
+    ${chain(['胎盤','臍静脈','静脈管','下大静脈','右心房','右心室','肺動脈','動脈管','大動脈','全身','臍動脈','胎盤'])}
+    <div class="scroll"><table class="tbl"><tr><th>通り道</th><th>どこ → どこ</th><th>素通り</th></tr>
+    <tr><td><b>静脈管</b><br><span class="small muted">アランチウス管</span></td><td>臍静脈 → 下大静脈</td><td>肝臓</td></tr>
+    <tr><td><b>卵円孔</b></td><td>右心房 → 左心房</td><td>肺</td></tr>
+    <tr><td><b>動脈管</b><br><span class="small muted">ボタロー管</span></td><td>肺動脈 → 大動脈</td><td>肺</td></tr></table></div>
+    <p class="small muted">胎児の肺はふくらんでおらず、血管の抵抗が高いため、血液はほとんど肺に流れません。そのため卵円孔と動脈管で肺を素通りします。</p></section>
+    <section class="panel"><h3>ポイント</h3>
+    ${rule('胎児を中心に考える')}
+    <div class="scroll"><table class="tbl"><tr><th></th><th>向き</th><th>流れる血液</th></tr>
+    <tr><td style="white-space:nowrap"><b>臍静脈</b><br><span class="small muted">1本</span></td><td>胎盤 → 胎児<br>（胎児に<b>入ってくる</b>）</td><td><b>動脈血</b><br>（O₂が多い）</td></tr>
+    <tr><td style="white-space:nowrap"><b>臍動脈</b><br><span class="small muted">2本</span></td><td>胎児 → 胎盤<br>（胎児から<b>出ていく</b>）</td><td><b>静脈血</b><br>（CO₂が多い）</td></tr></table></div>
+    <p class="small muted">動脈・静脈の名前は、流れる血液の種類ではなく<b>向き</b>で決まります（心臓から出る＝動脈、心臓へ戻る＝静脈）。肺動脈に静脈血が流れるのと同じ考え方です。</p></section>` },
 ];
 const PK_LESSONS = [
   { id:'1-1', t:'薬物動態', sub:'ADMEと、年齢や妊娠で変わる薬の動き', plan:['pk','pk','pk','pk','pk'], body:()=>`
@@ -3409,6 +3518,7 @@ const TERMS = {
   cog: [...POOL.mmse,...POOL.hdsr].map(q=>[q[0]+'（'+(POOL.mmse.includes(q)?'MMSE':'HDS-R')+'）', q[2]]),
   phy: [...POOL.mmt,...POOL.adl].map(q=>[q[0], q[2]]),
   sc:[['体循環','左心室→大動脈→全身→大静脈→右心房。大循環。'],['大動脈','左心室から全身へ動脈血を送る。'],['大静脈','全身から右心房へ静脈血を戻す。上大静脈と下大静脈。'],['腕頭動脈','右側にだけある。右総頸動脈と右鎖骨下動脈に分かれる。'],['大動脈弓の枝','腕頭動脈・左総頸動脈・左鎖骨下動脈の3本。'],['内頸動脈と椎骨動脈','脳に血液を送る2つのルート。'],['心原性脳梗塞','心房細動などで心臓にできた血栓が脳の動脈を詰まらせる。予防は抗凝固薬。'],['上大静脈・下大静脈','上半身・下半身の血液を集め、別々に右心房へ送る。'],['静脈角','内頸静脈と鎖骨下静脈の合流部。左静脈角に胸管が流入。'],['静脈還流','四肢の骨格筋の収縮（筋ポンプ）で増加する。']],
+  fc:[['臍静脈','1本。胎盤→胎児。動脈血が流れる。'],['臍動脈','2本。胎児→胎盤。静脈血が流れる。'],['静脈管（アランチウス管）','臍静脈→下大静脈。肝臓を素通り。'],['卵円孔','右心房→左心房。肺を素通り。'],['動脈管（ボタロー管）','肺動脈→大動脈。肺を素通り。']],
   pc:[['肺循環','右心室→肺動脈→肺→肺静脈→左心房。小循環。'],['肺動脈','右心室から肺へ静脈血を運ぶ。閉塞が起こりやすい。'],['肺静脈','肺から左心房へ動脈血を運ぶ。左右2本ずつ。']],
   bp:[['膠質浸透圧','アルブミンなどの血漿タンパクがつくる、水を血管内へ引き込む力。'],['スターリングの仮説','毛細血管での水の出入りは血圧と膠質浸透圧のバランスで決まる。'],['橈骨動脈','手首の親指側。ふだんの脈拍測定に使う。'],['総頸動脈','首の横。急変時の脈拍確認。左右同時に触れない。'],['血管運動神経','筋性動脈の平滑筋を支配し血管抵抗を調節。主に交感神経。'],['血管運動中枢','延髄にある血管運動神経の中枢。'],['圧受容器','頸動脈洞・大動脈弓で血圧の変化を感知。'],['化学受容器','CO₂増加は延髄の中枢化学受容体、O₂欠乏は頸動脈・大動脈の末梢化学受容体で感知。'],['RAA系','レニン・アンジオテンシン・アルドステロン系。血圧を上げる。'],['バソプレシン','抗利尿ホルモン。水の再吸収をうながし血圧を上げる。'],['循環血液量','体をめぐる血液の量。体重の約1/12。'],['血圧','血液が血管の壁を押す圧力。心拍出量×末梢血管抵抗。'],['脈圧','収縮期血圧−拡張期血圧。'],['平均血圧','拡張期血圧＋脈圧÷3。']],
   art:[['吻合','血管どうしが途中でつながっていること。'],['終動脈','吻合がない動脈。脳・肺・網膜・脾臓・腎臓。'],['機能的終動脈','吻合による血液供給が不十分な動脈。冠動脈。'],['動静脈吻合（A-Vシャント）','動脈と静脈が毛細血管を通らずにつながる。毛細血管の血流量を調節。'],['毛細血管','細動脈と細静脈をつなぐ細い血管。内皮細胞1層で、物質交換をする。'],['基底膜','内皮細胞を外から支える薄い膜。'],['静脈','全身（肺）から心臓へ血液を戻す血管。中膜が薄く、弁がある。'],['静脈弁','静脈の内側の弁。血液の逆流を防ぐ。下肢に多い。'],['筋ポンプ','筋肉の収縮で静脈がしぼられ、血液が心臓へ押し戻されるしくみ。'],['動脈','心臓から全身（肺）へ血液を運ぶ血管。壁が厚く弾力がある。'],['内膜','動脈壁のいちばん内側。内皮細胞でおおわれる。'],['中膜','動脈壁でいちばん厚い。弾性線維や平滑筋細胞。'],['外膜','動脈壁のいちばん外側。結合組織で壁を支える。'],['弾性動脈','弾性線維が多い動脈。大動脈など。'],['筋性動脈','平滑筋が多い動脈。細動脈など。']],
@@ -3450,6 +3560,7 @@ const UNITS = {
   cog: { no:'検5-1', title:'認知機能の検査', subject:'検査室', course:'lab', subj:4, lessons:COG_LESSONS, cards:'cog', drill:'cog' },
   phy: { no:'検5-2', title:'身体機能・ADLの評価', subject:'検査室', course:'lab', subj:4, lessons:PHY_LESSONS, cards:'phy', drill:'phy' },
   sc: { no:'C2-4', title:'体循環', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:SC_LESSONS, cards:'sc', drill:'sc' },
+  fc: { no:'C2-5', title:'胎児・新生児の血液循環', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:FC_LESSONS, cards:'fc', drill:'fc' },
   pc: { no:'C2-3', title:'肺循環', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:PC_LESSONS, cards:'pc', drill:'pc' },
   bp: { no:'C2-2', title:'血管系の生理', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:BP_LESSONS, cards:'bp', drill:'bp' },
   art: { no:'C2-1', title:'血管系の解剖', subject:'血管系の解剖と生理', course:'adC', subj:1, lessons:ART_LESSONS, cards:'art', drill:'art' },
@@ -3691,7 +3802,7 @@ const CATALOG = [
       { sec:'肝・胆・膵疾患', name:'膵疾患', k:'9', units:U('急性膵炎','慢性膵炎','膵癌') } ] },
     { id:'adC', name:'C　循環器疾患', k:'C', subjects:[
       { sec:'循環器系の解剖と生理', name:'心臓の解剖と生理', k:'1', units:U({ t:'心臓の解剖', ready:'hrt' },{ t:'心臓の生理', ready:'hp' }) },
-      { sec:'循環器系の解剖と生理', name:'血管系の解剖と生理', k:'2', units:U({ t:'血管系の解剖', ready:'art' },{ t:'血管系の生理', ready:'bp' },{ t:'肺循環', ready:'pc' },{ t:'体循環', ready:'sc' },'胎児・新生児の血液循環') },
+      { sec:'循環器系の解剖と生理', name:'血管系の解剖と生理', k:'2', units:U({ t:'血管系の解剖', ready:'art' },{ t:'血管系の生理', ready:'bp' },{ t:'肺循環', ready:'pc' },{ t:'体循環', ready:'sc' },{ t:'胎児・新生児の血液循環', ready:'fc' }) },
       { sec:'循環器系の解剖と生理', name:'リンパ系の解剖と生理', k:'3', units:U('リンパ系の解剖と生理') },
       { sec:'循環器系の症候・観察・検査', name:'循環器系の主要症候', k:'4', units:U('チアノーゼ','脈拍異常','頸静脈怒張') },
       { sec:'循環器系の症候・観察・検査', name:'循環器系のフィジカルアセスメント', k:'5', units:U('心音の聴診') },
