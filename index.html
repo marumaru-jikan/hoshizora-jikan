@@ -3062,12 +3062,39 @@ Object.assign(POOL, {
     ['酸素飽和度','肺動脈血と肺静脈血で、酸素飽和度が高いのは？','肺静脈血',['肺動脈血','どちらも同じ','どちらも0%'],'肺で酸素化された血液が流れています。'],
   ],
 });
+const circFig = (focus) => {
+  const B='#3a7fc4', R='#d9473f';
+  const op=k=>(!focus||focus===k)?1:.22;
+  const pipe=(d,c,k)=>`<g opacity="${op(k)}"><path d="${d}" fill="none" stroke="${c}" stroke-width="16" stroke-linejoin="round" stroke-linecap="round" opacity=".28"/><path d="${d}" fill="none" stroke="${c}" stroke-width="2.6" stroke-linejoin="round" stroke-dasharray="10 8" marker-mid="url(#cm${c===B?'b':'r'})"/></g>`;
+  const lab=(x,y,t,c,k,a='middle')=>`<g opacity="${op(k)}"><rect x="${a==='middle'?x-36:a==='start'?x:x-72}" y="${y-13}" width="72" height="20" rx="10" fill="#fff" stroke="${c}" stroke-width="1.5"/><text x="${a==='middle'?x:a==='start'?x+36:x-36}" y="${y+2}" font-size="11.5" font-weight="700" text-anchor="middle" fill="${c}">${t}</text></g>`;
+  const pul='M150 168 V150 H70 V54 H140', pv='M220 54 H290 V150 H208 V168';
+  const ao='M214 218 V236 H300 V340 H222', vc='M138 340 H60 V236 H146 V218';
+  return `<svg viewBox="0 0 360 380" width="100%" role="img" aria-label="血液循環の図。肺循環：右心室から肺動脈で肺へ、肺静脈で左心房へ。体循環：左心室から大動脈で全身へ、大静脈で右心房へ。" style="display:block;max-width:420px;margin:8px auto;font-family:var(--f-body)">
+  <defs>
+   <marker id="cmb" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="${B}"/></marker>
+   <marker id="cmr" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 1L9 5L1 9z" fill="${R}"/></marker>
+  </defs>
+  ${pipe('M150 168 V150 H70 V100 V54 H110 H140',B,'pul')}
+  ${pipe('M220 54 H250 H290 V100 V150 H208 V168',R,'pul')}
+  ${pipe('M214 218 V236 H300 V290 V340 H260 H222',R,'sys')}
+  ${pipe('M138 340 H100 H60 V290 V236 H146 V218',B,'sys')}
+  <g opacity="${op('pul')}"><path d="M180 20 V44" stroke="#c98f86" stroke-width="4"/><path d="M176 44 Q146 30 136 58 Q128 92 160 96 Q176 94 176 70 Z" fill="#f2b8b8" stroke="#c98f86" stroke-width="1.5"/><path d="M184 44 Q214 30 224 58 Q232 92 200 96 Q184 94 184 70 Z" fill="#f2b8b8" stroke="#c98f86" stroke-width="1.5"/>
+  <text x="180" y="116" font-size="12" font-weight="700" text-anchor="middle" fill="var(--ink)">肺</text></g>
+  <path d="M180 168 H128 Q122 168 122 176 Q124 214 180 236 Z" fill="#cfe0f3" stroke="${B}" stroke-width="2"/>
+  <path d="M180 168 H232 Q238 168 238 176 Q236 214 180 236 Z" fill="#f6cfcb" stroke="${R}" stroke-width="2"/>
+  <text x="152" y="198" font-size="10.5" font-weight="700" text-anchor="middle" fill="${B}">右心</text><text x="208" y="198" font-size="10.5" font-weight="700" text-anchor="middle" fill="${R}">左心</text>
+  <g opacity="${op('sys')}"><circle cx="180" cy="290" r="15" fill="#9aa3ad"/><path d="M150 360 V326 Q150 310 180 310 Q210 310 210 326 V360 Z" fill="#9aa3ad"/>
+  <text x="180" y="376" font-size="12" font-weight="700" text-anchor="middle" fill="var(--ink)">全身</text></g>
+  ${lab(70,30,'肺動脈',B,'pul')}${lab(290,30,'肺静脈',R,'pul')}
+  ${lab(60,368,'大静脈',B,'sys')}${lab(300,368,'大動脈',R,'sys')}
+  </svg>`;
+};
 const PC_LESSONS = [
   { id:'3-1', t:'肺循環', sub:'肺循環とは・肺動脈・肺静脈', plan:['pc','pc','pc','pc','pc'], body:()=>`
     <section class="panel"><h3>肺循環とは</h3>
     <p>右心室から出た<b>静脈血</b>を肺へ送り、肺で酸素を受け取った<b>動脈血</b>を左心房へ戻すまでの流れです（小循環）。</p>
     ${chain(['右心室','肺動脈','肺','肺静脈','左心房'])}
-    <img src="img/circ.png" alt="肺循環と体循環の図。心臓から肺動脈で肺へ、肺静脈で心臓へ戻る。心臓から大動脈で全身へ、大静脈で心臓へ戻る。" style="display:block;width:100%;max-width:400px;height:auto;border-radius:12px;margin:8px auto 0;background:#fff"></section>
+    ${circFig('pul')}</section>
     <section class="panel"><h3>肺動脈</h3>
     ${rule('動脈だけど静脈血（CO₂が多い）が流れる')}
     <p class="small">右心室から出て左右に分かれ、<b>肺門</b>から左右の肺に入ります。</p>
@@ -3092,7 +3119,7 @@ const SC_LESSONS = [
     <section class="panel"><h3>体循環とは</h3>
     <p>左心室から出た<b>動脈血</b>を全身へ送り、組織で酸素を渡して二酸化炭素を受け取った<b>静脈血</b>を右心房へ戻すまでの流れです（大循環）。</p>
     ${chain(['左心室','大動脈','全身','大静脈','右心房'])}
-    <img src="img/circ.png" alt="肺循環と体循環の図。心臓から大動脈で全身へ、大静脈で心臓へ戻る。心臓から肺動脈で肺へ、肺静脈で心臓へ戻る。" style="display:block;width:100%;max-width:400px;height:auto;border-radius:12px;margin:8px auto 10px;background:#fff">
+    ${circFig('sys')}
     <div class="scroll"><table class="tbl"><tr><th></th><th>体循環（大循環）</th><th>肺循環（小循環）</th></tr>
     <tr><td style="white-space:nowrap"><b>出発</b></td><td>左心室</td><td>右心室</td></tr>
     <tr><td style="white-space:nowrap"><b>行き先</b></td><td>全身</td><td>肺</td></tr>
