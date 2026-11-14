@@ -3428,6 +3428,7 @@ const exFig = () => {
   const O='#e2735f', K='#7d8597', T='#2b2f3a';
   const arrow=(y,dir,c,t)=>{const x1=dir>0?92:268,x2=dir>0?268:92;return `<line x1="${x1}" y1="${y}" x2="${x2-dir*10}" y2="${y}" stroke="${c}" stroke-width="10"/><path d="M${x2} ${y} L${x2-dir*16} ${y-11} L${x2-dir*16} ${y+11}Z" fill="${c}"/><text x="180" y="${y-10}" font-size="11.5" font-weight="700" fill="${T}" text-anchor="middle">${t}</text>`;};
   return `<svg viewBox="0 0 360 262" width="100%" role="img" aria-label="胎児と母体の物質交換。母体から胎児へ酸素と栄養素（糖・アミノ酸・遊離脂肪酸・ビタミン・ミネラル）、胎児から母体へ二酸化炭素と老廃物。" style="display:block;max-width:420px;margin:8px auto;font-family:var(--f-body)">
+  <rect x="0" y="0" width="360" height="262" rx="12" fill="#fff"/>
   <image href="img/fetus.jpg" x="2" y="62" width="90" height="102" preserveAspectRatio="xMidYMid meet"/>
   <image href="img/mother.jpg" x="276" y="34" width="80" height="148" preserveAspectRatio="xMidYMid meet"/>
   <text x="47" y="184" font-size="12.5" font-weight="800" fill="${T}" text-anchor="middle">胎児</text>
