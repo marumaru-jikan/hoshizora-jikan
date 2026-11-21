@@ -5051,7 +5051,8 @@ function rewardCard(rw){ const c=ALLC[rw.i];
 const NOVA_NEED = 30;
 const GROW = [ {n:'星屑の雲', at:0, d:'集めた星屑が、ふわりと集まりはじめました。'}, {n:'分子雲コア', at:8, d:'星屑がぎゅっと集まって、濃いかたまりになりました。'}, {n:'原始星', at:16, d:'まわりに円盤をまとい、熱をおびて光りはじめました。'}, {n:'若い星', at:24, d:'自分の力で輝きはじめています。あと少し。'}, {n:'新星の準備ができました', at:30, d:'どんな色の星が生まれるかは、お楽しみ。'} ];
 function skyInit(){
-  if(!R.sky || R.sky.dust==null){ const n=Object.keys(R.lessons||{}).length; R.sky={ dust:n, total:n, novae:[] }; save(); }
+  if(!R.sky || R.sky.dust==null){ const n=Object.keys(R.lessons||{}).length; R.sky={ dust:n, total:n, novae:[], fed:0 }; save(); }
+  if(R.sky.fed==null) R.sky.fed=0;
   return R.sky;
 }
 const growOf = n => { let g=GROW[0]; for(const s of GROW) if(n>=s.at) g=s; return g; };
@@ -5074,9 +5075,17 @@ function nightSVG(novae){
   return `<svg class="night" viewBox="0 0 360 230" role="img" aria-label="夜空　新星 ${n} こ">${bg}${st}${n?'':`<text x="180" y="110" text-anchor="middle" fill="#B9BEE6" font-size="13">まだ新星はありません</text>`}<path d="M0 208 Q60 188 120 200 T240 194 T360 202 V230 H0Z" fill="#05061A"/></svg>`;
 }
 const SHARD_I = `<svg class="shard" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 6.6L21 12l-6.6 2.4L12 22l-2.4-7.6L3 12l6.6-3.4z"/></svg>`;
+// 星屑を空へ：もっている星屑を夜空へ送り、30個たまると新星が生まれる
+function skyFeed(arg){
+  const s=skyInit(), before=growOf(s.fed).n, n=Math.min(arg==='all'?s.dust:1, s.dust, NOVA_NEED-s.fed); if(n<=0) return;
+  s.dust-=n; s.fed+=n; S.launched=0; S.skyMsg='';
+  if(s.fed>=NOVA_NEED){ s.fed=0; launchNova(); return; }
+  S.skyMsg = growOf(s.fed).n!==before ? `${growOf(s.fed).n}になった！` : `星屑を ${n} 個、空へ送った。`;
+  save();
+}
 function launchNova(){
-  const s=skyInit(); if(s.dust<NOVA_NEED) return;
-  s.dust-=NOVA_NEED; const nv={ h:ri(0,359), s:ri(60,95), l:ri(68,84), r:Math.round((.85+Math.random()*.4)*100)/100, d:today() };
+  const s=skyInit();
+  const nv={ h:ri(0,359), s:ri(60,95), l:ri(68,84), r:Math.round((.85+Math.random()*.4)*100)/100, d:today() };
   s.novae.push(nv); S.launched=s.novae.length; save();
 }
 
@@ -5189,7 +5198,7 @@ function vResult(){
   return `${meteor}${top('結果')}<div class="stack">
   <div class="panel result pop"><div class="big">${Q.score}/${n}</div><h2>${Q.retry?'見直し完了':l.id+'　'+l.t}</h2><p class="muted">${msg}</p></div>
   ${S.reward?rewardCard(S.reward):''}
-  ${S.gotShard?`<div class="panel shardget pop">${SHARD_I}<div><b>星屑が1つ集まりました</b><br><span class="small muted">星屑 ${R.sky.dust} / ${NOVA_NEED}${R.sky.dust>=NOVA_NEED?'　新星を生み出せます！':''}</span></div><button class="btn" data-act="toSky">夜空へ →</button></div>`:''}
+  ${S.gotShard?`<div class="panel shardget pop">${SHARD_I}<div><b>星屑が1つ集まりました</b><br><span class="small muted">もっている星屑 ${R.sky.dust}　夜空で空へ送れる</span></div><button class="btn" data-act="toSky">夜空へ →</button></div>`:''}
   ${Q.wrong.length?`<button class="btn warm wide" data-act="retry">間違えた ${Q.wrong.length}問 をもう一度</button>`:''}
   ${nx&&!Q.retry?`<button class="btn wide" data-act="lessonNext" data-arg="${nx.id}">次へ　${nx.id} ${nx.t} →</button>`:''}
   <button class="btn again wide" data-act="again">新しい問題でもう一度</button>
@@ -5211,17 +5220,18 @@ function vRecord(){
   ${units.length?units.map(([uid,u])=>`<div class="panel"><h3 style="margin-bottom:6px">${u.subject}　${u.no}　${u.title}</h3>${u.lessons.map(l=>`<div class="kv"><span>${l.id}　${l.t}</span>${lTag(uid,l.id)}</div>`).join('')}</div>`).join(''):'<p class="small muted">星屑（5分の学習）を終えると、ここに記録が並びます。</p>'}</div>`;
 }
 function vSky(){
-  const s=skyInit(), n=Math.min(s.dust,NOVA_NEED), g=growOf(n), nextG=GROW.find(x=>x.at>n), ready=s.dust>=NOVA_NEED, L=S.launched?s.novae[S.launched-1]:null;
-  return `<div class="stack"><div class="hello"><div class="eyebrow">夜空</div><h1>星屑を集めて新星を生み出そう</h1></div>
+  const s=skyInit(), n=s.fed, g=growOf(n), nextG=GROW.find(x=>x.at>n&&x.at<NOVA_NEED), L=S.launched?s.novae[S.launched-1]:null;
+  return `<div class="stack"><div class="hello"><div class="eyebrow">夜空</div><h1>星屑を空へ送って新星を生み出そう</h1></div>
   <div class="skybox">${nightSVG(s.novae)}<div class="skycount"><span>夜空の新星 <b class="num">${s.novae.length}</b> こ</span><span>集めた星屑 <b class="num">${s.total}</b></span></div></div>
-  ${L?`<div class="panel born pop"><svg viewBox="0 0 120 120" class="bsv">${starG(L,60,60,2)}</svg><div><p class="small muted">新星が生まれました！</p><h3>新星 No.${S.launched}</h3><p class="small">${hueName(L.h)}色に輝く星になりました。</p></div></div>`:''}
+  ${L?`<div class="panel born pop"><svg viewBox="0 0 120 120" class="bsv">${starG(L,60,60,2)}</svg><div><p class="small muted">新星が生まれた！</p><h3>新星 No.${S.launched}</h3><p class="small">${hueName(L.h)}色に輝く星になった。</p></div></div>`:''}
   <div class="panel grow"><div class="growtop"><div><p class="small muted">いま育っている星</p><h3>${g.n}</h3><p class="small">${g.d}</p></div>${stageSVG(n)}</div>
     <div class="meter"><i style="width:${n/NOVA_NEED*100}%"></i></div>
-    <div class="shardbal">${SHARD_I}<span>星屑 <b class="num">${s.dust}</b> / ${NOVA_NEED}</span></div>
-    <p class="small muted">${ready?'30個そろいました。どんな色の星が生まれるかは、お楽しみ。':(nextG&&nextG.at<NOVA_NEED?`あと <b class="num">${nextG.at-n}</b> 個で${nextG.n}、`:'')+`あと <b class="num">${NOVA_NEED-n}</b> 個で新星を生み出せます。`}</p>
-    <button class="btn warm wide" data-act="launch" ${ready?'':'disabled'}>新星を生み出す</button>
-    ${ready?'':'<p class="small muted">まだクリアしていない星屑（5分の学習）を1つクリアすると、星屑が1つ集まります。</p>'}</div>
-  <div class="panel"><h3>これまでの新星</h3>${s.novae.length?`<div class="list" style="margin-top:10px">${s.novae.map((v,i)=>`<div class="item"><svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">${starG(v,20,20,.9)}</svg><span class="body"><b>新星 No.${i+1}</b><br><span class="small muted">${hueName(v.h)}色</span></span><span class="small muted num">${v.d.replace(/-/g,'.')}</span></div>`).reverse().join('')}</div>`:'<p class="small muted" style="margin-top:6px">星屑を30個集めると、1つめの新星を空にあげられます。</p>'}</div></div>`;
+    <p class="small muted">${nextG?`あと <b class="num">${nextG.at-n}</b> 個で${nextG.n}、`:''}あと <b class="num">${NOVA_NEED-n}</b> 個で新星が生まれる。どんな色の星になるかは、お楽しみ。</p>
+    <div class="shardbal">${SHARD_I}<span>もっている星屑 <b class="num">${s.dust}</b></span></div>
+    ${S.skyMsg?`<p class="skymsg pop">${S.skyMsg}</p>`:''}
+    <div class="two"><button class="btn" data-act="feed" data-arg="1" ${s.dust?'':'disabled'}>1つ空へ</button><button class="btn ghost" data-act="feed" data-arg="all" ${s.dust?'':'disabled'}>まとめて空へ</button></div>
+    ${s.dust?'':'<p class="small muted">まだクリアしていない星屑（5分の学習）を1つクリアすると、星屑が1つ集まる。</p>'}</div>
+  <div class="panel"><h3>これまでの新星</h3>${s.novae.length?`<div class="list" style="margin-top:10px">${s.novae.map((v,i)=>`<div class="item"><svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">${starG(v,20,20,.9)}</svg><span class="body"><b>新星 No.${i+1}</b><br><span class="small muted">${hueName(v.h)}色</span></span><span class="small muted num">${v.d.replace(/-/g,'.')}</span></div>`).reverse().join('')}</div>`:'<p class="small muted" style="margin-top:6px">星屑を30個空へ送ると、1つめの新星が生まれる。</p>'}</div></div>`;
 }
 function vSettings(){
   const send = !GAS_URL ? `<span class="status">送信先がまだ設定されていません</span>` : R.outbox.length ? `<span class="status wait">送信待ち ${R.outbox.length}件（つながったら送ります）</span>` : `<span class="status ok">先生に送信済み</span>`;
@@ -5395,7 +5405,7 @@ function answerQ(picked){
 
 document.addEventListener('click', e=>{
   const tab=e.target.closest('[data-tab]');
-  if(tab){ S.stack=[]; S.viewCard=null; S.launched=0; S.view=tab.dataset.tab; render(); window.scrollTo(0,0); return; }
+  if(tab){ S.stack=[]; S.viewCard=null; S.launched=0; S.skyMsg=''; S.view=tab.dataset.tab; render(); window.scrollTo(0,0); return; }
   const b=e.target.closest('[data-act]'); if(!b||b.disabled) return;
   const a=b.dataset.act, arg=b.dataset.arg;
   if(a==='back') back();
@@ -5441,8 +5451,8 @@ document.addEventListener('click', e=>{
     S.view='result'; render(); window.scrollTo(0,0); }
   else if(a==='retry'){ const list=S.quiz.wrong.map(q=>Object.assign({},q,{choices:shuffle([...q.choices])})); S.view=S.stack.pop()||'lesson'; startQuiz(list); }
   else if(a==='again'){ S.view=S.stack.pop()||'lesson'; startQuiz(); }
-  else if(a==='launch'){ launchNova(); render(); window.scrollTo(0,0); }
-  else if(a==='toSky'){ S.stack=[]; S.launched=0; S.view='sky'; render(); window.scrollTo(0,0); }
+  else if(a==='feed'){ skyFeed(arg); render(); }
+  else if(a==='toSky'){ S.stack=[]; S.launched=0; S.skyMsg=''; S.view='sky'; render(); window.scrollTo(0,0); }
   else if(a==='tounit'){ const u=CU(); S.course=u.course; S.subj=u.subj; S.stack=[...navBase(u),'course']; S.view='subject'; render(); window.scrollTo(0,0); }
 });
 document.addEventListener('keydown', e=>{ if(e.key==='Escape' && S.viewCard!=null){ S.viewCard=null; render(); } });
