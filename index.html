@@ -5056,12 +5056,20 @@ const GROW = [ {n:'星屑の雲', at:0, d:'集めた星屑が、ふわりと集�
 function skyInit(){
   if(!R.sky || R.sky.dust==null){ const n=Object.keys(R.lessons||{}).length; R.sky={ dust:n, total:n, novae:[], fed:0 }; save(); }
   if(R.sky.fed==null) R.sky.fed=0;
+  if(R.sky.novae.some(v=>!v.code)){ novaName(R.sky); save(); }
   return R.sky;
 }
 const growOf = n => { let g=GROW[0]; for(const s of GROW) if(n>=s.at) g=s; return g; };
+// 色ごとの記号：赤R・オレンジO・金Y・緑G・水C・青B・紫V・ピンクP
+const HUE_CODE = {'赤':'R','オレンジ':'O','金':'Y','緑':'G','水':'C','青':'B','紫':'V','ピンク':'P'};
+// 名前（G-001など）と形がまだない新星に、生まれた順でつける
+function novaName(s){ const cnt={}; s.novae.forEach((v,i)=>{ const L=HUE_CODE[hueName(v.h)]; cnt[L]=(cnt[L]||0)+1;
+  if(!v.code){ v.code=L+'-'+String(cnt[L]).padStart(3,'0'); if(!v.pts){ const r=seeded(i*53+11); v.pts=[4,4,5,6,8][Math.floor(r()*5)]; v.rot=Math.round(r()*40-20); v.sh=Math.round((.8+r()*1.4)*100)/100; } } }); }
 const hueName = (h,l) => h<15||h>=345?'赤':h<40?'オレンジ':h<65?'金':h<150?'緑':h<190?'水':h<250?'青':h<290?'紫':'ピンク';
-function starG(sp,x,y,k){ x=+x; y=+y; const c=`hsl(${sp.h},${sp.s}%,${sp.l}%)`, r=sp.r*k;
-  return `<circle cx="${x}" cy="${y}" r="${14*r}" fill="${c}" opacity=".14"/><circle cx="${x}" cy="${y}" r="${7*r}" fill="${c}" opacity=".32"/><path d="M${x} ${y-16*r} Q${x+1.6*r} ${y-1.6*r} ${x+16*r} ${y} Q${x+1.6*r} ${y+1.6*r} ${x} ${y+16*r} Q${x-1.6*r} ${y+1.6*r} ${x-16*r} ${y} Q${x-1.6*r} ${y-1.6*r} ${x} ${y-16*r}Z" fill="${c}" opacity=".9"/><circle cx="${x}" cy="${y}" r="${3.2*r}" fill="#fff"/>`; }
+function starG(sp,x,y,k){ x=+x; y=+y; const c=`hsl(${sp.h},${sp.s}%,${sp.l}%)`, r=sp.r*k, P=sp.pts||4, rot=(sp.rot||0)*Math.PI/180, cr=1.6*r*(sp.sh||1), R=16*r;
+  let d=''; for(let i=0;i<P;i++){ const a=rot-Math.PI/2+i*2*Math.PI/P, m=a+Math.PI/P, tx=x+Math.cos(a)*R, ty=y+Math.sin(a)*R, a2=a+2*Math.PI/P, nx=x+Math.cos(a2)*R, ny=y+Math.sin(a2)*R, qx=x+Math.cos(m)*cr, qy=y+Math.sin(m)*cr;
+    d+=(i?'':`M${tx.toFixed(1)} ${ty.toFixed(1)}`)+` Q${qx.toFixed(1)} ${qy.toFixed(1)} ${nx.toFixed(1)} ${ny.toFixed(1)}`; }
+  return `<circle cx="${x}" cy="${y}" r="${14*r}" fill="${c}" opacity=".14"/><circle cx="${x}" cy="${y}" r="${7*r}" fill="${c}" opacity=".32"/><path d="${d}Z" fill="${c}" opacity=".9"/><circle cx="${x}" cy="${y}" r="${3.2*r}" fill="#fff"/>`; }
 function stageSVG(n){
   const g=growOf(n).n, x=110, y=85, rnd=seeded(5); let s='';
   if(n<16){ for(let i=0;i<9;i++){ const a=rnd()*6.28, d=(n<8?36:22)*rnd(); s+=`<ellipse cx="${(x+Math.cos(a)*d).toFixed(1)}" cy="${(y+Math.sin(a)*d*.6).toFixed(1)}" rx="${26+rnd()*20}" ry="${14+rnd()*10}" fill="hsla(${250+rnd()*40},60%,72%,.16)"/>`; }
@@ -5096,8 +5104,8 @@ function skyFeed(arg){
 }
 function launchNova(){
   const s=skyInit();
-  const nv={ h:ri(0,359), s:ri(60,95), l:ri(68,84), r:Math.round((.85+Math.random()*.4)*100)/100, d:today() };
-  s.novae.push(nv); S.launched=s.novae.length; save();
+  const nv={ h:ri(0,359), s:ri(60,95), l:ri(68,84), r:Math.round((.8+Math.random()*.5)*100)/100, pts:[4,4,5,6,8][ri(0,4)], rot:ri(-20,20), sh:Math.round((.8+Math.random()*1.4)*100)/100, d:today() };
+  s.novae.push(nv); novaName(s); S.launched=s.novae.length; save();
 }
 
 /* ===== 画面 ===== */
@@ -5234,7 +5242,7 @@ function vSky(){
   const s=skyInit(), n=s.fed, g=growOf(n), nextG=GROW.find(x=>x.at>n&&x.at<NOVA_NEED), L=S.launched?s.novae[S.launched-1]:null;
   return `<div class="stack"><div class="hello"><div class="eyebrow">夜空</div><h1>星屑を空へ送って新星を生み出そう</h1></div>
   <div class="skybox"><div class="skyscroll" id="skyscroll">${nightSVG(s.novae)}</div>${skyPages(s.novae.length)>1?'<div class="skyhint">← 横にスクロールすると、前の新星が見られる</div>':''}<div class="skycount"><span>夜空の新星 <b class="num">${s.novae.length}</b> こ</span><span>集めた星屑 <b class="num">${s.total}</b></span></div></div>
-  ${L?`<div class="panel born pop"><svg viewBox="0 0 120 120" class="bsv">${starG(L,60,60,2)}</svg><div><p class="small muted">新星が生まれた！</p><h3>新星 No.${S.launched}</h3><p class="small">${hueName(L.h)}色に輝く星になった。</p></div></div>`:''}
+  ${L?`<div class="panel born pop"><svg viewBox="0 0 120 120" class="bsv">${starG(L,60,60,2)}</svg><div><p class="small muted">新星が生まれた！</p><h3>${L.code}</h3><p class="small">${hueName(L.h)}色に輝く星になった。</p></div></div>`:''}
   <div class="panel grow"><div class="growtop"><div><p class="small muted">いま育っている星</p><h3>${g.n}</h3><p class="small">${g.d}</p></div>${stageSVG(n)}</div>
     <div class="meter"><i style="width:${n/NOVA_NEED*100}%"></i></div>
     <p class="small muted">${nextG?`あと <b class="num">${nextG.at-n}</b> 個で${nextG.n}、`:''}あと <b class="num">${NOVA_NEED-n}</b> 個で新星が生まれる。どんな色の星になるかは、お楽しみ。</p>
@@ -5242,7 +5250,7 @@ function vSky(){
     ${S.skyMsg?`<p class="skymsg pop">${S.skyMsg}</p>`:''}
     <div class="two"><button class="btn" data-act="feed" data-arg="1" ${s.dust?'':'disabled'}>1つ空へ</button><button class="btn ghost" data-act="feed" data-arg="all" ${s.dust?'':'disabled'}>まとめて空へ</button></div>
     ${s.dust?'':'<p class="small muted">まだクリアしていない星屑（5分の学習）を1つクリアすると、星屑が1つ集まる。</p>'}</div>
-  <div class="panel"><h3>これまでの新星</h3>${s.novae.length?`<div class="list" style="margin-top:10px">${s.novae.map((v,i)=>`<div class="item"><svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">${starG(v,20,20,.9)}</svg><span class="body"><b>新星 No.${i+1}</b><br><span class="small muted">${hueName(v.h)}色</span></span><span class="small muted num">${v.d.replace(/-/g,'.')}</span></div>`).reverse().join('')}</div>`:'<p class="small muted" style="margin-top:6px">星屑を30個空へ送ると、1つめの新星が生まれる。</p>'}</div></div>`;
+  <div class="panel"><h3>これまでの新星</h3>${s.novae.length?`<div class="list" style="margin-top:10px">${s.novae.map((v,i)=>`<div class="item"><svg viewBox="0 0 40 40" width="28" height="28" aria-hidden="true">${starG(v,20,20,.9)}</svg><span class="body"><b>${esc(v.code||'')}</b><br><span class="small muted">${hueName(v.h)}色　No.${i+1}</span></span><span class="small muted num">${v.d.replace(/-/g,'.')}</span></div>`).reverse().join('')}</div>`:'<p class="small muted" style="margin-top:6px">星屑を30個空へ送ると、1つめの新星が生まれる。</p>'}</div></div>`;
 }
 function vSettings(){
   const send = !GAS_URL ? `<span class="status">送信先がまだ設定されていません</span>` : R.outbox.length ? `<span class="status wait">送信待ち ${R.outbox.length}件（つながったら送ります）</span>` : `<span class="status ok">先生に送信済み</span>`;
