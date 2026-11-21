@@ -84,6 +84,14 @@ p{margin:0}
 .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--sunk);color:var(--muted);white-space:nowrap}
 .tag.done{background:var(--good-bg);color:var(--good)}
 .tag.mid{background:var(--accent-soft);color:var(--accent-ink)}
+.sbtn{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer}
+.sbtn svg,.sbox svg{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.sbox{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:4px 12px;color:var(--muted)}
+.sbox input[type=search]{flex:1;min-width:0;font:inherit;font-size:16px;color:var(--ink);background:transparent;border:0;padding:8px 0;outline:none}
+.sbox input[type=search]::-webkit-search-cancel-button{display:none}
+.sclear{border:0;background:none;color:var(--muted);font:inherit;padding:4px;cursor:pointer}
+.sres .snip{display:block;margin-top:4px;line-height:1.6}
+mark.hit{background:#FFE58A;color:#222;border-radius:3px;padding:0 1px}
 .lid{flex:none;min-width:44px;height:30px;padding:0 8px;border-radius:99px;display:grid;place-items:center;background:var(--teal-soft);color:var(--teal);font-weight:700;font-family:var(--f-display);font-variant-numeric:tabular-nums;font-size:.9rem}
 .lid.done{background:var(--teal);color:var(--surface)}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
@@ -5106,7 +5114,9 @@ function vHome(){
   const acc=R.answered?Math.round(R.correct/R.answered*100):0, uid=UNITS[R.lastUnit]?R.lastUnit:'cv', u=UNITS[uid], n=nextOf(uid);
   return `<div class="stack" style="padding-top:8px"><div class="sky">${heroArt()}<div class="txt"><span class="name">星空時間</span><h1>${greet()}${R.name?'、'+esc(R.name)+'さん':''}</h1><p>今日も5分だけ。<br>小さな輝き。</p></div></div>
   <div class="stats"><div class="stat"><b>${R.days.length}</b><span>学習した日</span></div><div class="stat"><b>${streak()}</b><span>連続した日</span></div><div class="stat"><b>${R.answered}</b><span>解いた問題${R.answered?'（'+acc+'%）':''}</span></div></div>
+  <button class="sbtn" data-act="go" data-arg="search">${SI_ICON}<span>星屑を検索</span></button>
   <button class="continue" data-act="lesson" data-arg="${n.id}" data-uid="${uid}"><span><small>続きから　${u.subject}・${u.title}（${doneCount(uid)}/${u.lessons.length}）</small><strong>${n.id}　${n.t}</strong></span><span class="go" aria-hidden="true">→</span></button>
+  ${recHTML()}
   ${CATALOG.filter(g=>!g.hidden).map(g=>`${g.group?`<h2>${g.group}</h2>`:''}<div class="subjects">${g.courses.map(c=>{ const r=readyCount(c);
     return `<button class="subj" data-act="course" data-arg="${c.id}"><span class="k">${c.k}</span><b>${c.name}</b><span class="small muted">${c.note||c.subjects.map(x=>x.name).join('・')}</span><span class="small ${r?'':'muted'}">${r?'公開中 '+r+'章':'準備中'}</span></button>`; }).join('')}</div>`).join('')}
   <button class="item panel" data-act="go" data-arg="install"><span class="body"><b>ホーム画面に追加</b><br><span class="small muted">アプリのようにアイコンから開けます</span></span><span class="chev">›</span></button></div>`;
@@ -5259,7 +5269,108 @@ async function renderPdf(){ const P=S.pdf, box=document.getElementById('pdfpages
       cv.width=vp.width; cv.height=vp.height; cv.className='pdfpage'; cv.style.width=W+'px'; box.appendChild(cv); await pg.render({ canvasContext:cv.getContext('2d'), viewport:vp }).promise; } }
   catch(e){ if(tok===P.tok) box.innerHTML='<p class="small muted" style="padding:24px;text-align:center">PDFを読みこめませんでした。下のボタンから開いてください。</p>'; } }
 
-const VIEWS={ setup:vSetup, home:vHome, course:vCourse, subject:vSubject, unit:vUnit, lesson:vLesson, cards:vCards, quiz:vQuiz, result:vResult, record:vRecord, settings:vSettings, install:vInstall, drill:vDrill, pdf:vPdf, sky:vSky };
+
+// ===== 検索 =====
+const SI_ICON='<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>';
+// 全角英数→半角、ひらがな→カタカナ、英字は小文字（文字数は変えない）
+const snorm = s => String(s).replace(/[！-～]/g,c=>String.fromCharCode(c.charCodeAt(0)-0xFEE0)).replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60)).replace(/　/g,' ').toLowerCase();
+const stext = h => String(h).replace(/<svg[\s\S]*?<\/svg>/gi,' ').replace(/<br\s*\/?>/gi,' ').replace(/<\/(p|td|th|tr|h3|li|div|section)>/gi,' ').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&amp;/g,'&').replace(/\s+/g,' ').trim();
+// 章（UNITS）がどの科目・項目の何章目にあるか
+function unitPlace(uid){
+  for(const c of allCourses()) for(const [si,sb] of c.subjects.entries()){ const k=sb.units.findIndex(x=>x.ready===uid); if(k>=0) return {c,si,sb,k,un:sb.units[k]}; }
+  return null;
+}
+let SIDX=null;
+function searchIndex(){
+  if(SIDX) return SIDX; SIDX=[];
+  for(const [uid,u] of Object.entries(UNITS)){
+    if(u.course==='memo') continue; const P=unitPlace(uid); if(!P) continue;
+    const path=P.c.name+'　'+P.sb.name+'　'+(P.k+1)+'章 '+P.un.t;
+    for(const l of u.lessons){
+      let body=''; try{ body=stext(l.body()); }catch(e){}
+      const head=stext(l.t+' '+(l.sub||''));
+      SIDX.push({uid,lid:l.id,course:P.c.id,subj:P.si,title:l.id+'　'+l.t,path,head,nhead:snorm(head),body,nbody:snorm(body)}); } }
+  return SIDX;
+}
+function searchRun(q){
+  const terms=snorm(q).split(/\s+/).filter(Boolean); if(!terms.length) return [];
+  const out=[];
+  for(const e of searchIndex()){
+    if(!terms.every(t=>e.nhead.includes(t)||e.nbody.includes(t))) continue;
+    const sc=terms.reduce((a,t)=>a+(e.nhead.includes(t)?10:0)+Math.min(5,e.nbody.split(t).length-1),0);
+    out.push({e,sc}); }
+  return out.sort((a,b)=>b.sc-a.sc).slice(0,60).map(x=>x.e);
+}
+function snipHTML(e,q){
+  const terms=snorm(q).split(/\s+/).filter(Boolean), t0=terms[0], i=e.nbody.indexOf(t0);
+  if(i<0) return '';
+  const a=Math.max(0,i-24), b=Math.min(e.body.length,i+t0.length+40);
+  let s=e.body.slice(a,b), ns=e.nbody.slice(a,b), out='', k=0;
+  const re=new RegExp(terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g'); let m;
+  while((m=re.exec(ns))){ out+=esc(s.slice(k,m.index))+'<mark class="hit">'+esc(s.slice(m.index,m.index+m[0].length))+'</mark>'; k=m.index+m[0].length; if(!m[0].length) re.lastIndex++; }
+  out+=esc(s.slice(k));
+  return (a>0?'…':'')+out+(b<e.body.length?'…':'');
+}
+function searchResults(q){
+  if(!q.trim()) return '<p class="small muted">星屑のタイトル・本文・表の中から探せる。スペースで区切ると、すべてを含むものを探す。ひらがなで入力してもカタカナに一致する。</p>';
+  const r=searchRun(q);
+  if(!r.length) return '<p class="small muted">見つからなかった。</p>';
+  return `<p class="small muted">${r.length}${r.length>=60?'件以上':'件'}</p><div class="list">${r.map(e=>`<button class="item sres" data-act="sres" data-uid="${e.uid}" data-arg="${esc(e.lid)}" data-c="${e.course}" data-s="${e.subj}"><span class="body"><b>${esc(e.title)}</b><br><span class="small muted">${esc(e.path)}</span><span class="small snip">${snipHTML(e,q)}</span></span><span class="chev">›</span></button>`).join('')}</div>`;
+}
+function vSearch(){
+  return `${top('検索')}<div class="stack"><label class="sbox">${SI_ICON}<input type="search" id="sq" placeholder="用語・薬の名前など" value="${esc(S.q||'')}" autocomplete="off" enterkeyhint="search"><button class="sclear" data-act="sclear" aria-label="消す"${S.q?'':' hidden'}>✕</button></label><div id="sr">${searchResults(S.q||'')}</div></div>`;
+}
+// 検索から開いた星屑で、言葉に印をつけて最初の場所へ
+function markHits(root,q){
+  const terms=snorm(q).split(/\s+/).filter(Boolean); if(!terms.length) return;
+  const re=new RegExp(terms.map(t=>t.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|'),'g');
+  const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.nodeValue.trim()&&!n.parentNode.closest('svg,button,mark')?1:2});
+  const ns=[]; while(w.nextNode()) ns.push(w.currentNode);
+  let first=null;
+  for(const n of ns){ const t=n.nodeValue, nt=snorm(t); re.lastIndex=0; if(!re.test(nt)) continue; re.lastIndex=0;
+    const f=document.createDocumentFragment(); let k=0, m;
+    while((m=re.exec(nt))){ if(!m[0].length){ re.lastIndex++; continue; } f.append(t.slice(k,m.index)); const mk=document.createElement('mark'); mk.className='hit'; mk.textContent=t.slice(m.index,m.index+m[0].length); f.append(mk); if(!first) first=mk; k=m.index+m[0].length; }
+    f.append(t.slice(k)); n.replaceWith(f); }
+  if(first) setTimeout(()=>first.scrollIntoView({block:'center'}),0);
+}
+
+// ===== おすすめ星屑 =====
+function recPool(){
+  const out=[];
+  for(const [uid,u] of Object.entries(UNITS)){
+    if(u.course==='memo') continue; const P=unitPlace(uid); if(!P) continue;
+    u.lessons.forEach((l,i)=>{ if(l.ref) return; out.push({uid,l,i,u,sb:P.sb,course:P.c.id,subj:P.si}); }); }
+  return out;
+}
+function recommend(){
+  const P=recPool(), now=Date.now(), DAY=864e5, rnd=seeded(+today().replace(/\D/g,'')%100000);
+  const rec=x=>R.lessons[lkey(x.uid,x.l.id)];
+  // 未演習：手をつけた章の続きを優先、残りは日替わり
+  const started=new Set(P.filter(x=>rec(x)).map(x=>x.uid));
+  const fresh=P.filter(x=>!rec(x)), freshA=fresh.filter(x=>started.has(x.uid)), freshB=fresh.filter(x=>!started.has(x.uid)).map(x=>[rnd(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+  const seenU=new Set(), freshList=[];
+  for(const x of freshA) if(!seenU.has(x.uid)){ seenU.add(x.uid); freshList.push(x); }
+  for(const x of freshB) if(!seenU.has(x.uid)){ seenU.add(x.uid); freshList.push(x); }
+  // 間違いが多い：前回の正答率が低い順
+  const rate=x=>{ const s=rec(x); return (s.last!=null?s.last:s.best)/(s.total||1); };
+  const miss=P.filter(x=>rec(x)&&rate(x)<1).sort((a,b)=>rate(a)-rate(b));
+  // 時間が経っている：前回から3日以上、古い順
+  const age=x=>{ const s=rec(x); return s.at?now-s.at:Infinity; };
+  const old=P.filter(x=>rec(x)&&age(x)>=3*DAY).sort((a,b)=>age(b)-age(a));
+  const picks=[], used=new Set(), add=(x,why)=>{ const k=lkey(x.uid,x.l.id); if(used.has(k)) return false; used.add(k); picks.push({x,why}); return true; };
+  const take=(list,n,why)=>{ let c=0; for(const x of list){ if(c>=n||picks.length>=5) break; if(add(x,why(x))) c++; } };
+  const wMiss=x=>{ const s=rec(x); return '正答 '+(s.last!=null?s.last:s.best)+'/'+s.total; };
+  const wOld=x=>{ const s=rec(x); return s.at?Math.floor((now-s.at)/DAY)+'日前':'しばらく前'; };
+  take(miss,2,wMiss); take(old,1,wOld); take(freshList,2,()=>'未演習');
+  take(miss,5,wMiss); take(old,5,wOld); take(freshList,5,()=>'未演習');
+  return picks;
+}
+function recHTML(){
+  const r=recommend(); if(!r.length) return '';
+  return `<h2>おすすめ星屑</h2><div class="list">${r.map(({x,why})=>`<button class="item" data-act="rec" data-uid="${x.uid}" data-arg="${esc(x.l.id)}" data-c="${x.course}" data-s="${x.subj}"><span class="lid">${esc(x.l.test?'まとめ':x.l.id)}</span><span class="body"><b>${esc(x.l.t)}</b><br><span class="small muted">${esc(x.sb.name+'　'+x.u.title)}</span></span><span class="tag ${why==='未演習'?'':'mid'}">${why}</span><span class="chev">›</span></button>`).join('')}</div>`;
+}
+
+const VIEWS={ setup:vSetup, home:vHome, course:vCourse, subject:vSubject, unit:vUnit, lesson:vLesson, cards:vCards, quiz:vQuiz, result:vResult, record:vRecord, settings:vSettings, install:vInstall, drill:vDrill, pdf:vPdf, sky:vSky, search:vSearch };
 function render(){
   app.innerHTML=VIEWS[S.view]();
   tabs.hidden = S.view==='setup';
@@ -5269,6 +5380,12 @@ function render(){
   if(c) c.addEventListener('change',e=>{ const v=normCode(e.target.value); if(CODE_RE.test(v)){ R.code=v; save(); } e.target.value=R.code; });
   if(n) n.addEventListener('input',e=>{ R.name=e.target.value.trim(); save(); });
   if (S.view==='pdf') renderPdf();
+  if (S.view==='search'){ const i=document.getElementById('sq'), sr=document.getElementById('sr'), cl=app.querySelector('.sclear');
+    i.addEventListener('input',()=>{ S.q=i.value; cl.hidden=!S.q; sr.innerHTML=searchResults(S.q); });
+    i.addEventListener('keydown',e=>{ if(e.key==='Enter') i.blur(); });
+    if(!S.q) i.focus(); }
+  if (S.view==='lesson' && S.hl){ const L=app.querySelector('.lesson'); if(L) markHits(L,S.hl); }
+  if (S.view!=='lesson') S.hl='';
 }
 function answerQ(picked){
   const Q=S.quiz, q=Q.qs[Q.i], ok=picked===q.answer; Q.picked=picked; R.answered++;
@@ -5287,6 +5404,9 @@ document.addEventListener('click', e=>{
   else if(a==='closeCard'){ S.viewCard=null; render(); }
   else if(a==='meteorClose'){ S.meteor=''; render(); }
   else if(a==='go') go(arg);
+  else if(a==='sres'){ S.uid=b.dataset.uid; S.course=b.dataset.c; S.subj=+b.dataset.s; S.lid=arg; S.hl=S.q||''; go('lesson'); }
+  else if(a==='rec'){ S.uid=b.dataset.uid; S.course=b.dataset.c; S.subj=+b.dataset.s; S.lid=arg; S.hl=''; go('lesson'); }
+  else if(a==='sclear'){ S.q=''; render(); }
   else if(a==='pdf') openPdf(arg);
   else if(a==='pdfTab'){ S.pdf.i=+arg; render(); }
   else if(a==='pdfZoom'){ S.pdf.z=S.pdf.z>1?1:1.8; render(); }
@@ -5309,7 +5429,7 @@ document.addEventListener('click', e=>{
     if(Q.i+1<Q.qs.length){ Q.i++; Q.picked=null; Q.hint=false; render(); window.scrollTo(0,0); return; }
     S.reward=null; S.gotShard=false; let chapterJust=false;
     if(!Q.retry){ skyInit(); const u=CU(), l=LX(S.lid), k=lkey(S.uid,l.id), first=!R.lessons[k], wasDone=unitDone(S.uid), n=Q.qs.length, s=R.lessons[k]||{best:0,tries:0,total:n};
-      s.tries++; s.best=Math.max(s.best,Q.score); s.total=n; R.lessons[k]=s; R.lastUnit=S.uid; save();
+      s.tries++; s.best=Math.max(s.best,Q.score); s.last=Q.score; s.at=Date.now(); s.total=n; R.lessons[k]=s; R.lastUnit=S.uid; save();
       report({ subject:u.subject, unit:u.no+' '+u.title, lesson:l.id, title:l.t, score:Q.score, total:n, sec:Math.round((Date.now()-S.lessonStart)/1000) });
       chapterJust = !wasDone && unitDone(S.uid);
       if(chapterJust){ // 章をクリア → 流れ星のメッセージ。その項目の章がぜんぶクリアになったらカード
