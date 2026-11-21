@@ -240,6 +240,9 @@ ol.steps{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:6px}
 /* grow a star */
 .skybox{border-radius:22px;overflow:hidden;background:linear-gradient(175deg,#232867 0%,#10143C 58%,#05071C 100%);color:#E8EAFB}
 .skybox .night{display:block;width:100%;height:auto}
+.skyscroll{overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.skyscroll .night{width:calc(100% * var(--pages,1))}
+.skyhint{font-size:.75rem;color:#C6CAEE;text-align:center;padding:6px 0 0}
 .skycount{display:flex;justify-content:space-between;padding:8px 16px 12px;font-size:.82rem;color:#C6CAEE}
 .skycount b{color:#fff;font-size:1rem}
 .night .tw{animation-duration:4s}
@@ -5068,11 +5071,19 @@ function stageSVG(n){
   else s=`<circle cx="${x}" cy="${y}" r="46" fill="hsla(260,60%,70%,.1)"/>`+starG({h:48,s:90,l:88,r:n>=30?1.9:1.4},x,y,1);
   return `<svg class="stg" viewBox="0 0 220 170" role="img" aria-label="${g}"><g class="bob">${s}</g></svg>`;
 }
+// 夜空は10こごとに1画面ずつ横に広がる（横スクロール）
+const SKY_PER = 10;
+const skyPages = n => Math.max(1, Math.ceil(n/SKY_PER));
 function nightSVG(novae){
-  const n=novae.length, rnd=seeded(11); let bg=''; for(let i=0;i<60;i++) bg+=`<circle cx="${(rnd()*360).toFixed(1)}" cy="${(rnd()*190).toFixed(1)}" r="${(.4+rnd()*.9).toFixed(2)}" fill="#fff" opacity="${(.25+rnd()*.5).toFixed(2)}"/>`;
-  const k=n>16?.62:n>8?.78:.95; let st='';
-  novae.slice(-40).forEach((t,i)=>{ const r=seeded((n-novae.slice(-40).length+i)*31+7), x=24+r()*312, y=22+r()*150; st+=`<g class="tw" style="animation-delay:${-(i*1.7)%4}s">${starG(t,x.toFixed(1),y.toFixed(1),k)}</g>`; });
-  return `<svg class="night" viewBox="0 0 360 230" role="img" aria-label="夜空　新星 ${n} こ">${bg}${st}${n?'':`<text x="180" y="110" text-anchor="middle" fill="#B9BEE6" font-size="13">まだ新星はありません</text>`}<path d="M0 208 Q60 188 120 200 T240 194 T360 202 V230 H0Z" fill="#05061A"/></svg>`;
+  const n=novae.length, P=skyPages(n), W=360*P, rnd=seeded(11); let bg='';
+  for(let i=0;i<60*P;i++) bg+=`<circle cx="${(rnd()*W).toFixed(1)}" cy="${(rnd()*190).toFixed(1)}" r="${(.4+rnd()*.9).toFixed(2)}" fill="#fff" opacity="${(.25+rnd()*.5).toFixed(2)}"/>`;
+  let st='';
+  novae.forEach((t,i)=>{ const p=Math.floor(i/SKY_PER), j=i%SKY_PER, r=seeded(i*31+7);
+    // 1画面を5×2のマスに分けて、マスの中でゆらす（重なりにくい）
+    const cx=p*360+36+(j%5)*72+(r()-.5)*40, cy=44+Math.floor(j/5)*76+(r()-.5)*44;
+    st+=`<g class="tw" style="animation-delay:${-(i*1.7)%4}s">${starG(t,cx.toFixed(1),cy.toFixed(1),.95)}</g>`; });
+  let ground=''; for(let p=0;p<P;p++){ const o=p*360; ground+=`<path d="M${o} 208 Q${o+60} 188 ${o+120} 200 T${o+240} 194 T${o+360} 202 V230 H${o}Z" fill="#05061A"/>`; }
+  return `<svg class="night" viewBox="0 0 ${W} 230" style="--pages:${P}" role="img" aria-label="夜空　新星 ${n} こ">${bg}${st}${n?'':`<text x="180" y="110" text-anchor="middle" fill="#B9BEE6" font-size="13">まだ新星はありません</text>`}${ground}</svg>`;
 }
 const SHARD_I = `<svg class="shard" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l2.4 6.6L21 12l-6.6 2.4L12 22l-2.4-7.6L3 12l6.6-3.4z"/></svg>`;
 // 星屑を空へ：もっている星屑を夜空へ送り、30個たまると新星が生まれる
@@ -5222,7 +5233,7 @@ function vRecord(){
 function vSky(){
   const s=skyInit(), n=s.fed, g=growOf(n), nextG=GROW.find(x=>x.at>n&&x.at<NOVA_NEED), L=S.launched?s.novae[S.launched-1]:null;
   return `<div class="stack"><div class="hello"><div class="eyebrow">夜空</div><h1>星屑を空へ送って新星を生み出そう</h1></div>
-  <div class="skybox">${nightSVG(s.novae)}<div class="skycount"><span>夜空の新星 <b class="num">${s.novae.length}</b> こ</span><span>集めた星屑 <b class="num">${s.total}</b></span></div></div>
+  <div class="skybox"><div class="skyscroll" id="skyscroll">${nightSVG(s.novae)}</div>${skyPages(s.novae.length)>1?'<div class="skyhint">← 横にスクロールすると、前の新星が見られる</div>':''}<div class="skycount"><span>夜空の新星 <b class="num">${s.novae.length}</b> こ</span><span>集めた星屑 <b class="num">${s.total}</b></span></div></div>
   ${L?`<div class="panel born pop"><svg viewBox="0 0 120 120" class="bsv">${starG(L,60,60,2)}</svg><div><p class="small muted">新星が生まれた！</p><h3>新星 No.${S.launched}</h3><p class="small">${hueName(L.h)}色に輝く星になった。</p></div></div>`:''}
   <div class="panel grow"><div class="growtop"><div><p class="small muted">いま育っている星</p><h3>${g.n}</h3><p class="small">${g.d}</p></div>${stageSVG(n)}</div>
     <div class="meter"><i style="width:${n/NOVA_NEED*100}%"></i></div>
@@ -5390,6 +5401,7 @@ function render(){
   if(c) c.addEventListener('change',e=>{ const v=normCode(e.target.value); if(CODE_RE.test(v)){ R.code=v; save(); } e.target.value=R.code; });
   if(n) n.addEventListener('input',e=>{ R.name=e.target.value.trim(); save(); });
   if (S.view==='pdf') renderPdf();
+  if (S.view==='sky'){ const sc=document.getElementById('skyscroll'); if(sc){ const end=()=>{ sc.scrollLeft=sc.scrollWidth; }; end(); requestAnimationFrame(end); setTimeout(end,60); } }
   if (S.view==='search'){ const i=document.getElementById('sq'), sr=document.getElementById('sr'), cl=app.querySelector('.sclear');
     i.addEventListener('input',()=>{ S.q=i.value; cl.hidden=!S.q; sr.innerHTML=searchResults(S.q); });
     i.addEventListener('keydown',e=>{ if(e.key==='Enter') i.blur(); });
