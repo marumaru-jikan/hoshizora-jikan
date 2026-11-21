@@ -5057,7 +5057,7 @@ function skyInit(){
 }
 const growOf = n => { let g=GROW[0]; for(const s of GROW) if(n>=s.at) g=s; return g; };
 const hueName = (h,l) => h<15||h>=345?'赤':h<40?'オレンジ':h<65?'金':h<150?'緑':h<190?'水':h<250?'青':h<290?'紫':'ピンク';
-function starG(sp,x,y,k){ const c=`hsl(${sp.h},${sp.s}%,${sp.l}%)`, r=sp.r*k;
+function starG(sp,x,y,k){ x=+x; y=+y; const c=`hsl(${sp.h},${sp.s}%,${sp.l}%)`, r=sp.r*k;
   return `<circle cx="${x}" cy="${y}" r="${14*r}" fill="${c}" opacity=".14"/><circle cx="${x}" cy="${y}" r="${7*r}" fill="${c}" opacity=".32"/><path d="M${x} ${y-16*r} Q${x+1.6*r} ${y-1.6*r} ${x+16*r} ${y} Q${x+1.6*r} ${y+1.6*r} ${x} ${y+16*r} Q${x-1.6*r} ${y+1.6*r} ${x-16*r} ${y} Q${x-1.6*r} ${y-1.6*r} ${x} ${y-16*r}Z" fill="${c}" opacity=".9"/><circle cx="${x}" cy="${y}" r="${3.2*r}" fill="#fff"/>`; }
 function stageSVG(n){
   const g=growOf(n).n, x=110, y=85, rnd=seeded(5); let s='';
